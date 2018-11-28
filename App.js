@@ -6,8 +6,10 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
+import type { Screen } from 'app/scenes';
+import Scenes from 'app/scenes';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -17,13 +19,52 @@ const instructions = Platform.select({
 });
 
 type Props = {};
-export default class App extends Component<Props> {
+type Product = {
+  name: string,
+  image: string,
+};
+type State = {
+  currentScreen: Screen,
+  products: Product[],
+  currentProduct: Product,
+};
+
+export default class App extends PureComponent<Props, State> {
+  constructor() {
+    super();
+    this.state = {
+      currentScreen: Scenes.Login,
+      products: [],
+      currentProduct: null,
+    }
+  }
+
   render() {
+    const currentScreen = this.state.currentScreen;
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native, hey!!!!!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        {(() => {
+          switch (currentScreen) {
+            case Scenes.Login:
+              return (
+                <Text style={styles.welcome}>
+                  Welcome to React Native, hey!!!!!
+                </Text>
+              );
+            case Scenes.ProductList:
+              return (
+                <Text style={styles.welcome}>
+                  Welcome to React Native, hey!!!!!
+                </Text>
+              );
+            case Scenes.Product:
+              return (
+                <Text style={styles.welcome}>
+                  Welcome to React Native, hey!!!!!
+                </Text>
+              );
+          }
+        })()}
       </View>
     );
   }

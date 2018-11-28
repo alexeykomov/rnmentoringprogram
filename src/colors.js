@@ -18,6 +18,6 @@ const Colors = {
   DarkGray: '#464557',
 };
 
-export type Color = $Keys<typeof Colors>;
+export type Color = $Values<typeof Colors>;
 
 export default Colors;
