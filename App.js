@@ -10,6 +10,7 @@ import React, { PureComponent } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import type { Screen } from 'app/scenes';
 import Scenes from 'app/scenes';
+import LoginScreen from 'app/scenes/login';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+    fontFamily: 'vincHand'
   },
   instructions: {
     textAlign: 'center',

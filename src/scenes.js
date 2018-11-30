@@ -1,5 +1,5 @@
 /**
- * Colors.
+ * Scenes.
  *
  * @format
  * @flow

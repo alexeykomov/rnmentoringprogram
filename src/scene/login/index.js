@@ -11,3 +11,5 @@ const LoginScreen = () => (
 
   </View>
 );
+
+export default LoginScreen;
