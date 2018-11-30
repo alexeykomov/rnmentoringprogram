@@ -10,7 +10,8 @@ import React, { PureComponent } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import type { Screen } from 'app/scenes';
 import Scenes from 'app/scenes';
-import LoginScreen from 'app/scenes/login';
+import LoginScreen from 'app/scene/login';
+import Colors from 'app/colors';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -37,7 +38,7 @@ export default class App extends PureComponent<Props, State> {
       currentScreen: Scenes.Login,
       products: [],
       currentProduct: null,
-    }
+    };
   }
 
   render() {
@@ -47,11 +48,7 @@ export default class App extends PureComponent<Props, State> {
         {(() => {
           switch (currentScreen) {
             case Scenes.Login:
-              return (
-                <Text style={styles.welcome}>
-                  Welcome to React Native, hey!!!!!
-                </Text>
-              );
+              return <LoginScreen onLoginPress={this.onLoginPress} />;
             case Scenes.ProductList:
               return (
                 <Text style={styles.welcome}>
@@ -69,6 +66,14 @@ export default class App extends PureComponent<Props, State> {
       </View>
     );
   }
+
+  onLoginPress() {
+    return this.setState(
+      (prevState: State, props: Props): State => ({
+        currentScreen: Scenes.ProductList,
+      }),
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -82,7 +87,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-    fontFamily: 'vincHand'
+    fontFamily: 'vincHand',
+    color: Colors.Graphite,
   },
   instructions: {
     textAlign: 'center',
