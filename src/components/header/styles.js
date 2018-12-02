@@ -7,19 +7,21 @@ import Colors from '../../colors';
 
 const style = StyleSheet.create({
   header: {
+    height: 110,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    textAlign: 'center',
+
+    backgroundColor: Colors.EpamBlue,
+  },
+  text: {
     fontSize: 35,
     fontWeight: 'bold',
     fontFamily: 'vincHand',
     color: Colors.White,
-    alignItems: 'center',
-    textAlign: 'center',
-    paddingTop: 40,
-    paddingBottom: 20,
-    backgroundColor: Colors.EpamBlue,
-  }
+  },
+  iconContainer: {marginRight: 20}
 });
 
 export default style;

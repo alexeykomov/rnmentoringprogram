@@ -2,18 +2,20 @@
  * @flow
  */
 
-import style from '../../scene/productlist/styles';
+import style from './styles';
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 type HeaderProps = {
-  chidren: Object
+  icon: Object | null,
+  text: string,
 }
 
-export const Header = ({ chidren, icon, text}:HeaderProps) => (
+export const Header = ({ icon, text }:HeaderProps) => (
   <View style={style.header}>
-    {icon}
-    <Text style={header.text}>{text}</Text>
+    {icon && <View style={style.iconContainer}>{icon}</View>}
+    <Text style={style.text}>{text}</Text>
   </View>
 );
 
+export default Header;

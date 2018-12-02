@@ -14,6 +14,7 @@ import {
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
 import type { ProductUid } from '../../product';
+import Header from '../../components/header';
 
 type ProductListProps = {
   onProductSelect: (productId: ProductUid) => void,
@@ -22,15 +23,14 @@ type ProductListProps = {
 
 const ProductList = ({ onProductSelect, products }: ProductListProps) => (
   <View style={style.container}>
-    <View>
-      <Text style={style.header}>Products</Text>
-    </View>
-    <ScrollView>
+    <Header text={'Products'} icon={null}></Header>
+    <ScrollView style={style.frame}>
       {products.map((product, index, products) => {
         const borderBottomModifier =
           index < products.length - 1 ? style['product__no-border-bottom'] : {};
         return (
-          <TouchableHighlight onPress={() => onProductSelect(product.id)}>
+          <TouchableHighlight onPress={() => onProductSelect(product.id)}
+          key={product.id}>
             <View style={[style.product, borderBottomModifier]}>
               <View
                 style={{

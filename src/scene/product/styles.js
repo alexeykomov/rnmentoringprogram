@@ -34,8 +34,7 @@ const style = StyleSheet.create({
     fontSize: 22,
   },
   productTextContainer: {
-    paddingLeft: 20,
-    paddingRight: 20,
+    padding: 20,
   },
   returnButton: { marginTop: 20, width: 200, height: 40 },
   returnBackground: {

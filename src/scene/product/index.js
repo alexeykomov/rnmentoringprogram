@@ -13,6 +13,7 @@ import {
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
 import type { ProductUid } from '../../product';
+import { Header } from '../../components/header';
 
 type ProductListProps = {
   productId: ProductUid,
@@ -35,14 +36,7 @@ const ProductFull = ({
   onReturnFromProduct,
 }: ProductListProps) => (
   <View style={style.container}>
-    <View style={style.header}>
-      <View style={{ marginLeft: 20, marginRight: 20 }}>
-        <Icon product={productId} size={IconSizes.Big} />
-      </View>
-      <Text style={style.headerText}>
-        {getProductName(products, productId)}
-      </Text>
-    </View>
+    <Header icon={<Icon product={productId} size={IconSizes.Big}/>} text={getProductName(products, productId)}/>
     <ScrollView style={style.productTextContainer}>
       <Text style={style.productText}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus arcu
