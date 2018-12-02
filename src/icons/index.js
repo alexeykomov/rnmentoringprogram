@@ -12,7 +12,7 @@ type IconProps = {
   size: IconSize,
 };
 
-const getImageByProduct = product => {
+const getImageByProduct = (product: ProductUid) => {
   switch (product) {
     case Products.Battery:
       return require('./001-battery.png');

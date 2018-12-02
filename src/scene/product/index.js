@@ -4,12 +4,7 @@
 
 import style from './styles';
 import type { Product } from '../../product';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  ScrollView,
-} from 'react-native';
+import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
 import type { ProductUid } from '../../product';
@@ -27,7 +22,7 @@ const getProductName = (products, productId) => {
   );
   return productsWithThisId.length
     ? productsWithThisId[0].name
-    : "It seems you're browsing unexisteing or delered product";
+    : "It seems you're browsing nonexistent or deleted product";
 };
 
 const ProductFull = ({
@@ -36,7 +31,10 @@ const ProductFull = ({
   onReturnFromProduct,
 }: ProductListProps) => (
   <View style={style.container}>
-    <Header icon={<Icon product={productId} size={IconSizes.Big}/>} text={getProductName(products, productId)}/>
+    <Header
+      icon={<Icon product={productId} size={IconSizes.Big} />}
+      text={getProductName(products, productId)}
+    />
     <ScrollView style={style.productTextContainer}>
       <Text style={style.productText}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus arcu
