@@ -4,8 +4,8 @@
 
 import React from 'react';
 import { View, TouchableHighlight, TextInput, Text, Image } from 'react-native';
-import style from 'app/scene/login/style';
-import Colors from 'app/colors';
+import style from '../../scene/login/style';
+import Colors from '../../colors';
 
 type LoginScreenProps = {
   onLoginPress: () => void,
@@ -17,7 +17,7 @@ const LoginScreen = ({ onLoginPress }: LoginScreenProps) => (
       style={style.headerBlock}
     >
       <Image
-        source={require('app/img/001-battery.png')}
+        source={require('./smiling.png')}
         style={style.greetIcon}
       />
       <Text style={style.header}>Friday's shop</Text>

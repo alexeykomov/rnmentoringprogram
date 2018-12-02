@@ -2,7 +2,7 @@
  * @flow
  * */
 
-import { getUid } from 'app/lib/id';
+import { getUid } from './lib/id';
 
 export const Products = {
   NonExistent: 0,

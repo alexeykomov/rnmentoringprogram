@@ -4,7 +4,7 @@
 
 import React from 'react';
 import Scenes from './scenes';
-import type { Product, ProductUid } from 'app/product';
+import type { Product, ProductUid } from './product';
 import type { Scene } from './scenes';
 import { Products } from './product';
 
@@ -15,7 +15,7 @@ export type State = {
 };
 
 export const state: State = {
-  currentScreen: Scenes.Login,
+  currentScreen: Scenes.Product,
   products: [
     {
       id: Products.Battery,
@@ -54,5 +54,5 @@ export const state: State = {
       name: 'Electric tower',
     },
   ],
-  currentProductId: Products.NonExistent,
+  currentProductId: Products.Truck,
 };

@@ -8,24 +8,16 @@
 
 import React, { PureComponent } from 'react';
 import { Platform, StyleSheet, Text, View, Image } from 'react-native';
-import type { Scene } from 'app/scenes';
-import Scenes from 'app/scenes';
-import LoginScreen from 'app/scene/login';
-import ProductList from 'app/scene/productlist';
-import Colors from 'app/colors';
-import type { Product } from 'app/product';
-import { getUid } from 'app/lib/id';
-import { state } from 'app/state';
-import type { State } from 'app/state';
-import type { ProductUid } from 'app/product';
-import { Products } from 'app/product';
+import Scenes from './src/scenes';
+import LoginScreen from './src/scene/login';
+import ProductList from './src/scene/productlist';
+import ProductFull from './src/scene/product';
+import Colors from './src/colors';
+import { state } from './src/state';
+import type { State } from './src/state';
+import type { ProductUid } from './src/product';
+import { Products } from './src/product';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
 type Props = {};
 
@@ -36,7 +28,7 @@ export default class App extends PureComponent<Props, State> {
   }
 
   render() {
-    const { currentScreen, products } = this.state;
+    const { currentScreen, products, currentProductId } = this.state;
     return (
       <View style={styles.container}>
         {(() => {
@@ -52,9 +44,7 @@ export default class App extends PureComponent<Props, State> {
               );
             case Scenes.Product:
               return (
-                <Text style={styles.welcome}>
-                  Welcome to React Native, hey!!!!!
-                </Text>
+                <ProductFull products={products} productId={currentProductId} onReturnFromProduct={this.onReturnFromProduct}/>
               );
           }
         })()}
@@ -66,18 +56,18 @@ export default class App extends PureComponent<Props, State> {
     this.setState((prevState: State, props: Props) => ({
       ...prevState,
       currentScreen: Scenes.ProductList,
-    }));
+    }))
   };
 
-  onProductSelect(productId: ProductUid) {
-    this.setState((prevState: State, props: Props) => ({
+  onProductSelect = (productId: ProductUid) => {
+    this.setState((prevState:State, props: Props) => ({
       ...prevState,
       currentProductId: productId,
       currentScreen: Scenes.Product,
     }));
-  }
+  };
 
-  onReturnFromProduct() {
+  onReturnFromProduct = () => {
     this.setState((prevState: State, props: Props) => ({
       ...prevState,
       currentProductId: Products.NonExistent,

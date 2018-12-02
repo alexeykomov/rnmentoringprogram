@@ -3,7 +3,7 @@
  * */
 
 import { StyleSheet } from 'react-native';
-import Colors from 'app/colors';
+import Colors from '../../colors';
 
 type LoginStyle = {
   header: Object,

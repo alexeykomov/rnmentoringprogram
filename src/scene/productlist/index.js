@@ -2,12 +2,18 @@
  * @flow
  * */
 
-import ProductListStyle from 'app/scene/productlist/styles';
-import type { Product } from 'app/product';
-import { View, TouchableHighlight, Image, Text } from 'react-native';
+import ProductListStyle from '../../scene/productlist/styles';
+import type { Product } from '../../product';
+import {
+  View,
+  TouchableHighlight,
+  Image,
+  Text,
+  ScrollView,
+} from 'react-native';
 import React from 'react';
-import { Icon } from 'app/icons';
-import type { ProductUid } from 'app/product';
+import { Icon, IconSizes } from '../../icons';
+import type { ProductUid } from '../../product';
 
 type ProductListProps = {
   onProductSelect: (productId: ProductUid) => void,
@@ -17,24 +23,38 @@ type ProductListProps = {
 const ProductList = ({ onProductSelect, products }: ProductListProps) => (
   <View style={ProductListStyle.container}>
     <View>
-      <Text>Products</Text>
+      <Text style={ProductListStyle.header}>Products</Text>
     </View>
-    {products.map(product => (
-      <TouchableHighlight
-        key={product.id}
-        onPress={() => onProductSelect(product.id)}
-      >
-        <View style={ProductListStyle.product}>
-          <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-            <Icon product={product.id} size={0} />
-            <Text>{product.name}</Text>
-          </View>
-          <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-            <Text>&gt;</Text>
-          </View>
-        </View>
-      </TouchableHighlight>
-    ))}
+    <ScrollView>
+      {products.map((product, index, products) => {
+        const borderBottomModifier =
+          index < products.length - 1
+            ? ProductListStyle['product__no-border-bottom']
+            : {};
+        return (
+          <TouchableHighlight onPress={() => onProductSelect(product.id)}>
+            <View style={[ProductListStyle.product, borderBottomModifier]}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'flex-start',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}
+              >
+                <View style={ProductListStyle.productIcon}>
+                  <Icon product={product.id} size={IconSizes.Small} />
+                </View>
+                <Text style={ProductListStyle.productText}>{product.name}</Text>
+              </View>
+              <View style={ProductListStyle.productAngle}>
+                <Text>{'>'}</Text>
+              </View>
+            </View>
+          </TouchableHighlight>
+        );
+      })}
+    </ScrollView>
   </View>
 );
 
