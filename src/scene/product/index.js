@@ -2,12 +2,11 @@
  * @flow
  * */
 
-import ProductListStyle from './styles';
+import style from './styles';
 import type { Product } from '../../product';
 import {
   View,
-  TouchableHighlight,
-  Image,
+  TouchableOpacity,
   Text,
   ScrollView,
 } from 'react-native';
@@ -36,17 +35,17 @@ const ProductFull = ({
   products,
   onReturnFromProduct,
 }: ProductListProps) => (
-  <View style={ProductListStyle.container}>
-    <View style={ProductListStyle.header}>
+  <View style={style.container}>
+    <View style={style.header}>
       <View style={{ marginLeft: 20, marginRight: 20 }}>
         <Icon product={productId} size={IconSizes.Big} />
       </View>
-      <Text style={ProductListStyle.headerText}>
+      <Text style={style.headerText}>
         {getProductName(products, productId)}
       </Text>
     </View>
-    <ScrollView style={ProductListStyle.productTextContainer}>
-      <Text style={ProductListStyle.productText}>
+    <ScrollView style={style.productTextContainer}>
+      <Text style={style.productText}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus arcu
         ante, mollis eget gravida a, accumsan in purus. Fusce in tincidunt
         turpis, id euismod mauris. Integer elementum congue dolor. Pellentesque
@@ -58,14 +57,14 @@ const ProductFull = ({
         pretium lorem. Maecenas nec consectetur erat. Proin semper laoreet ex,
         dapibus tempus urna cursus et.
       </Text>
-      <TouchableHighlight
-        style={{ marginTop: 20, width: 200, height: 40 }}
+      <TouchableOpacity
+        style={style.returnButton}
         onPress={onReturnFromProduct}
       >
-        <View style={ProductListStyle.returnButton}>
-          <Text style={ProductListStyle.return}>All Products</Text>
+        <View style={style.returnBackground}>
+          <Text style={style.returnText}>All Products</Text>
         </View>
-      </TouchableHighlight>
+      </TouchableOpacity>
     </ScrollView>
   </View>
 );

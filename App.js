@@ -7,7 +7,7 @@
  */
 
 import React, { PureComponent } from 'react';
-import { Platform, StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Scenes from './src/scenes';
 import LoginScreen from './src/scene/login';
 import ProductList from './src/scene/productlist';
@@ -17,7 +17,6 @@ import { state } from './src/state';
 import type { State } from './src/state';
 import type { ProductUid } from './src/product';
 import { Products } from './src/product';
-
 
 type Props = {};
 
@@ -44,7 +43,11 @@ export default class App extends PureComponent<Props, State> {
               );
             case Scenes.Product:
               return (
-                <ProductFull products={products} productId={currentProductId} onReturnFromProduct={this.onReturnFromProduct}/>
+                <ProductFull
+                  products={products}
+                  productId={currentProductId}
+                  onReturnFromProduct={this.onReturnFromProduct}
+                />
               );
           }
         })()}
@@ -56,11 +59,11 @@ export default class App extends PureComponent<Props, State> {
     this.setState((prevState: State, props: Props) => ({
       ...prevState,
       currentScreen: Scenes.ProductList,
-    }))
+    }));
   };
 
   onProductSelect = (productId: ProductUid) => {
-    this.setState((prevState:State, props: Props) => ({
+    this.setState((prevState: State, props: Props) => ({
       ...prevState,
       currentProductId: productId,
       currentScreen: Scenes.Product,
@@ -73,7 +76,7 @@ export default class App extends PureComponent<Props, State> {
       currentProductId: Products.NonExistent,
       currentScreen: Scenes.ProductList,
     }));
-  }
+  };
 }
 
 const styles = StyleSheet.create({

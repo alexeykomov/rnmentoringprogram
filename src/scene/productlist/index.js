@@ -2,7 +2,7 @@
  * @flow
  * */
 
-import ProductListStyle from '../../scene/productlist/styles';
+import style from '../../scene/productlist/styles';
 import type { Product } from '../../product';
 import {
   View,
@@ -21,19 +21,19 @@ type ProductListProps = {
 };
 
 const ProductList = ({ onProductSelect, products }: ProductListProps) => (
-  <View style={ProductListStyle.container}>
+  <View style={style.container}>
     <View>
-      <Text style={ProductListStyle.header}>Products</Text>
+      <Text style={style.header}>Products</Text>
     </View>
     <ScrollView>
       {products.map((product, index, products) => {
         const borderBottomModifier =
           index < products.length - 1
-            ? ProductListStyle['product__no-border-bottom']
+            ? style['product__no-border-bottom']
             : {};
         return (
           <TouchableHighlight onPress={() => onProductSelect(product.id)}>
-            <View style={[ProductListStyle.product, borderBottomModifier]}>
+            <View style={[style.product, borderBottomModifier]}>
               <View
                 style={{
                   flex: 1,
@@ -42,12 +42,12 @@ const ProductList = ({ onProductSelect, products }: ProductListProps) => (
                   flexDirection: 'row',
                 }}
               >
-                <View style={ProductListStyle.productIcon}>
+                <View style={style.productIcon}>
                   <Icon product={product.id} size={IconSizes.Small} />
                 </View>
-                <Text style={ProductListStyle.productText}>{product.name}</Text>
+                <Text style={style.productText}>{product.name}</Text>
               </View>
-              <View style={ProductListStyle.productAngle}>
+              <View style={style.productAngle}>
                 <Text>{'>'}</Text>
               </View>
             </View>

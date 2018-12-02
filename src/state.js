@@ -15,7 +15,7 @@ export type State = {
 };
 
 export const state: State = {
-  currentScreen: Scenes.Product,
+  currentScreen: Scenes.Login,
   products: [
     {
       id: Products.Battery,

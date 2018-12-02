@@ -3,7 +3,7 @@
  * */
 
 import React from 'react';
-import { View, TouchableHighlight, TextInput, Text, Image } from 'react-native';
+import { View, TouchableOpacity, TextInput, Text, Image } from 'react-native';
 import style from '../../scene/login/style';
 import Colors from '../../colors';
 
@@ -36,9 +36,12 @@ const LoginScreen = ({ onLoginPress }: LoginScreenProps) => (
         secureTextEntry
         selectionColor={Colors.BrightBlue}
       />
-      <TouchableHighlight onPress={onLoginPress}>
-        <Text style={style.login}>login</Text>
-      </TouchableHighlight>
+      <TouchableOpacity style={style.loginButton} onPress={onLoginPress}>
+        <View style={style.loginBackground}>
+
+          <Text style={style.loginText}>login</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   </View>
 );

@@ -5,7 +5,7 @@
 import { StyleSheet } from 'react-native';
 import Colors from '../../colors';
 
-const ProductListStyle = StyleSheet.create({
+const style = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -39,15 +39,15 @@ const ProductListStyle = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
-  returnButton: {
-
+  returnButton: { marginTop: 20, width: 200, height: 40 },
+  returnBackground: {
     borderWidth: 2,
     borderStyle: 'solid',
     borderRadius: 3,
     borderColor: Colors.EpamBlue,
     backgroundColor: Colors.EpamBlue,
   },
-  return: {
+  returnText: {
     textAlign: 'center',
     fontSize: 18,
     lineHeight: 40,
@@ -56,4 +56,4 @@ const ProductListStyle = StyleSheet.create({
   },
 });
 
-export default ProductListStyle;
+export default style;

@@ -5,7 +5,7 @@
 import { StyleSheet } from 'react-native';
 import Colors from '../../colors';
 
-const ProductListStyle = StyleSheet.create({
+const style = StyleSheet.create({
   header: {
     fontSize: 35,
     fontWeight: 'bold',
@@ -63,4 +63,4 @@ const ProductListStyle = StyleSheet.create({
   },
 });
 
-export default ProductListStyle;
+export default style;

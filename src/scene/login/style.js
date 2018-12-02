@@ -7,7 +7,10 @@ import Colors from '../../colors';
 
 type LoginStyle = {
   header: Object,
-  login: Object,
+  loginButton: Object,
+  loginBackground: Object,
+  loginText: Object,
+  loginButton: Object,
   greetIcon: Object,
   loginInput: Object,
   container: Object,
@@ -37,20 +40,23 @@ const style: LoginStyle = StyleSheet.create({
     fontFamily: 'vincHand',
     color: Colors.Graphite,
   },
-  login: {
+  loginButton: {
     width: 80,
     height: 30,
     marginTop: 10,
     marginBottom: 20,
+  },
+  loginBackground: {
+    borderWidth: 2,
+    borderRadius: 3,
+    borderColor: Colors.EpamBlue,
+    backgroundColor: Colors.EpamBlue,
+  },
+  loginText: {
     textAlign: 'center',
     fontSize: 18,
     fontFamily: 'vincHand',
     color: Colors.White,
-    borderWidth: 2,
-    borderStyle: 'solid',
-    borderRadius: 3,
-    borderColor: Colors.EpamBlue,
-    backgroundColor: Colors.EpamBlue,
   },
   greetIcon: {
     marginTop: 50,
