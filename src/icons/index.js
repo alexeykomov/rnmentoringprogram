@@ -9,10 +9,10 @@ import React from 'react';
 
 type IconProps = {
   product: ProductUid,
-  size: IconSize;
+  size: IconSize,
 };
 
-const getImageByProduct = (product) => {
+const getImageByProduct = product => {
   switch (product) {
     case Products.Battery:
       return require('./001-battery.png');
@@ -32,7 +32,8 @@ const getImageByProduct = (product) => {
       return require('./008-truck.png');
     case Products.ElectricTower:
       return require('./009-electric-tower.png');
-    default: return null;
+    default:
+      return null;
   }
 };
 
@@ -45,7 +46,11 @@ export type IconSize = $Values<typeof IconSizes>;
 
 export const Icon = ({ product, size }: IconProps) => (
   <Image
-    style={size === IconSizes.Big ? {width: 40, height: 40 } : {width: 30, height: 30 }}
+    style={
+      size === IconSizes.Big
+        ? { width: 40, height: 40 }
+        : { width: 30, height: 30 }
+    }
     source={getImageByProduct(product)}
   />
 );

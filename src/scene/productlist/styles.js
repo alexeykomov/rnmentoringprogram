@@ -61,6 +61,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  productAngleIcon: { width: 20, height: 20 },
 });
 
 export default style;

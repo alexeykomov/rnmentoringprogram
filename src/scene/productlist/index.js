@@ -28,9 +28,7 @@ const ProductList = ({ onProductSelect, products }: ProductListProps) => (
     <ScrollView>
       {products.map((product, index, products) => {
         const borderBottomModifier =
-          index < products.length - 1
-            ? style['product__no-border-bottom']
-            : {};
+          index < products.length - 1 ? style['product__no-border-bottom'] : {};
         return (
           <TouchableHighlight onPress={() => onProductSelect(product.id)}>
             <View style={[style.product, borderBottomModifier]}>
@@ -48,7 +46,10 @@ const ProductList = ({ onProductSelect, products }: ProductListProps) => (
                 <Text style={style.productText}>{product.name}</Text>
               </View>
               <View style={style.productAngle}>
-                <Text>{'>'}</Text>
+                <Image
+                  style={{ width: 20, height: 20 }}
+                  source={require('./angle-arrow-pointing-to-right.png')}
+                />
               </View>
             </View>
           </TouchableHighlight>
