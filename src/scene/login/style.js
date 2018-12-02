@@ -9,19 +9,68 @@ type LoginStyle = {
   header: Object,
   login: Object,
   greetIcon: Object,
-}
+  loginInput: Object,
+  container: Object,
+  headerBlock: Object,
+  inputBlock: Object,
+};
 
 const style: LoginStyle = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  headerBlock: {
+    flex: 0.8,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  inputBlock: { flex: 1.2, alignItems: 'center' },
   header: {
-    fontSize: 20,
+    fontSize: 35,
+    fontWeight: 'bold',
     fontFamily: 'vincHand',
     color: Colors.Graphite,
   },
   login: {
+    width: 80,
+    height: 30,
+    marginTop: 10,
+    marginBottom: 20,
+    textAlign: 'center',
+    fontSize: 18,
+    fontFamily: 'vincHand',
+    color: Colors.White,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderRadius: 3,
+    borderColor: Colors.EpamBlue,
+    backgroundColor: Colors.EpamBlue,
+  },
+  greetIcon: {
+    marginTop: 50,
+    width: 50,
+    height: 50,
+  },
+  loginInput: {
+    width: 280,
+    height: 30,
+    marginBottom: 20,
+    textAlign: 'center',
+    fontSize: 18,
+    lineHeight: 30,
     fontFamily: 'vincHand',
     color: Colors.Graphite,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderRadius: 3,
+    borderColor: Colors.EpamBlue,
   },
-  greetIcon: {},
 });
 
 export default style;

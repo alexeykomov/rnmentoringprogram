@@ -7,11 +7,18 @@
  */
 
 import React, { PureComponent } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
-import type { Screen } from 'app/scenes';
+import { Platform, StyleSheet, Text, View, Image } from 'react-native';
+import type { Scene } from 'app/scenes';
 import Scenes from 'app/scenes';
 import LoginScreen from 'app/scene/login';
+import ProductList from 'app/scene/productlist';
 import Colors from 'app/colors';
+import type { Product } from 'app/product';
+import { getUid } from 'app/lib/id';
+import { state } from 'app/state';
+import type { State } from 'app/state';
+import type { ProductUid } from 'app/product';
+import { Products } from 'app/product';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -21,28 +28,15 @@ const instructions = Platform.select({
 });
 
 type Props = {};
-type Product = {
-  name: string,
-  image: string,
-};
-type State = {
-  currentScreen: Screen,
-  products: Product[],
-  currentProduct: Product,
-};
 
 export default class App extends PureComponent<Props, State> {
   constructor() {
     super();
-    this.state = {
-      currentScreen: Scenes.Login,
-      products: [],
-      currentProduct: null,
-    };
+    this.state = state;
   }
 
   render() {
-    const currentScreen = this.state.currentScreen;
+    const { currentScreen, products } = this.state;
     return (
       <View style={styles.container}>
         {(() => {
@@ -51,9 +45,10 @@ export default class App extends PureComponent<Props, State> {
               return <LoginScreen onLoginPress={this.onLoginPress} />;
             case Scenes.ProductList:
               return (
-                <Text style={styles.welcome}>
-                  Welcome to React Native, hey!!!!!
-                </Text>
+                <ProductList
+                  products={products}
+                  onProductSelect={this.onProductSelect}
+                />
               );
             case Scenes.Product:
               return (
@@ -67,12 +62,27 @@ export default class App extends PureComponent<Props, State> {
     );
   }
 
-  onLoginPress() {
-    return this.setState(
-      (prevState: State, props: Props): State => ({
-        currentScreen: Scenes.ProductList,
-      }),
-    );
+  onLoginPress = () => {
+    this.setState((prevState: State, props: Props) => ({
+      ...prevState,
+      currentScreen: Scenes.ProductList,
+    }));
+  };
+
+  onProductSelect(productId: ProductUid) {
+    this.setState((prevState: State, props: Props) => ({
+      ...prevState,
+      currentProductId: productId,
+      currentScreen: Scenes.Product,
+    }));
+  }
+
+  onReturnFromProduct() {
+    this.setState((prevState: State, props: Props) => ({
+      ...prevState,
+      currentProductId: Products.NonExistent,
+      currentScreen: Scenes.ProductList,
+    }));
   }
 }
 

@@ -11,6 +11,6 @@ const Scenes = {
   ProductList: 2,
 };
 
-export type Screen = $Values<typeof Scenes>;
+export type Scene = $Values<typeof Scenes>;
 
 export default Scenes;
