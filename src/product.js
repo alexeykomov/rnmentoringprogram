@@ -2,8 +2,6 @@
  * @flow
  * */
 
-import { getUid } from './lib/id';
-
 export const Products = {
   NonExistent: 0,
   Battery: 1,

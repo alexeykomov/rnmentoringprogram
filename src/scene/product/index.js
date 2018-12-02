@@ -13,7 +13,6 @@ import {
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
 import type { ProductUid } from '../../product';
-import Colors from '../../colors';
 
 type ProductListProps = {
   productId: ProductUid,
