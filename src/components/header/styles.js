@@ -21,7 +21,7 @@ const style = StyleSheet.create({
     fontFamily: 'vincHand',
     color: Colors.White,
   },
-  iconContainer: {marginRight: 20}
+  iconContainer: { marginRight: 20 },
 });
 
 export default style;

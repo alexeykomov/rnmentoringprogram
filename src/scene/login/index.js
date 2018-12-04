@@ -13,13 +13,8 @@ type LoginScreenProps = {
 
 const LoginScreen = ({ onLoginPress }: LoginScreenProps) => (
   <View style={style.container}>
-    <View
-      style={style.headerBlock}
-    >
-      <Image
-        source={require('./smiling.png')}
-        style={style.greetIcon}
-      />
+    <View style={style.headerBlock}>
+      <Image source={require('./smiling.png')} style={style.greetIcon} />
       <Text style={style.header}>Friday's shop</Text>
     </View>
     <View style={style.inputBlock}>
@@ -38,7 +33,6 @@ const LoginScreen = ({ onLoginPress }: LoginScreenProps) => (
       />
       <TouchableOpacity style={style.loginButton} onPress={onLoginPress}>
         <View style={style.loginBackground}>
-
           <Text style={style.loginText}>login</Text>
         </View>
       </TouchableOpacity>

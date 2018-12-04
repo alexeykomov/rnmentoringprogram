@@ -9,9 +9,9 @@ import { View, Text } from 'react-native';
 type HeaderProps = {
   icon: Object | null,
   text: string,
-}
+};
 
-export const Header = ({ icon, text }:HeaderProps) => (
+export const Header = ({ icon, text }: HeaderProps) => (
   <View style={style.header}>
     {icon && <View style={style.iconContainer}>{icon}</View>}
     <Text style={style.text}>{text}</Text>

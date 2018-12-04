@@ -23,14 +23,16 @@ type ProductListProps = {
 
 const ProductList = ({ onProductSelect, products }: ProductListProps) => (
   <View style={style.container}>
-    <Header text={'Products'} icon={null}></Header>
+    <Header text={'Products'} icon={null} />
     <ScrollView style={style.frame}>
       {products.map((product, index, products) => {
         const borderBottomModifier =
           index < products.length - 1 ? style['product__no-border-bottom'] : {};
         return (
-          <TouchableHighlight onPress={() => onProductSelect(product.id)}
-          key={product.id}>
+          <TouchableHighlight
+            onPress={() => onProductSelect(product.id)}
+            key={product.id}
+          >
             <View style={[style.product, borderBottomModifier]}>
               <View
                 style={{

@@ -28,7 +28,7 @@ const style = StyleSheet.create({
     alignItems: 'stretch',
     backgroundColor: Colors.White,
   },
-  frame: {marginTop: -1},
+  frame: { marginTop: -1 },
   product: {
     fontFamily: 'vincHand',
     flexDirection: 'row',
