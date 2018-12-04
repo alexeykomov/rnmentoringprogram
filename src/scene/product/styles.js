@@ -9,7 +9,6 @@ const style = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignItems: 'center',
     textAlign: 'center',
     height: 110,
     paddingTop: 40,
