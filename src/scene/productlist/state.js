@@ -3,19 +3,14 @@
  */
 
 import React from 'react';
-import Scenes from './scenes';
-import type { Product, ProductUid } from './product';
-import type { Scene } from './scenes';
+import type { Product } from './product';
 import { Products } from './product';
 
 export type State = {
-  currentScreen: Scene,
   products: Product[],
-  currentProductId: ProductUid,
 };
 
 export const state: State = {
-  currentScreen: Scenes.Login,
   products: [
     {
       id: Products.Battery,
@@ -54,5 +49,4 @@ export const state: State = {
       name: 'Electric tower',
     },
   ],
-  currentProductId: Products.Truck,
 };
