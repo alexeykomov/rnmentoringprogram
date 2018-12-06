@@ -7,7 +7,6 @@ import Colors from '../../colors';
 
 const style = StyleSheet.create({
   header: {
-    height: 110,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

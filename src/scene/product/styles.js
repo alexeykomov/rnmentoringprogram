@@ -31,9 +31,9 @@ const style = StyleSheet.create({
     fontFamily: 'vincHand',
     color: Colors.Graphite,
     fontSize: 22,
+    padding: 20,
   },
   productTextContainer: {
-    padding: 20,
   },
   returnButton: { marginTop: 20, width: 200, height: 40 },
   returnBackground: {
