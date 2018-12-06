@@ -20,12 +20,6 @@ type State = {
 };
 
 class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
-  componentWillReceiveProps(prevProps: LoginScreenProps, prevState: State) {
-    if (this.state.tokenReceived) {
-      prevProps.navigation.navigate(Routes.ProductList);
-    }
-  }
-
   render() {
     const { onLoginPress, navigation } = this.props;
     return (
@@ -50,7 +44,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
           />
           <TouchableOpacity
             style={style.loginButton}
-            onPress={this.onLoginClick.bind(navigation)}
+            onPress={() => this.onLoginClick(navigation)}
           >
             <View style={style.loginBackground}>
               <Text style={style.loginText}>login</Text>
@@ -65,7 +59,8 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     this.setState((prevState, props) => ({
       ...prevState,
 
-    }))
+    }));
+    navigation.navigate(Routes.ProductList);
   }
 }
 export default LoginScreen;

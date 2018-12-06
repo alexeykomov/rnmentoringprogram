@@ -21,7 +21,6 @@ import { state } from './state';
 import type { State } from './state';
 
 type ProductListProps = {
-  products: Product[],
   navigation: NavigationScreenProp<void>,
 };
 
@@ -32,7 +31,8 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   }
 
   render() {
-    const { navigation, products } = this.props;
+    const { navigation } = this.props;
+    const { products } = this.state;
 
     return (
       <View style={style.container}>
