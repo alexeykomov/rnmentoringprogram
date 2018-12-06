@@ -11,6 +11,7 @@ import type { ProductUid } from '../../product';
 import { Header } from '../../components/header';
 import type { NavigationScreenProp } from 'react-navigation';
 import { Products } from '../../product';
+import Colors from '../../colors';
 
 type ProductListProps = {
   productId: ProductUid,
@@ -24,40 +25,58 @@ const NonExistentProduct: Product = {
   name: "It seems you're browsing nonexistent or deleted product",
 };
 
-const ProductFull = ({ onReturnFromProduct, navigation }: ProductListProps) => {
-  const product = navigation.getParam<product>(
-    'product', NonExistentProduct
-  );
-  return (
-    <View style={style.container}>
-      <Header
-        icon={<Icon product={product.id} size={IconSizes.Big} />}
-        text={product.name}
-      />
-      <ScrollView style={style.productTextContainer}>
-        <Text style={style.productText}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus arcu
-          ante, mollis eget gravida a, accumsan in purus. Fusce in tincidunt
-          turpis, id euismod mauris. Integer elementum congue dolor.
-          Pellentesque luctus mi tempus urna lacinia varius. Nulla velit nibh,
-          tempor sit amet malesuada eu, interdum quis diam. Ut accumsan semper
-          vulputate. Maecenas faucibus eros nec laoreet lacinia. Sed nec odio
-          justo. Nunc lobortis venenatis lorem, ac condimentum velit. Nulla vel
-          mollis enim. Curabitur sit amet dolor eleifend, faucibus nisi in,
-          auctor ante. Nulla aliquam pretium lorem. Maecenas nec consectetur
-          erat. Proin semper laoreet ex, dapibus tempus urna cursus et.
-        </Text>
-        <TouchableOpacity
-          style={style.returnButton}
-          onPress={() => navigation.goBack()}
-        >
-          <View style={style.returnBackground}>
-            <Text style={style.returnText}>All Products</Text>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
-  );
-};
+class ProductFull extends React.PureComponent<ProductListProps> {
+  static navigationOptions = ({
+    navigation,
+  }: {
+    navigation: NavigationScreenProp<void>,
+  }) => {
+    return {
+      headerTitleStyle: {
+        color: Colors.White,
+      },
+      headerStyle: {
+        backgroundColor: Colors.EpamBlue,
+        borderBottomWidth: 0,
+      },
+    };
+  };
+
+  render() {
+    const { onReturnFromProduct, navigation } = this.props;
+    const product = navigation.getParam<product>('product', NonExistentProduct);
+    return (
+      <View style={style.container}>
+        <ScrollView style={style.productTextContainer}>
+          <Header
+            icon={<Icon product={product.id} size={IconSizes.Big} />}
+            text={product.name}
+          />
+          <Text style={style.productText}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+            arcu ante, mollis eget gravida a, accumsan in purus. Fusce in
+            tincidunt turpis, id euismod mauris. Integer elementum congue dolor.
+            Pellentesque luctus mi tempus urna lacinia varius. Nulla velit nibh,
+            tempor sit amet malesuada eu, interdum quis diam. Ut accumsan semper
+            vulputate. Maecenas faucibus eros nec laoreet lacinia. Sed nec odio
+            justo. Nunc lobortis venenatis lorem, ac condimentum velit. Nulla
+            vel mollis enim. Curabitur sit amet dolor eleifend, faucibus nisi
+            in, auctor ante. Nulla aliquam pretium lorem. Maecenas nec
+            consectetur erat. Proin semper laoreet ex, dapibus tempus urna
+            cursus et.
+          </Text>
+          <TouchableOpacity
+            style={style.returnButton}
+            onPress={() => navigation.goBack()}
+          >
+            <View style={style.returnBackground}>
+              <Text style={style.returnText}>All Products</Text>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+    );
+  }
+}
 
 export default ProductFull;

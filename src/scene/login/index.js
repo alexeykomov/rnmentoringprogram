@@ -20,6 +20,10 @@ type State = {
 };
 
 class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
+  static navigationOptions = {
+    header: null,
+  };
+
   render() {
     const { onLoginPress, navigation } = this.props;
     return (

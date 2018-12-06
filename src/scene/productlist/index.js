@@ -19,12 +19,24 @@ import { Routes } from '../../../App';
 import { Products } from '../../product';
 import { state } from './state';
 import type { State } from './state';
+import Colors from '../../colors';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
 };
 
 class ProductList extends React.PureComponent<ProductListProps, State> {
+  static navigationOptions = {
+    headerTitle:  <Header text={'Products'} icon={null} />,
+    headerTitleStyle: {
+      color: Colors.White,
+    },
+    headerStyle: {
+      backgroundColor: Colors.EpamBlue,
+      borderBottomWidth: 0,
+    }
+  };
+
   constructor() {
     super();
     this.state = state;
@@ -36,7 +48,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 
     return (
       <View style={style.container}>
-        <Header text={'Products'} icon={null} />
+
         <ScrollView style={style.frame}>
           {products.map((product, index, products) => {
             const borderBottomModifier =
