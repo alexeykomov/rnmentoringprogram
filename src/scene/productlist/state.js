@@ -3,8 +3,8 @@
  */
 
 import React from 'react';
-import type { Product } from './product';
-import { Products } from './product';
+import type { Product } from '../../product';
+import { Products } from '../../product';
 
 export type State = {
   products: Product[],

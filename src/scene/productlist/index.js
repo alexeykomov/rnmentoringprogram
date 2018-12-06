@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
-import type { ProductUid } from '../../product';
 import Header from '../../components/header';
 import type { NavigationScreenProp } from 'react-navigation';
 import { Routes } from '../../../App';
@@ -23,7 +22,7 @@ import type { State } from './state';
 
 type ProductListProps = {
   products: Product[],
-  navigation: NavigationScreenProp,
+  navigation: NavigationScreenProp<void>,
 };
 
 class ProductList extends React.PureComponent<ProductListProps, State> {
@@ -46,12 +45,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
                 : {};
             return (
               <TouchableHighlight
-                onPress={() =>
-                  navigation.navigate({
-                    routeName: Routes.ProductFull,
-                    params: { product },
-                  })
-                }
+                onPress={this.onProductClick(navigation, product)}
                 key={product.id}
               >
                 <View style={[style.product, borderBottomModifier]}>
@@ -81,6 +75,14 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
         </ScrollView>
       </View>
     );
+  }
+
+  onProductClick(navigation: NavigationScreenProp<void>, product: Product) {
+    return () =>
+      navigation.navigate({
+        routeName: Routes.ProductFull,
+        params: { product },
+      });
   }
 }
 

@@ -14,36 +14,58 @@ type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
 };
 
-const LoginScreen = ({ onLoginPress, navigation }: LoginScreenProps) => (
-  <View style={style.container}>
-    <View style={style.headerBlock}>
-      <Image source={require('./smiling.png')} style={style.greetIcon} />
-      <Text style={style.header}>Friday's shop</Text>
-    </View>
-    <View style={style.inputBlock}>
-      <TextInput
-        style={style.loginInput}
-        textContentType={'emailAddress'}
-        placeholder={'E-mail'}
-        selectionColor={Colors.BrightBlue}
-      />
-      <TextInput
-        style={style.loginInput}
-        textContentType={'password'}
-        placeholder={'Password'}
-        secureTextEntry
-        selectionColor={Colors.BrightBlue}
-      />
-      <TouchableOpacity
-        style={style.loginButton}
-        onPress={() => navigation.navigate(Routes.ProductList)}
-      >
-        <View style={style.loginBackground}>
-          <Text style={style.loginText}>login</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  </View>
-);
+type State = {
+  isLoading: boolean,
+  tokenReceived: boolean,
+};
 
+class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
+  componentWillReceiveProps(prevProps: LoginScreenProps, prevState: State) {
+    if (this.state.tokenReceived) {
+      prevProps.navigation.navigate(Routes.ProductList);
+    }
+  }
+
+  render() {
+    const { onLoginPress, navigation } = this.props;
+    return (
+      <View style={style.container}>
+        <View style={style.headerBlock}>
+          <Image source={require('./smiling.png')} style={style.greetIcon} />
+          <Text style={style.header}>Friday's shop</Text>
+        </View>
+        <View style={style.inputBlock}>
+          <TextInput
+            style={style.loginInput}
+            textContentType={'emailAddress'}
+            placeholder={'E-mail'}
+            selectionColor={Colors.BrightBlue}
+          />
+          <TextInput
+            style={style.loginInput}
+            textContentType={'password'}
+            placeholder={'Password'}
+            secureTextEntry
+            selectionColor={Colors.BrightBlue}
+          />
+          <TouchableOpacity
+            style={style.loginButton}
+            onPress={this.onLoginClick.bind(navigation)}
+          >
+            <View style={style.loginBackground}>
+              <Text style={style.loginText}>login</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
+  onLoginClick(navigation: NavigationScreenProp<void>) {
+    this.setState((prevState, props) => ({
+      ...prevState,
+
+    }))
+  }
+}
 export default LoginScreen;

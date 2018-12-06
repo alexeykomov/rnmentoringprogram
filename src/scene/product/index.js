@@ -16,7 +16,7 @@ type ProductListProps = {
   productId: ProductUid,
   products: Product[],
   onReturnFromProduct: () => void,
-  navigation: NavigationScreenProp<{product: Product}>,
+  navigation: NavigationScreenProp<void>,
 };
 
 const NonExistentProduct: Product = {
@@ -24,11 +24,10 @@ const NonExistentProduct: Product = {
   name: "It seems you're browsing nonexistent or deleted product",
 };
 
-const ProductFull = ({
-  onReturnFromProduct,
-  navigation,
-}: ProductListProps) => {
-  const product: Product = navigation.getParam<Product>('product', NonExistentProduct);
+const ProductFull = ({ onReturnFromProduct, navigation }: ProductListProps) => {
+  const product = navigation.getParam<product>(
+    'product', NonExistentProduct
+  );
   return (
     <View style={style.container}>
       <Header
