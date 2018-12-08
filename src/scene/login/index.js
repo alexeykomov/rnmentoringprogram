@@ -154,7 +154,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
       const response = await getResponse(username, password);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
-        this.handleRequestError(new Error('Response is not ok.'));
+        return this.handleRequestError(new Error('Response is not ok.'));
       }
       const token = await response.text();
       this.handleRequestSuccess();
