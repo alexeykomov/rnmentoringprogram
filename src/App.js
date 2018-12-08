@@ -6,20 +6,12 @@
  * @flow
  */
 
-import React, { PureComponent } from 'react';
-import LoginScreen from './src/scene/login';
-import ProductList from './src/scene/productlist';
-import ProductFull from './src/scene/product';
+import React from 'react';
+import LoginScreen from './scene/login';
+import ProductList from './scene/productlist';
+import ProductFull from './scene/product';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-
-
-export const Routes = {
-  Login: 'Login',
-  ProductList: 'ProductList',
-  ProductFull: 'ProductFull',
-};
-
-export type Route = $Values<typeof Routes>;
+import { Routes } from './routes';
 
 const AppNavigator = createStackNavigator(
   {

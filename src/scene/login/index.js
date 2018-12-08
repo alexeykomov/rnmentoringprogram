@@ -3,29 +3,72 @@
  * */
 
 import React from 'react';
-import { View, TouchableOpacity, TextInput, Text, Image } from 'react-native';
+import type { Node } from 'react';
+import {
+  View,
+  TouchableOpacity,
+  TextInput,
+  Text,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import style from '../../scene/login/style';
 import Colors from '../../colors';
-import type { NavigationScreenProp } from 'react-navigation';
-import { Routes } from '../../../App';
+import type { NavigationScreenProp, NavigationScreenConfig } from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
+import { Routes } from '../../routes';
 
 type LoginScreenProps = {
-  onLoginPress: () => void,
   navigation: NavigationScreenProp<void>,
 };
 
 type State = {
-  isLoading: boolean,
-  tokenReceived: boolean,
+  loading: boolean,
+  username: string,
+  password: string,
 };
 
+const AUTH_URL =
+  'http://ecsc00a02fb3.epam.com/index.php/rest/V1/integration/customer/token';
+
+async function mockResponse() {
+  return await new Promise(res =>
+    setTimeout(
+      () => res({ ok: true, text: () => Promise.resolve('token') }),
+      1000,
+    ),
+  );
+}
+
+async function getResponse(username, password) {
+  return await fetch(AUTH_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+    body: JSON.stringify({
+      username,
+      password,
+    }),
+  });
+}
+
 class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
-  static navigationOptions = {
+  static navigationOptions:NavigationScreenConfig<{header: null}> = {
     header: null,
   };
 
+  constructor(props: LoginScreenProps) {
+    super(props);
+    this.state = {
+      loading: false,
+      username: '',
+      password: '',
+    };
+  }
+
   render() {
-    const { onLoginPress, navigation } = this.props;
+    const { navigation } = this.props;
     return (
       <View style={style.container}>
         <View style={style.headerBlock}>
@@ -38,6 +81,10 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
             textContentType={'emailAddress'}
             placeholder={'E-mail'}
             selectionColor={Colors.BrightBlue}
+            value={this.state.username}
+            onChangeText={username =>
+              this.setState(prevState => ({ ...prevState, username }))
+            }
           />
           <TextInput
             style={style.loginInput}
@@ -45,26 +92,103 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
             placeholder={'Password'}
             secureTextEntry
             selectionColor={Colors.BrightBlue}
+            value={this.state.password}
+            onChangeText={password =>
+              this.setState(prevState => ({ ...prevState, password }))
+            }
           />
           <TouchableOpacity
             style={style.loginButton}
-            onPress={() => this.onLoginClick(navigation)}
+            onPress={() =>
+              this.onLoginClick(
+                navigation,
+                this.state.username,
+                this.state.password,
+              )
+            }
           >
             <View style={style.loginBackground}>
               <Text style={style.loginText}>login</Text>
             </View>
           </TouchableOpacity>
         </View>
+        {this.state.loading && (
+          <View style={style.loaderContainer}>
+            <ActivityIndicator
+              animating={this.state.loading}
+              size={'large'}
+              color={Colors.BrightBlue}
+            />
+          </View>
+        )}
       </View>
     );
   }
 
-  onLoginClick(navigation: NavigationScreenProp<void>) {
-    this.setState((prevState, props) => ({
-      ...prevState,
+  onLoginClick(
+    navigation: NavigationScreenProp<void>,
+    username: string,
+    password: string,
+  ) {
+    if (this.state.loading) {
+      return;
+    }
+    this.setState((prevState, props) => {
+      this.sendRequest(navigation, username, password);
+      return {
+        ...prevState,
+        loading: true,
+      };
+    });
+  }
 
-    }));
-    navigation.navigate(Routes.ProductList);
+  async sendRequest(
+    navigation: NavigationScreenProp<void>,
+    username: string,
+    password: string,
+  ) {
+    console.log('username: ', username);
+    console.log('password: ', password);
+    try {
+      // const response = await mockResponse();
+      const response = await getResponse(username, password);
+      const responseIsOk = response.ok;
+      if (!responseIsOk) {
+        this.handleRequestError(new Error('Response is not ok.'));
+      }
+      const token = await response.text();
+      this.handleRequestSuccess();
+    } catch (e) {
+      this.handleRequestError(e);
+    }
+  }
+
+  handleRequestSuccess() {
+    this.setState((prevState, props) => {
+      // TODO(alexk): we're navigating to product list without animation,
+      // gonna fix it
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: Routes.ProductList }),
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
+      return {
+        ...prevState,
+        loading: false,
+      };
+    });
+  }
+
+  handleRequestError(e: Error) {
+    console.log('Fetch error: ', e);
+    this.setState((prevState, props) => {
+      return {
+        ...prevState,
+        loading: false,
+      };
+    });
   }
 }
 export default LoginScreen;

@@ -35,7 +35,7 @@ const style = StyleSheet.create({
   },
   productTextContainer: {
   },
-  returnButton: { marginTop: 20, width: 200, height: 40 },
+  returnButton: { marginLeft: 20, marginRight: 20, width: 200, height: 40 },
   returnBackground: {
     borderWidth: 2,
     borderStyle: 'solid',

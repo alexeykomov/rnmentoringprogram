@@ -14,19 +14,23 @@ import {
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
 import Header from '../../components/header';
-import type { NavigationScreenProp } from 'react-navigation';
-import { Routes } from '../../../App';
+import type {
+  NavigationScreenConfig,
+  NavigationScreenProp,
+} from 'react-navigation';
+import { Routes } from '../../routes';
 import { Products } from '../../product';
 import { state } from './state';
 import type { State } from './state';
 import Colors from '../../colors';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
 };
 
 class ProductList extends React.PureComponent<ProductListProps, State> {
-  static navigationOptions = {
+  static navigationOptions:NavigationScreenConfig<{headerStyle: ViewStyleProp}> = {
     headerTitle:  <Header text={'Products'} icon={null} />,
     headerTitleStyle: {
       color: Colors.White,

@@ -16,6 +16,7 @@ const Colors = {
   DarkBlue: '#263852',
   LightGray: '#cccccc',
   DarkGray: '#464557',
+  WhiteTransparent: 'rgba(255,255,255,0.5)'
 };
 
 export type Color = $Values<typeof Colors>;
