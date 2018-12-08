@@ -7,16 +7,16 @@ import type { Product } from '../../product';
 import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
-import type { ProductUid } from '../../product';
 import { Header } from '../../components/header';
-import type { NavigationScreenProp } from 'react-navigation';
+import type {
+  NavigationScreenConfig,
+  NavigationScreenProp,
+} from 'react-navigation';
 import { Products } from '../../product';
 import Colors from '../../colors';
+import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 
 type ProductListProps = {
-  productId: ProductUid,
-  products: Product[],
-  onReturnFromProduct: () => void,
   navigation: NavigationScreenProp<void>,
 };
 
@@ -26,24 +26,20 @@ const NonExistentProduct: Product = {
 };
 
 class ProductFull extends React.PureComponent<ProductListProps> {
-  static navigationOptions = ({
-    navigation,
-  }: {
-    navigation: NavigationScreenProp<void>,
-  }) => {
-    return {
-      headerTitleStyle: {
-        color: Colors.White,
-      },
-      headerStyle: {
-        backgroundColor: Colors.EpamBlue,
-        borderBottomWidth: 0,
-      },
-    };
+  static navigationOptions: NavigationScreenConfig<{
+    headerStyle: ViewStyleProp,
+  }> = {
+    headerTitleStyle: {
+      color: Colors.White,
+    },
+    headerStyle: {
+      backgroundColor: Colors.EpamBlue,
+      borderBottomWidth: 0,
+    },
   };
 
   render() {
-    const { onReturnFromProduct, navigation } = this.props;
+    const { navigation } = this.props;
     const product = navigation.getParam<product>('product', NonExistentProduct);
     return (
       <View style={style.container}>
