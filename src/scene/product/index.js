@@ -28,26 +28,30 @@ const NonExistentProduct: Product = {
 class ProductFull extends React.PureComponent<ProductListProps> {
   static navigationOptions: NavigationScreenConfig<{
     headerStyle: ViewStyleProp,
-  }> = {
-    headerTitleStyle: {
-      color: Colors.White,
-    },
-    headerStyle: {
-      backgroundColor: Colors.EpamBlue,
-      borderBottomWidth: 0,
-    },
+  }> = ({ navigation }) => {
+    const product = navigation.getParam<product>('product', NonExistentProduct);
+    return {
+      headerTitleStyle: {
+        color: Colors.White,
+      },
+      headerStyle: {
+        backgroundColor: Colors.EpamBlue,
+        borderBottomWidth: 0,
+      },
+      headerTitle: (
+        <Header
+          icon={<Icon product={product.id} size={IconSizes.Small} />}
+          text={product.name}
+        />
+      ),
+    };
   };
 
   render() {
     const { navigation } = this.props;
-    const product = navigation.getParam<product>('product', NonExistentProduct);
     return (
       <View style={style.container}>
         <ScrollView style={style.productTextContainer}>
-          <Header
-            icon={<Icon product={product.id} size={IconSizes.Big} />}
-            text={product.name}
-          />
           <Text style={style.productText}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
             arcu ante, mollis eget gravida a, accumsan in purus. Fusce in

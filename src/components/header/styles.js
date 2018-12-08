@@ -15,12 +15,12 @@ const style = StyleSheet.create({
     backgroundColor: Colors.EpamBlue,
   },
   text: {
-    fontSize: 35,
+    fontSize: 25,
     fontWeight: 'bold',
     fontFamily: 'vincHand',
     color: Colors.White,
   },
-  iconContainer: { marginRight: 20 },
+  iconContainer: { marginRight: 10 },
 });
 
 export default style;
