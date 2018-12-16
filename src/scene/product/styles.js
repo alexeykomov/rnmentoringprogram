@@ -33,10 +33,16 @@ const style = StyleSheet.create({
     fontSize: 22,
     padding: 20,
   },
-  productTextContainer: {
+  productTextContainer: {},
+  returnButton: {
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 20,
+    height: 40,
+    alignItems: 'center',
   },
-  returnButton: { marginLeft: 20, marginRight: 20, width: 200, height: 40 },
   returnBackground: {
+    minWidth: 300,
     borderWidth: 2,
     borderStyle: 'solid',
     borderRadius: 3,
