@@ -35,6 +35,8 @@ const PAGE_SIZE = 20;
 
 const INITIAL_PAGE = 0;
 
+const ON_END_REACHED_THRESHOLD = 0.2;
+
 const renderProductItem = (onProductClick: Function, product: Product) => (
   <ProductItem onProductClick={onProductClick} product={product} />
 );
@@ -140,7 +142,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
                 item,
               )
             }
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
             onEndReached={this.onLoadMore}
             ItemSeparatorComponent={this.renderSeparator}
             ListHeaderComponent={this.renderSeparator}
@@ -175,7 +177,6 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   };
 
   onProductClick(navigation: NavigationScreenProp<void>, product: Product) {
-    console.log('onProductClick: ', product);
     return navigation.navigate({
       routeName: Routes.ProductFull,
       params: { product },
@@ -234,7 +235,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
                 id: randomProductId,
                 iconId: randomProductId,
                 name: 'Battery',
-                telephone: '+375291111111',
+                telephone: '+375111111111',
                 location: {
                   latitude: 53.9480826,
                   longitude: 27.7105363,

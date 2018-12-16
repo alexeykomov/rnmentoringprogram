@@ -2,9 +2,13 @@
  * @flow
  * */
 
-import style from './styles';
 import type { Product } from '../../product';
-import { View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Alert,
+  Linking,
+} from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
 import { Header } from '../../components/header';
@@ -16,7 +20,6 @@ import { Products } from '../../product';
 import Colors from '../../colors';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import MapView, { Marker } from 'react-native-maps';
-import { Routes } from '../../routes';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -27,11 +30,11 @@ const NonExistentProduct: Product = {
   iconId: Products.NonExistent,
   name: "It seems you're browsing nonexistent or deleted product",
   history: '',
-  location: {longitude: 0, latitude: 0},
-  telephone: ''
+  location: { longitude: 0, latitude: 0 },
+  telephone: '',
 };
 
-class ProductFull extends React.PureComponent<ProductListProps> {
+class LocationScreen extends React.PureComponent<ProductListProps> {
   static navigationOptions: NavigationScreenConfig<{
     headerStyle: ViewStyleProp,
   }> = ({ navigation }) => {
@@ -57,39 +60,41 @@ class ProductFull extends React.PureComponent<ProductListProps> {
     const { navigation } = this.props;
     const product = navigation.getParam<product>('product', NonExistentProduct);
     return (
-      <View style={style.container}>
-        <ScrollView style={style.productTextContainer}>
-          <Text style={style.productText}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-            arcu ante, mollis eget gravida a, accumsan in purus. Fusce in
-            tincidunt turpis, id euismod mauris. Integer elementum congue dolor.
-            Pellentesque luctus mi tempus urna lacinia varius.
-            cursus et.
-          </Text>
-
-          <TouchableOpacity
-            style={style.returnButton}
-            onPress={() => navigation.navigate({
-              routeName: Routes.LocationScreen,
-              params: { product },
-            })}
-          >
-            <View style={style.returnBackground}>
-              <Text style={style.returnText}>Location</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={style.returnButton}
-            onPress={() => navigation.goBack()}
-          >
-            <View style={style.returnBackground}>
-              <Text style={style.returnText}>All Products</Text>
-            </View>
-          </TouchableOpacity>
-        </ScrollView>
+      <View style={StyleSheet.absoluteFillObject}>
+        <MapView
+          style={StyleSheet.absoluteFillObject}
+          initialRegion={{
+            latitude: product.location.latitude,
+            longitude: product.location.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        >
+          <Marker
+            onPress={() => {
+              Alert.alert(
+                'Call product provider',
+                `Call ${product.telephone}`,
+                [
+                  { text: 'Cancel', onPress: () => {}, style: 'cancel' },
+                  {
+                    text: 'OK',
+                    onPress: () => {
+                      Linking.openURL(`tel:${product.telephone}`);
+                    },
+                  },
+                ],
+                { cancelable: false },
+              );
+            }}
+            coordinate={product.location}
+            title={product.name}
+            description={product.telephone}
+          />
+        </MapView>
       </View>
     );
   }
 }
 
-export default ProductFull;
+export default LocationScreen;
