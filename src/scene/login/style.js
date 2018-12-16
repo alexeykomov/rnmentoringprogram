@@ -16,7 +16,6 @@ type LoginStyle = {
   container: Object,
   headerBlock: Object,
   inputBlock: Object,
-  loaderContainer: Object,
 };
 
 const style: LoginStyle = StyleSheet.create({
@@ -73,16 +72,6 @@ const style: LoginStyle = StyleSheet.create({
     borderStyle: 'solid',
     borderRadius: 3,
     borderColor: Colors.EpamBlue,
-  },
-  loaderContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    backgroundColor: Colors.WhiteTransparent,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 

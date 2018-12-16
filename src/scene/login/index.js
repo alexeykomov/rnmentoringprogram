@@ -17,6 +17,7 @@ import Colors from '../../colors';
 import type { NavigationScreenProp, NavigationScreenConfig } from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { Routes } from '../../routes';
+import { Loader } from '../../components/loader';
 
 type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -113,13 +114,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
           </TouchableOpacity>
         </View>
         {this.state.loading && (
-          <View style={style.loaderContainer}>
-            <ActivityIndicator
-              animating={this.state.loading}
-              size={'large'}
-              color={Colors.BrightBlue}
-            />
-          </View>
+          <Loader size={'large'} color={Colors.BrightBlue}/>
         )}
       </View>
     );
@@ -147,11 +142,9 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     username: string,
     password: string,
   ) {
-    console.log('username: ', username);
-    console.log('password: ', password);
     try {
-      // const response = await mockResponse();
-      const response = await getResponse(username, password);
+      const response = await mockResponse();
+      // const response = await getResponse(username, password);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(new Error('Response is not ok.'));

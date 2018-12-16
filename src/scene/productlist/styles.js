@@ -37,11 +37,6 @@ const style = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     height: 50,
-    borderTopWidth: 1,
-    borderStyle: 'solid',
-    borderTopColor: Colors.EpamBlue,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.EpamBlue,
     backgroundColor: Colors.White,
   },
   ['product__no-border-bottom']: {
@@ -65,6 +60,10 @@ const style = StyleSheet.create({
     flexDirection: 'row',
   },
   productAngleIcon: { width: 20, height: 20 },
+  separator: {
+    height: 1,
+    backgroundColor: Colors.EpamBlue,
+  }
 });
 
 export default style;

@@ -8,9 +8,12 @@ import { Products } from '../../product';
 
 export type State = {
   products: Product[],
+  loading: boolean,
+  refreshing: boolean,
+  currentPage: number,
 };
 
-export const state: State = {
+/*export const state: State = {
   products: [
     {
       id: Products.Battery,
@@ -49,4 +52,4 @@ export const state: State = {
       name: 'Electric tower',
     },
   ],
-};
+};*/

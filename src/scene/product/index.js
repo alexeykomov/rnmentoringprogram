@@ -23,6 +23,9 @@ type ProductListProps = {
 const NonExistentProduct: Product = {
   id: Products.NonExistent,
   name: "It seems you're browsing nonexistent or deleted product",
+  history: '',
+  location: {longitude: 0, latitude: 0},
+  telephone: ''
 };
 
 class ProductFull extends React.PureComponent<ProductListProps> {
