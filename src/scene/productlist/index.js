@@ -3,14 +3,14 @@
  * */
 
 import style from '../../scene/productlist/styles';
-import type { Product } from '../../product';
+import type { Product, ProductUid } from '../../product';
 import {
   View,
   TouchableHighlight,
   Image,
   Text,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
@@ -25,6 +25,7 @@ import type { State } from './state';
 import Colors from '../../colors';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { Loader } from '../../components/loader';
+import { getRandomProductId } from '../../lib/id';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -35,10 +36,7 @@ const PAGE_SIZE = 20;
 const INITIAL_PAGE = 0;
 
 const renderProductItem = (onProductClick: Function, product: Product) => (
-  <ProductItem
-    onProductClick={onProductClick}
-    product={product}
-  />
+  <ProductItem onProductClick={onProductClick} product={product} />
 );
 
 type ProductItemProps = {
@@ -46,10 +44,7 @@ type ProductItemProps = {
   product: Product,
 };
 
-const ProductItem = ({
-  onProductClick,
-  product,
-}: ProductItemProps) => {
+const ProductItem = ({ onProductClick, product }: ProductItemProps) => {
   return (
     <TouchableHighlight onPress={onProductClick} key={product.id}>
       <View style={style.product}>
@@ -62,7 +57,7 @@ const ProductItem = ({
           }}
         >
           <View style={style.productIcon}>
-            <Icon product={product.id} size={IconSizes.Small} />
+            <Icon product={product.iconId} size={IconSizes.Small} />
           </View>
           <Text style={style.productText}>{product.name}</Text>
         </View>
@@ -132,22 +127,28 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 
     return (
       <View style={style.container}>
-        {this.state.loading ? <Loader size={'small'} color={Colors.DarkGray}/> :
-        <FlatList
-          style={style.frame}
-          data={products}
-          keyExtractor={(item: Product, index: number) => String(item.id)}
-          renderItem={({ item }) =>
-            renderProductItem(() => this.onProductClick(navigation, item), item)
-          }
-          onEndReachedThreshold={0.5}
-          onEndReached={this.onLoadMore}
-          ItemSeparatorComponent={this.renderSeparator}
-          ListHeaderComponent={this.renderSeparator}
-          ListFooterComponent={this.renderSeparator}
-          refreshing={this.state.refreshing}
-          onRefresh={this.onRefresh}
-        />}
+        {this.state.loading ? (
+          <Loader size={'small'} color={Colors.DarkGray} />
+        ) : (
+          <FlatList
+            style={style.frame}
+            data={products}
+            keyExtractor={(item: Product, index: number) => String(item.id)}
+            renderItem={({ item }) =>
+              renderProductItem(
+                () => this.onProductClick(navigation, item),
+                item,
+              )
+            }
+            onEndReachedThreshold={0.5}
+            onEndReached={this.onLoadMore}
+            ItemSeparatorComponent={this.renderSeparator}
+            ListHeaderComponent={this.renderSeparator}
+            ListFooterComponent={this.renderSeparator}
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh}
+          />
+        )}
       </View>
     );
   }
@@ -174,11 +175,11 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   };
 
   onProductClick(navigation: NavigationScreenProp<void>, product: Product) {
-    return () =>
-      navigation.navigate({
-        routeName: Routes.ProductFull,
-        params: { product },
-      });
+    console.log('onProductClick: ', product);
+    return navigation.navigate({
+      routeName: Routes.ProductFull,
+      params: { product },
+    });
   }
 
   renderSeparator() {
@@ -227,16 +228,20 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       json: () =>
         Promise.resolve(
           new Array(pageSize).fill(null).map(
-            (el: null): Product => ({
-              id: Products.Battery,
-              name: 'Battery',
-              telephone: '+375291111111',
-              location: {
-                latitude: 53.9480826,
-                longitude: 27.7105363,
-              },
-              history: 'Lorem Ipsum',
-            }),
+            (el: null): Product => {
+              const randomProductId = getRandomProductId();
+              return {
+                id: randomProductId,
+                iconId: randomProductId,
+                name: 'Battery',
+                telephone: '+375291111111',
+                location: {
+                  latitude: 53.9480826,
+                  longitude: 27.7105363,
+                },
+                history: 'Lorem Ipsum',
+              };
+            },
           ),
         ),
     });

@@ -28,7 +28,7 @@ const style = StyleSheet.create({
     alignItems: 'stretch',
     backgroundColor: Colors.White,
   },
-  frame: { marginTop: -1 },
+  frame: { marginTop: -StyleSheet.hairlineWidth },
   product: {
     fontFamily: 'vincHand',
     flexDirection: 'row',
@@ -61,7 +61,7 @@ const style = StyleSheet.create({
   },
   productAngleIcon: { width: 20, height: 20 },
   separator: {
-    height: 1,
+    height: StyleSheet.hairlineWidth,
     backgroundColor: Colors.EpamBlue,
   }
 });

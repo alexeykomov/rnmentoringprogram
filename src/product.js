@@ -19,6 +19,7 @@ export type ProductUid = $Values<typeof Products>;
 
 export type Product = {
   id: ProductUid,
+  iconId: ProductUid,
   name: string,
   history: string,
   telephone: string,
