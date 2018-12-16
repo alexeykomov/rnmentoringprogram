@@ -13,6 +13,7 @@ import ProductFull from './scene/product';
 import LocationScreen from './scene/location';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Routes } from './routes';
+import ModalScreen from './scene/modal/modal';
 
 const AppNavigator = createStackNavigator(
   {
@@ -23,7 +24,22 @@ const AppNavigator = createStackNavigator(
   },
   {
     initialRouteName: Routes.Login,
-  }
+  },
+);
+
+const RootStack = createStackNavigator(
+  {
+    Main: {
+      screen: AppNavigator,
+    },
+    Modal: {
+      screen: ModalScreen,
+    },
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none',
+  },
 );
 
 export default createAppContainer(AppNavigator);
