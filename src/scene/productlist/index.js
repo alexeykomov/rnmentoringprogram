@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   Image,
   Text,
+  FlatList,
 } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';

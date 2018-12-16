@@ -142,8 +142,8 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     password: string,
   ) {
     try {
-      const response = await mockResponse();
-      // const response = await getResponse(username, password);
+      // const response = await mockResponse();
+      const response = await getResponse(username, password);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(new Error('Response is not ok.'));
