@@ -3,14 +3,12 @@
  * */
 
 import style from '../../scene/productlist/styles';
-import type { Product, ProductUid } from '../../product';
+import type { Product } from '../../product';
 import {
   View,
   TouchableHighlight,
   Image,
   Text,
-  FlatList,
-  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';

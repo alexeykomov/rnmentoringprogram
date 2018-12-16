@@ -15,7 +15,6 @@ import type {
 import { Products } from '../../product';
 import Colors from '../../colors';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
-import MapView, { Marker } from 'react-native-maps';
 import { Routes } from '../../routes';
 
 type ProductListProps = {

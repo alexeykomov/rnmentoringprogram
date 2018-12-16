@@ -10,7 +10,6 @@ import {
   TextInput,
   Text,
   Image,
-  ActivityIndicator,
 } from 'react-native';
 import style from '../../scene/login/style';
 import Colors from '../../colors';

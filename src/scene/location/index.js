@@ -21,7 +21,7 @@ import Colors from '../../colors';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import MapView, { Marker } from 'react-native-maps';
 
-type ProductListProps = {
+type LocationScreenProps = {
   navigation: NavigationScreenProp<void>,
 };
 
@@ -34,7 +34,7 @@ const NonExistentProduct: Product = {
   telephone: '',
 };
 
-class LocationScreen extends React.PureComponent<ProductListProps> {
+class LocationScreen extends React.PureComponent<LocationScreenProps> {
   static navigationOptions: NavigationScreenConfig<{
     headerStyle: ViewStyleProp,
   }> = ({ navigation }) => {
