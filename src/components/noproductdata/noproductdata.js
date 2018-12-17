@@ -1,4 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+/** @flow */
+
+import { Text, View } from 'react-native';
 import React from 'react';
 import style from './noproductdata.styles'
 

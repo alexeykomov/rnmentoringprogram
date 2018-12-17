@@ -3,7 +3,6 @@
  * */
 
 import { StyleSheet } from 'react-native';
-import Colors from '../../colors';
 
 const style = StyleSheet.create({
   container: {

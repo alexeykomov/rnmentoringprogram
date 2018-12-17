@@ -4,7 +4,7 @@
 
 import style from './styles';
 import type { Product } from '../../product';
-import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { View, FlatList, } from 'react-native';
 import React from 'react';
 import Header from '../../components/header';
 import type {
@@ -17,7 +17,6 @@ import type { State } from './state';
 import Colors from '../../colors';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { Loader } from '../../components/loader';
-import { getRandomProductId } from '../../lib/id';
 import ProductItem from './productitem/productitem';
 import { formatProducts } from './producttransform';
 import type { ProductApiResponse } from './producttransform';
@@ -33,11 +32,6 @@ const PAGE_SIZE = 20;
 const INITIAL_PAGE = 1;
 
 const ON_END_REACHED_THRESHOLD = 0.2;
-
-type ProductItemProps = {
-  onProductClick: Function,
-  product: Product,
-};
 
 class ProductList extends React.PureComponent<ProductListProps, State> {
   static navigationOptions: NavigationScreenConfig<{

@@ -1,3 +1,5 @@
+/** @flow */
+
 import style from './styles';
 import { ActivityIndicator, View } from 'react-native';
 import React from 'react';

@@ -1,6 +1,8 @@
+/** @flow */
+
 import { StyleSheet, View, Text } from 'react-native';
 import React from 'react';
-import { NavigationScreenProp } from 'react-navigation';
+import type { NavigationScreenProp } from 'react-navigation';
 import Button from '../../components/button/button';
 import style from './styles';
 
