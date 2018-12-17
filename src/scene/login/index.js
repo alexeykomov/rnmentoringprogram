@@ -11,7 +11,7 @@ import {
   Text,
   Image,
 } from 'react-native';
-import style from '../../scene/login/style';
+import style from './styles';
 import Colors from '../../colors';
 import type { NavigationScreenProp, NavigationScreenConfig } from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation';

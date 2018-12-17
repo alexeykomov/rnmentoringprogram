@@ -8,6 +8,10 @@ import Colors from '../../colors';
 const style = StyleSheet.create({
   modalContainer: {
     ...StyleSheet.absoluteFillObject,
+    backgroundColor: Colors.White,
+  },
+  modalSubContainer: {
+    ...StyleSheet.absoluteFillObject,
     margin: 20,
     padding: 20,
     borderWidth: StyleSheet.hairlineWidth,
@@ -15,6 +19,7 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: Colors.EpamBlue,
+    backgroundColor: Colors.White,
   },
   modalHeader: {
     fontFamily: 'vincHand',

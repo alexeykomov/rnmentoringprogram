@@ -15,16 +15,20 @@ class ModalScreen extends React.PureComponent<ModalScreenProps> {
     const retryAction = navigation.getParam('retryAction', () => {});
     return (
       <View style={style.modalContainer}>
-        <Text style={style.modalHeader}>Oops!</Text>
-        <Text style={style.modalText}>{`You're encountering network error: ${error.message}`}</Text>
-        <Button
-          caption={'Retry'}
-          onPress={() => {
-            retryAction();
-            navigation.goBack();
-          }}
-        />
-        <Button caption={'Close'} onPress={() => navigation.goBack()} />
+        <View style={style.modalSubContainer}>
+          <Text style={style.modalHeader}>Oops!</Text>
+          <Text style={style.modalText}>{`You're encountering network error: ${
+            error.message
+          }`}</Text>
+          <Button
+            caption={'Retry'}
+            onPress={() => {
+              retryAction();
+              navigation.goBack();
+            }}
+          />
+          <Button caption={'Close'} onPress={() => navigation.goBack()} />
+        </View>
       </View>
     );
   }

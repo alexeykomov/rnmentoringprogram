@@ -2,7 +2,7 @@
  * @flow
  * */
 
-import style from '../../scene/productlist/styles';
+import style from './styles';
 import type { Product } from '../../product';
 import { View, FlatList } from 'react-native';
 import React from 'react';

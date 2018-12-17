@@ -59,16 +59,17 @@ class LocationScreen extends React.PureComponent<LocationScreenProps> {
   render() {
     const { navigation } = this.props;
     const product = navigation.getParam<product>('product', NonExistentProduct);
+    const initialRegion = {
+      latitude: product.location.latitude,
+      longitude: product.location.longitude,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    };
     return (
       <View style={StyleSheet.absoluteFillObject}>
         <MapView
           style={StyleSheet.absoluteFillObject}
-          initialRegion={{
-            latitude: product.location.latitude,
-            longitude: product.location.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
+          initialRegion={initialRegion}
         >
           <Marker
             onPress={() => {
