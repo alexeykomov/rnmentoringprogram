@@ -59,10 +59,7 @@ class ProductFull extends React.PureComponent<ProductListProps> {
       <View style={style.container}>
         <ScrollView style={style.productTextContainer}>
           <Text style={style.productText}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-            arcu ante, mollis eget gravida a, accumsan in purus. Fusce in
-            tincidunt turpis, id euismod mauris. Integer elementum congue dolor.
-            Pellentesque luctus mi tempus urna lacinia varius. cursus et.
+            {product.history}
           </Text>
 
           <TouchableOpacity

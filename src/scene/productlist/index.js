@@ -4,7 +4,7 @@
 
 import style from './styles';
 import type { Product } from '../../product';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, StyleSheet, Text } from 'react-native';
 import React from 'react';
 import Header from '../../components/header';
 import type {
@@ -19,6 +19,10 @@ import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet
 import { Loader } from '../../components/loader';
 import { getRandomProductId } from '../../lib/id';
 import ProductItem from './productitem/productitem';
+import { formatProducts } from './producttransform';
+import type { ProductApiResponse } from './producttransform';
+import obj from './../../../response.json';
+import NoProductData from '../../components/noproductdata/noproductdata';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -66,7 +70,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   async sendRequest(page: number, retryAction: Function) {
     try {
       const response = await this.mockResponse(PAGE_SIZE, page);
-      //const response = await this.getResponse(PAGE_SIZE);
+      // const response = await this.getResponse(PAGE_SIZE, page);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
@@ -74,7 +78,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
           retryAction,
         );
       }
-      const products = await response.json();
+      const products = formatProducts(await response.json());
       this.handleRequestSuccess(products, page);
     } catch (e) {
       this.handleRequestError(e, retryAction);
@@ -87,28 +91,32 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 
     return (
       <View style={style.container}>
-        {this.state.loading ? (
-          <Loader size={'small'} color={Colors.DarkGray} />
-        ) : (
-          <FlatList
-            style={style.frame}
-            data={products}
-            keyExtractor={this.keyExtractor}
-            renderItem={({ item }) =>
-              renderProductItem(
-                () => this.onProductClick(navigation, item),
-                item,
-              )
-            }
-            onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
-            onEndReached={this.onLoadMore}
-            ItemSeparatorComponent={this.renderSeparator}
-            ListHeaderComponent={this.renderSeparator}
-            ListFooterComponent={this.renderSeparator}
-            refreshing={this.state.refreshing}
-            onRefresh={this.onRefresh}
-          />
-        )}
+        {(() => {
+          if (this.state.loading) {
+            return <Loader size={'small'} color={Colors.DarkGray} />;
+          }
+          return (
+            <FlatList
+              style={style.frame}
+              data={products}
+              keyExtractor={this.keyExtractor}
+              renderItem={({ item }) =>
+                renderProductItem(
+                  () => this.onProductClick(navigation, item),
+                  item,
+                )
+              }
+              onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
+              onEndReached={this.onLoadMore}
+              ItemSeparatorComponent={this.renderSeparator}
+              ListHeaderComponent={this.renderSeparator}
+              ListFooterComponent={this.renderSeparator}
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh}
+              ListEmptyComponent={<NoProductData/>}
+            />
+          );
+        })()}
       </View>
     );
   }
@@ -197,30 +205,11 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   async mockResponse(
     pageSize: number,
     page: number,
-  ): Promise<{ ok: boolean, json: () => Promise<Product[]> }> {
-    const array = [];
+  ): Promise<{ ok: boolean, json: () => Promise<ProductApiResponse> }> {
     await new Promise(res => setTimeout(res, 1000));
     return Promise.resolve({
-      ok: false,
-      json: () =>
-        Promise.resolve(
-          new Array(pageSize).fill(null).map(
-            (el: null): Product => {
-              const randomProductId = getRandomProductId();
-              return {
-                id: randomProductId,
-                iconId: randomProductId,
-                name: 'Battery',
-                telephone: '+375111111111',
-                location: {
-                  latitude: 53.9480826,
-                  longitude: 27.7105363,
-                },
-                history: 'Lorem Ipsum',
-              };
-            },
-          ),
-        ),
+      ok: true,
+      json: () => Promise.resolve(obj),
     });
   }
 }

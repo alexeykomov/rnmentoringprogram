@@ -17,7 +17,7 @@ class ModalScreen extends React.PureComponent<ModalScreenProps> {
       <View style={style.modalContainer}>
         <View style={style.modalSubContainer}>
           <Text style={style.modalHeader}>Oops!</Text>
-          <Text style={style.modalText}>{`You're encountering network error: ${
+          <Text style={style.modalText}>{`You're encountering error: ${
             error.message
           }`}</Text>
           <Button
