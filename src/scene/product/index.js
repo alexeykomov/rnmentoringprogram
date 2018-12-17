@@ -26,8 +26,8 @@ const NonExistentProduct: Product = {
   iconId: Products.NonExistent,
   name: "It seems you're browsing nonexistent or deleted product",
   history: '',
-  location: {longitude: 0, latitude: 0},
-  telephone: ''
+  location: { longitude: 0, latitude: 0 },
+  telephone: '',
 };
 
 class ProductFull extends React.PureComponent<ProductListProps> {
@@ -62,16 +62,17 @@ class ProductFull extends React.PureComponent<ProductListProps> {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
             arcu ante, mollis eget gravida a, accumsan in purus. Fusce in
             tincidunt turpis, id euismod mauris. Integer elementum congue dolor.
-            Pellentesque luctus mi tempus urna lacinia varius.
-            cursus et.
+            Pellentesque luctus mi tempus urna lacinia varius. cursus et.
           </Text>
 
           <TouchableOpacity
             style={style.returnButton}
-            onPress={() => navigation.navigate({
-              routeName: Routes.LocationScreen,
-              params: { product },
-            })}
+            onPress={() =>
+              navigation.navigate({
+                routeName: Routes.LocationScreen,
+                params: { product },
+              })
+            }
           >
             <View style={style.returnBackground}>
               <Text style={style.returnText}>Location</Text>

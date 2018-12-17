@@ -32,7 +32,7 @@ const RootStack = createStackNavigator(
     Main: {
       screen: AppNavigator,
     },
-    Modal: {
+    [Routes.Modal]: {
       screen: ModalScreen,
     },
   },
@@ -42,4 +42,4 @@ const RootStack = createStackNavigator(
   },
 );
 
-export default createAppContainer(AppNavigator);
+export default createAppContainer(RootStack);

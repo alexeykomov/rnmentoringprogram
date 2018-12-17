@@ -4,15 +4,8 @@
 
 import style from '../../scene/productlist/styles';
 import type { Product } from '../../product';
-import {
-  View,
-  TouchableHighlight,
-  Image,
-  Text,
-  FlatList,
-} from 'react-native';
+import { View, FlatList } from 'react-native';
 import React from 'react';
-import { Icon, IconSizes } from '../../icons';
 import Header from '../../components/header';
 import type {
   NavigationScreenConfig,
@@ -25,6 +18,7 @@ import Colors from '../../colors';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { Loader } from '../../components/loader';
 import { getRandomProductId } from '../../lib/id';
+import ProductItem from './productitem/productitem';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -32,45 +26,13 @@ type ProductListProps = {
 
 const PAGE_SIZE = 20;
 
-const INITIAL_PAGE = 0;
+const INITIAL_PAGE = 1;
 
 const ON_END_REACHED_THRESHOLD = 0.2;
-
-const renderProductItem = (onProductClick: Function, product: Product) => (
-  <ProductItem onProductClick={onProductClick} product={product} />
-);
 
 type ProductItemProps = {
   onProductClick: Function,
   product: Product,
-};
-
-const ProductItem = ({ onProductClick, product }: ProductItemProps) => {
-  return (
-    <TouchableHighlight onPress={onProductClick} key={product.id}>
-      <View style={style.product}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}
-        >
-          <View style={style.productIcon}>
-            <Icon product={product.iconId} size={IconSizes.Small} />
-          </View>
-          <Text style={style.productText}>{product.name}</Text>
-        </View>
-        <View style={style.productAngle}>
-          <Image
-            style={{ width: 20, height: 20 }}
-            source={require('./angle-arrow-pointing-to-right.png')}
-          />
-        </View>
-      </View>
-    </TouchableHighlight>
-  );
 };
 
 class ProductList extends React.PureComponent<ProductListProps, State> {
@@ -97,28 +59,25 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     };
   }
 
-  async componentDidMount() {
-    this.setState((prevState, props) => {
-      this.sendRequest(INITIAL_PAGE);
-      return {
-        ...prevState,
-        loading: true,
-      };
-    });
+  componentDidMount() {
+    this.loadInitial();
   }
 
-  async sendRequest(page: number) {
+  async sendRequest(page: number, retryAction: Function) {
     try {
       const response = await this.mockResponse(PAGE_SIZE, page);
       //const response = await this.getResponse(PAGE_SIZE);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
-        return this.handleRequestError(new Error('Response is not ok.'));
+        return this.handleRequestError(
+          new Error('Response is not ok.'),
+          retryAction,
+        );
       }
       const products = await response.json();
-      this.handleRequestSuccess(products);
+      this.handleRequestSuccess(products, page);
     } catch (e) {
-      this.handleRequestError(e);
+      this.handleRequestError(e, retryAction);
     }
   }
 
@@ -134,7 +93,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
           <FlatList
             style={style.frame}
             data={products}
-            keyExtractor={(item: Product, index: number) => String(item.id)}
+            keyExtractor={this.keyExtractor}
             renderItem={({ item }) =>
               renderProductItem(
                 () => this.onProductClick(navigation, item),
@@ -154,9 +113,21 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     );
   }
 
+  keyExtractor = (item: Product, index: number) => String(item.id);
+
+  loadInitial = () => {
+    this.setState((prevState, props) => {
+      this.sendRequest(INITIAL_PAGE, this.loadInitial);
+      return {
+        ...prevState,
+        loading: true,
+      };
+    });
+  };
+
   onRefresh = () => {
     this.setState((prevState, props) => {
-      this.sendRequest(INITIAL_PAGE);
+      this.sendRequest(INITIAL_PAGE, this.onRefresh);
       return {
         ...prevState,
         refreshing: true,
@@ -167,10 +138,9 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   onLoadMore = () => {
     this.setState((prevState, props) => {
       const newPage = this.state.currentPage + 1;
-      this.sendRequest(newPage);
+      this.sendRequest(newPage, this.onLoadMore);
       return {
         ...prevState,
-        currentPage: newPage,
       };
     });
   };
@@ -186,20 +156,27 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     return <View style={style.separator} />;
   }
 
-  handleRequestSuccess(products: Product[]) {
+  handleRequestSuccess(products: Product[], page: number) {
     this.setState((prevState, props) => {
       return {
         ...prevState,
         products: [...this.state.products, ...products],
         loading: false,
         refreshing: false,
+        currentPage: page,
       };
     });
   }
 
-  handleRequestError(e: Error) {
+  handleRequestError(e: Error, retryAction: Function) {
+    const { navigation } = this.props;
+
     console.log('Fetch error: ', e);
     this.setState((prevState, props) => {
+      navigation.navigate({
+        routeName: Routes.Modal,
+        params: { error: e, retryAction },
+      });
       return {
         ...prevState,
         loading: false,
@@ -224,7 +201,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     const array = [];
     await new Promise(res => setTimeout(res, 1000));
     return Promise.resolve({
-      ok: true,
+      ok: false,
       json: () =>
         Promise.resolve(
           new Array(pageSize).fill(null).map(
@@ -247,5 +224,9 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     });
   }
 }
+
+const renderProductItem = (onProductClick: Function, product: Product) => (
+  <ProductItem onProductClick={onProductClick} product={product} />
+);
 
 export default ProductList;

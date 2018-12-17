@@ -1,0 +1,912 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "sku": "Ski",
+      "name": "Ski",
+      "attribute_set_id": 4,
+      "price": 500,
+      "status": 1,
+      "visibility": 4,
+      "type_id": "simple",
+      "created_at": "2018-12-11 13:23:56",
+      "updated_at": "2018-12-11 13:23:56",
+      "product_links": [],
+      "tier_prices": [],
+      "custom_attributes": [
+        {
+          "attribute_code": "options_container",
+          "value": "container2"
+        },
+        {
+          "attribute_code": "url_key",
+          "value": "ski"
+        },
+        {
+          "attribute_code": "gift_message_available",
+          "value": "2"
+        },
+        {
+          "attribute_code": "required_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "has_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "meta_title",
+          "value": "Ski"
+        },
+        {
+          "attribute_code": "meta_keyword",
+          "value": "Ski"
+        },
+        {
+          "attribute_code": "meta_description",
+          "value": "Ski "
+        },
+        {
+          "attribute_code": "tax_class_id",
+          "value": "2"
+        },
+        {
+          "attribute_code": "quantity_and_stock_status",
+          "value": "1"
+        },
+        {
+          "attribute_code": "category_ids",
+          "value": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "sku": "SnowboardSk",
+      "name": "SnowboardSk",
+      "attribute_set_id": 4,
+      "price": 1007,
+      "status": 1,
+      "visibility": 4,
+      "type_id": "simple",
+      "created_at": "2018-12-11 13:26:46",
+      "updated_at": "2018-12-11 13:27:03",
+      "product_links": [],
+      "tier_prices": [],
+      "custom_attributes": [
+        {
+          "attribute_code": "options_container",
+          "value": "container2"
+        },
+        {
+          "attribute_code": "url_key",
+          "value": "snowboard"
+        },
+        {
+          "attribute_code": "gift_message_available",
+          "value": "2"
+        },
+        {
+          "attribute_code": "required_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "has_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "meta_title",
+          "value": "Snowboard"
+        },
+        {
+          "attribute_code": "meta_keyword",
+          "value": "Snowboard"
+        },
+        {
+          "attribute_code": "meta_description",
+          "value": "Snowboard "
+        },
+        {
+          "attribute_code": "tax_class_id",
+          "value": "2"
+        },
+        {
+          "attribute_code": "quantity_and_stock_status",
+          "value": "1"
+        },
+        {
+          "attribute_code": "category_ids",
+          "value": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "sku": "24-WG085",
+      "name": "Sprite Yoga Strap 6 foot",
+      "attribute_set_id": 4,
+      "price": 14,
+      "status": 1,
+      "visibility": 4,
+      "type_id": "simple",
+      "created_at": "2018-12-11 13:33:52",
+      "updated_at": "2018-12-11 13:33:53",
+      "weight": 1,
+      "product_links": [
+        {
+          "sku": "24-WG085",
+          "link_type": "related",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085",
+          "link_type": "related",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085",
+          "link_type": "crosssell",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085",
+          "link_type": "crosssell",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085",
+          "link_type": "upsell",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085",
+          "link_type": "upsell",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        }
+      ],
+      "tier_prices": [],
+      "custom_attributes": [
+        {
+          "attribute_code": "options_container",
+          "value": "container2"
+        },
+        {
+          "attribute_code": "url_key",
+          "value": "sprite-yoga-strap-6-foot"
+        },
+        {
+          "attribute_code": "msrp_display_actual_price_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "required_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "has_options",
+          "value": "1"
+        },
+        {
+          "attribute_code": "meta_title",
+          "value": "Meta Title"
+        },
+        {
+          "attribute_code": "meta_keyword",
+          "value": "meta1, meta2, meta3"
+        },
+        {
+          "attribute_code": "meta_description",
+          "value": "meta description"
+        },
+        {
+          "attribute_code": "tax_class_id",
+          "value": "2"
+        },
+        {
+          "attribute_code": "quantity_and_stock_status",
+          "value": "1"
+        },
+        {
+          "attribute_code": "category_ids",
+          "value": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "attribute_code": "description",
+          "value": "<p>The Sprite Yoga Strap is your untiring partner in demanding stretches, holds and alignment routines. The strap's 100% organic cotton fabric is woven tightly to form a soft, textured yet non-slip surface. The plastic clasp buckle is easily adjustable, lightweight and urable under strain.<\/p><ul><li>100% soft and durable cotton.<li>Plastic cinch buckle is easy to use.<li>Three natural colors made from phthalate and heavy metal free dyes.<\/ul>"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "sku": "24-WG086",
+      "name": "Sprite Yoga Strap 8 foot",
+      "attribute_set_id": 4,
+      "price": 17,
+      "status": 1,
+      "visibility": 4,
+      "type_id": "simple",
+      "created_at": "2018-12-11 13:33:53",
+      "updated_at": "2018-12-11 13:33:53",
+      "weight": 1,
+      "product_links": [
+        {
+          "sku": "24-WG086",
+          "link_type": "related",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG086",
+          "link_type": "crosssell",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG086",
+          "link_type": "upsell",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        }
+      ],
+      "tier_prices": [],
+      "custom_attributes": [
+        {
+          "attribute_code": "options_container",
+          "value": "container2"
+        },
+        {
+          "attribute_code": "url_key",
+          "value": "sprite-yoga-strap-8-foot"
+        },
+        {
+          "attribute_code": "msrp_display_actual_price_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "required_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "has_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "meta_title",
+          "value": "Meta Title"
+        },
+        {
+          "attribute_code": "meta_keyword",
+          "value": "meta1, meta2, meta4"
+        },
+        {
+          "attribute_code": "meta_description",
+          "value": "meta description"
+        },
+        {
+          "attribute_code": "tax_class_id",
+          "value": "2"
+        },
+        {
+          "attribute_code": "quantity_and_stock_status",
+          "value": "1"
+        },
+        {
+          "attribute_code": "category_ids",
+          "value": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "attribute_code": "description",
+          "value": "<p>The Sprite Yoga Strap is your untiring partner in demanding stretches, holds and alignment routines. The strap's 100% organic cotton fabric is woven tightly to form a soft, textured yet non-slip surface. The plastic clasp buckle is easily adjustable, lightweight and durable under strain.<\/p><ul><li>8' long x 1.0\" wide.<li>100% soft and durable cotton.<li>Plastic cinch buckle is easy to use.<li>Three natural colors made from phthalate and heavy metal free dyes.<\/ul>"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "sku": "24-WG087",
+      "name": "Sprite Yoga Strap 10 foot",
+      "attribute_set_id": 4,
+      "price": 21,
+      "status": 1,
+      "visibility": 4,
+      "type_id": "simple",
+      "created_at": "2018-12-11 13:33:53",
+      "updated_at": "2018-12-11 13:33:53",
+      "weight": 1,
+      "product_links": [
+        {
+          "sku": "24-WG087",
+          "link_type": "related",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG087",
+          "link_type": "crosssell",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG087",
+          "link_type": "upsell",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        }
+      ],
+      "tier_prices": [],
+      "custom_attributes": [
+        {
+          "attribute_code": "options_container",
+          "value": "container2"
+        },
+        {
+          "attribute_code": "url_key",
+          "value": "sprite-yoga-strap-10-foot"
+        },
+        {
+          "attribute_code": "msrp_display_actual_price_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "required_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "has_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "meta_title",
+          "value": "Meta Title"
+        },
+        {
+          "attribute_code": "meta_keyword",
+          "value": "meta1, meta2, meta5"
+        },
+        {
+          "attribute_code": "meta_description",
+          "value": "meta description"
+        },
+        {
+          "attribute_code": "tax_class_id",
+          "value": "2"
+        },
+        {
+          "attribute_code": "quantity_and_stock_status",
+          "value": "1"
+        },
+        {
+          "attribute_code": "category_ids",
+          "value": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "attribute_code": "description",
+          "value": "<p>The Sprite Yoga Strap is your untiring partner in demanding stretches, holds and alignment routines. The strap's 100% organic cotton fabric is woven tightly to form a soft, textured yet non-slip surface. The plastic clasp buckle is easily adjustable, lightweight and durable under strain.<\/p><ul><li>10' long x 1.0\" wide.<li>100% soft and durable cotton.<li>Plastic cinch buckle is easy to use.<li>Three natural colors made from phthalate and heavy metal free dyes.<\/ul>"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "sku": "24-WG085_Group",
+      "name": "Set of Sprite Yoga Straps",
+      "attribute_set_id": 4,
+      "status": 1,
+      "visibility": 4,
+      "type_id": "grouped",
+      "created_at": "2018-12-11 13:33:53",
+      "updated_at": "2018-12-11 13:33:53",
+      "product_links": [
+        {
+          "sku": "24-WG085_Group",
+          "link_type": "related",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085_Group",
+          "link_type": "related",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085_Group",
+          "link_type": "crosssell",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085_Group",
+          "link_type": "crosssell",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085_Group",
+          "link_type": "upsell",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085_Group",
+          "link_type": "upsell",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        }
+      ],
+      "tier_prices": [],
+      "custom_attributes": [
+        {
+          "attribute_code": "options_container",
+          "value": "container2"
+        },
+        {
+          "attribute_code": "url_key",
+          "value": "set-of-sprite-yoga-straps"
+        },
+        {
+          "attribute_code": "required_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "has_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "meta_title",
+          "value": "Meta Title"
+        },
+        {
+          "attribute_code": "meta_keyword",
+          "value": "meta1, meta2, meta6"
+        },
+        {
+          "attribute_code": "meta_description",
+          "value": "meta description"
+        },
+        {
+          "attribute_code": "quantity_and_stock_status",
+          "value": "1"
+        },
+        {
+          "attribute_code": "category_ids",
+          "value": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "attribute_code": "description",
+          "value": "<p>Great set of Sprite Yoga Straps for every stretch and hold you need. There are three straps in this set: 6', 8' and 10'.<\/p><ul><li>100% soft and durable cotton.<\/li><li>Plastic cinch buckle is easy to use.<\/li><li>Choice of three natural colors made from phthalate and heavy metal free dyes.<\/li><\/ul>"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "sku": "24-WG085-bundle-dynamic",
+      "name": "Sprite Yoga Strap Dynamic Bundle",
+      "attribute_set_id": 4,
+      "price": 0,
+      "status": 1,
+      "visibility": 4,
+      "type_id": "bundle",
+      "created_at": "2018-12-11 13:33:53",
+      "updated_at": "2018-12-11 13:33:53",
+      "weight": 1,
+      "product_links": [
+        {
+          "sku": "24-WG085-bundle-dynamic",
+          "link_type": "related",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085-bundle-dynamic",
+          "link_type": "related",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085-bundle-dynamic",
+          "link_type": "crosssell",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085-bundle-dynamic",
+          "link_type": "crosssell",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085-bundle-dynamic",
+          "link_type": "upsell",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085-bundle-dynamic",
+          "link_type": "upsell",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        }
+      ],
+      "tier_prices": [],
+      "custom_attributes": [
+        {
+          "attribute_code": "shipment_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "options_container",
+          "value": "container2"
+        },
+        {
+          "attribute_code": "price_view",
+          "value": "0"
+        },
+        {
+          "attribute_code": "url_key",
+          "value": "sprite-yoga-strap2"
+        },
+        {
+          "attribute_code": "msrp_display_actual_price_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "required_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "has_options",
+          "value": "1"
+        },
+        {
+          "attribute_code": "meta_title",
+          "value": "Meta Title"
+        },
+        {
+          "attribute_code": "sku_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "meta_keyword",
+          "value": "meta1, meta2, meta8"
+        },
+        {
+          "attribute_code": "price_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "meta_description",
+          "value": "meta description"
+        },
+        {
+          "attribute_code": "tax_class_id",
+          "value": "2"
+        },
+        {
+          "attribute_code": "quantity_and_stock_status",
+          "value": "1"
+        },
+        {
+          "attribute_code": "weight_type",
+          "value": "1"
+        },
+        {
+          "attribute_code": "category_ids",
+          "value": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "attribute_code": "description",
+          "value": "<p>The Sprite Yoga Strap is your untiring partner in demanding stretches, holds and alignment routines. The strap's 100% organic cotton fabric is woven tightly to form a soft, textured yet non-slip surface. The plastic clasp buckle is easily adjustable, lightweight and durable under strain.<\/p><ul><li>100% soft and durable cotton.<li>Plastic cinch buckle is easy to use.<li>Three natural colors made from phthalate and heavy metal free dyes.<\/ul>"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "sku": "24-WG085-bundle-fixed",
+      "name": "Sprite Yoga Strap Fixed Bundle",
+      "attribute_set_id": 4,
+      "price": 14,
+      "status": 1,
+      "visibility": 4,
+      "type_id": "bundle",
+      "created_at": "2018-12-11 13:33:53",
+      "updated_at": "2018-12-11 13:33:53",
+      "weight": 1,
+      "product_links": [
+        {
+          "sku": "24-WG085-bundle-fixed",
+          "link_type": "related",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085-bundle-fixed",
+          "link_type": "related",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085-bundle-fixed",
+          "link_type": "crosssell",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085-bundle-fixed",
+          "link_type": "crosssell",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085-bundle-fixed",
+          "link_type": "upsell",
+          "linked_product_sku": "24-WG086",
+          "linked_product_type": "simple",
+          "position": null
+        },
+        {
+          "sku": "24-WG085-bundle-fixed",
+          "link_type": "upsell",
+          "linked_product_sku": "24-WG087",
+          "linked_product_type": "simple",
+          "position": null
+        }
+      ],
+      "tier_prices": [],
+      "custom_attributes": [
+        {
+          "attribute_code": "shipment_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "options_container",
+          "value": "container2"
+        },
+        {
+          "attribute_code": "price_view",
+          "value": "0"
+        },
+        {
+          "attribute_code": "url_key",
+          "value": "sprite-yoga-strap3"
+        },
+        {
+          "attribute_code": "msrp_display_actual_price_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "required_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "has_options",
+          "value": "1"
+        },
+        {
+          "attribute_code": "meta_title",
+          "value": "Meta Title"
+        },
+        {
+          "attribute_code": "sku_type",
+          "value": "1"
+        },
+        {
+          "attribute_code": "meta_keyword",
+          "value": "meta1, meta2, meta9"
+        },
+        {
+          "attribute_code": "price_type",
+          "value": "1"
+        },
+        {
+          "attribute_code": "meta_description",
+          "value": "meta description"
+        },
+        {
+          "attribute_code": "tax_class_id",
+          "value": "2"
+        },
+        {
+          "attribute_code": "quantity_and_stock_status",
+          "value": "1"
+        },
+        {
+          "attribute_code": "weight_type",
+          "value": "1"
+        },
+        {
+          "attribute_code": "category_ids",
+          "value": [
+            "3",
+            "4"
+          ]
+        },
+        {
+          "attribute_code": "description",
+          "value": "<p>The Sprite Yoga Strap is your untiring partner in demanding stretches, holds and alignment routines. The strap's 100% organic cotton fabric is woven tightly to form a soft, textured yet non-slip surface. The plastic clasp buckle is easily adjustable, lightweight and durable under strain.<\/p><ul><li>100% soft and durable cotton.<li>Plastic cinch buckle is easy to use.<li>Three natural colors made from phthalate and heavy metal free dyes.<\/ul>"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "sku": "Ski1",
+      "name": "Ski1",
+      "attribute_set_id": 4,
+      "price": 500,
+      "status": 1,
+      "visibility": 4,
+      "type_id": "simple",
+      "created_at": "2018-12-11 13:44:40",
+      "updated_at": "2018-12-11 13:44:40",
+      "product_links": [],
+      "tier_prices": [],
+      "custom_attributes": [
+        {
+          "attribute_code": "options_container",
+          "value": "container2"
+        },
+        {
+          "attribute_code": "url_key",
+          "value": "ski1"
+        },
+        {
+          "attribute_code": "gift_message_available",
+          "value": "2"
+        },
+        {
+          "attribute_code": "msrp_display_actual_price_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "required_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "has_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "meta_title",
+          "value": "Ski1"
+        },
+        {
+          "attribute_code": "meta_keyword",
+          "value": "Ski1"
+        },
+        {
+          "attribute_code": "meta_description",
+          "value": "Ski1"
+        },
+        {
+          "attribute_code": "tax_class_id",
+          "value": "2"
+        },
+        {
+          "attribute_code": "quantity_and_stock_status",
+          "value": "1"
+        },
+        {
+          "attribute_code": "category_ids",
+          "value": []
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "sku": "SnowboardSk2",
+      "name": "SnowboardSk2",
+      "attribute_set_id": 4,
+      "price": 1007,
+      "status": 1,
+      "visibility": 4,
+      "type_id": "simple",
+      "created_at": "2018-12-11 13:44:40",
+      "updated_at": "2018-12-11 13:44:40",
+      "product_links": [],
+      "tier_prices": [],
+      "custom_attributes": [
+        {
+          "attribute_code": "options_container",
+          "value": "container2"
+        },
+        {
+          "attribute_code": "url_key",
+          "value": "snowboardsk2"
+        },
+        {
+          "attribute_code": "gift_message_available",
+          "value": "2"
+        },
+        {
+          "attribute_code": "msrp_display_actual_price_type",
+          "value": "0"
+        },
+        {
+          "attribute_code": "required_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "has_options",
+          "value": "0"
+        },
+        {
+          "attribute_code": "meta_title",
+          "value": "SnowboardSk2"
+        },
+        {
+          "attribute_code": "meta_keyword",
+          "value": "SnowboardSk2"
+        },
+        {
+          "attribute_code": "meta_description",
+          "value": "SnowboardSk2"
+        },
+        {
+          "attribute_code": "tax_class_id",
+          "value": "2"
+        },
+        {
+          "attribute_code": "quantity_and_stock_status",
+          "value": "1"
+        },
+        {
+          "attribute_code": "category_ids",
+          "value": []
+        }
+      ]
+    }
+  ],
+  "search_criteria": {
+    "filter_groups": [],
+    "page_size": 10,
+    "current_page": 0
+  },
+  "total_count": 31
+}
