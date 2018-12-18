@@ -14,7 +14,6 @@ export const getRandomProductId = () => {
   const realProducts = Object.values(Products).filter(
     product => product !== Products.NonExistent,
   );
-  console.log('realProducts: ', realProducts);
   /* NOTE(alexk): This is to persuade Flow that we indeed return ProductUid. */
   switch (Math.floor(Math.random() * (realProducts.length - 1))) {
     case 0:
