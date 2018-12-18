@@ -31,10 +31,10 @@ const style = StyleSheet.create({
     marginRight: 20,
   },
   productAngle: {
-    flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'row',
+    width: 100,
   },
   productAngleIcon: { width: 20, height: 20 },
 });

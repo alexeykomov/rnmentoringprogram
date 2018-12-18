@@ -19,6 +19,7 @@ const style = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'vincHand',
     color: Colors.White,
+    maxWidth: 140,
   },
   iconContainer: { marginRight: 10 },
 });

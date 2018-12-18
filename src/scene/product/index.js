@@ -59,6 +59,8 @@ class ProductFull extends React.PureComponent<ProductListProps> {
       <View style={style.container}>
         <ScrollView style={style.productTextContainer}>
           <Text style={style.productText}>
+            {product.name}
+          </Text><Text style={style.productText}>
             {product.history}
           </Text>
 

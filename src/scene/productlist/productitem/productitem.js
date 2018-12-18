@@ -1,5 +1,5 @@
 import { Image, Text, TouchableHighlight, View } from 'react-native';
-import style from '../styles';
+import style from './styles';
 import { Icon, IconSizes } from '../../../icons';
 import React from 'react';
 
@@ -18,7 +18,7 @@ const ProductItem = ({ onProductClick, product }: ProductItemProps) => {
           <View style={style.productIcon}>
             <Icon product={product.iconId} size={IconSizes.Small} />
           </View>
-          <Text style={style.productText}>{product.name}</Text>
+          <Text numberOfLines={1} style={style.productText}>{product.name}</Text>
         </View>
         <View style={style.productAngle}>
           <Image

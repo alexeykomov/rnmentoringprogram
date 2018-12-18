@@ -14,7 +14,7 @@ type HeaderProps = {
 export const Header = ({ icon, text }: HeaderProps) => (
   <View style={style.header}>
     {icon && <View style={style.iconContainer}>{icon}</View>}
-    <Text style={style.text}>{text}</Text>
+    <Text numberOfLines={1} style={style.text}>{text}</Text>
   </View>
 );
 
