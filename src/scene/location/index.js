@@ -3,12 +3,7 @@
  * */
 
 import type { Product } from '../../product';
-import {
-  View,
-  StyleSheet,
-  Alert,
-  Linking,
-} from 'react-native';
+import { View, StyleSheet, Alert, Linking } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
 import { Header } from '../../components/header';
@@ -65,6 +60,7 @@ class LocationScreen extends React.PureComponent<LocationScreenProps> {
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     };
+
     return (
       <View style={StyleSheet.absoluteFillObject}>
         <MapView
@@ -72,22 +68,7 @@ class LocationScreen extends React.PureComponent<LocationScreenProps> {
           initialRegion={initialRegion}
         >
           <Marker
-            onPress={() => {
-              Alert.alert(
-                'Call product provider',
-                `Call ${product.telephone}`,
-                [
-                  { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      Linking.openURL(`tel:${product.telephone}`);
-                    },
-                  },
-                ],
-                { cancelable: false },
-              );
-            }}
+            onPress={() => this.onMarkerPress(product)}
             coordinate={product.location}
             title={product.name}
             description={product.telephone}
@@ -96,6 +77,27 @@ class LocationScreen extends React.PureComponent<LocationScreenProps> {
       </View>
     );
   }
+
+  onMarkerPress = (product: Product) => {
+    Alert.alert(
+      'Call product provider',
+      `Call ${product.telephone}`,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => {
+            Linking.openURL(`tel:${product.telephone}`);
+          },
+        },
+      ],
+      { cancelable: false },
+    );
+  };
 }
 
 export default LocationScreen;

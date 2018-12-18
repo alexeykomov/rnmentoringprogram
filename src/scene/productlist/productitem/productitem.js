@@ -8,12 +8,7 @@ const ProductItem = ({ onProductClick, product }: ProductItemProps) => {
     <TouchableHighlight onPress={onProductClick} key={product.id}>
       <View style={style.product}>
         <View
-          style={{
-            flex: 1,
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}
+          style={style.iconAndNameContainer}
         >
           <View style={style.productIcon}>
             <Icon product={product.iconId} size={IconSizes.Small} />
@@ -22,7 +17,7 @@ const ProductItem = ({ onProductClick, product }: ProductItemProps) => {
         </View>
         <View style={style.productAngle}>
           <Image
-            style={{ width: 20, height: 20 }}
+            style={style.productAngleIcon}
             source={require('./angle-arrow-pointing-to-right.png')}
           />
         </View>

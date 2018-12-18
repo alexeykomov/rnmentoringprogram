@@ -16,6 +16,12 @@ const style = StyleSheet.create({
     height: 50,
     backgroundColor: Colors.White,
   },
+  iconAndNameContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   ['product__no-border-bottom']: {
     borderBottomWidth: 0,
   },
