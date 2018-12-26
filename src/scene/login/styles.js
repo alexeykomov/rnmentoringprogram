@@ -32,7 +32,6 @@ const style: LoginStyle = StyleSheet.create({
   inputBlock: { flex: 1.2, alignItems: 'center' },
   header: {
     fontSize: 35,
-    fontWeight: 'bold',
     fontFamily: 'vincHand',
     color: Colors.Graphite,
   },

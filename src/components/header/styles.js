@@ -2,7 +2,7 @@
  * @flow
  * */
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import Colors from '../../colors';
 
 const style = StyleSheet.create({
@@ -11,12 +11,13 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-
     backgroundColor: Colors.EpamBlue,
+  },
+  header_noButtonBack: {
+    paddingLeft: Platform.OS === 'ios' ? 0 : 20,
   },
   text: {
     fontSize: 25,
-    fontWeight: 'bold',
     fontFamily: 'vincHand',
     color: Colors.White,
     maxWidth: 140,

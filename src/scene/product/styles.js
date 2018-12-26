@@ -17,7 +17,6 @@ const style = StyleSheet.create({
   },
   headerText: {
     fontSize: 35,
-    fontWeight: 'bold',
     fontFamily: 'vincHand',
     color: Colors.White,
   },

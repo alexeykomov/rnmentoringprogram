@@ -9,7 +9,6 @@ const style = StyleSheet.create({
   header: {
     height: 110,
     fontSize: 35,
-    fontWeight: 'bold',
     fontFamily: 'vincHand',
     color: Colors.White,
     alignItems: 'center',

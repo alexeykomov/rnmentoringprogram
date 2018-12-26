@@ -4,7 +4,7 @@
 
 import style from './styles';
 import type { Product } from '../../product';
-import { View, FlatList, } from 'react-native';
+import { View, FlatList } from 'react-native';
 import React from 'react';
 import Header from '../../components/header';
 import type {
@@ -37,7 +37,9 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   static navigationOptions: NavigationScreenConfig<{
     headerStyle: ViewStyleProp,
   }> = {
-    headerTitle: <Header text={'Products'} icon={null} />,
+    headerTitle: (
+      <Header text={'Products'} icon={null} buttonBackIsPresent={false} />
+    ),
     headerTitleStyle: {
       color: Colors.White,
     },
@@ -107,7 +109,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
               ListFooterComponent={this.renderSeparator}
               refreshing={this.state.refreshing}
               onRefresh={this.onRefresh}
-              ListEmptyComponent={<NoProductData/>}
+              ListEmptyComponent={<NoProductData />}
             />
           );
         })()}

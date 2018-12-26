@@ -46,6 +46,7 @@ class LocationScreen extends React.PureComponent<LocationScreenProps> {
         <Header
           icon={<Icon product={product.id} size={IconSizes.Small} />}
           text={product.name}
+          buttonBackIsPresent={true}
         />
       ),
     };
