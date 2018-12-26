@@ -23,6 +23,7 @@ const style: LoginStyle = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
+    minHeight: 450,
   },
   headerBlock: {
     flex: 0.8,
@@ -60,11 +61,10 @@ const style: LoginStyle = StyleSheet.create({
   },
   loginInput: {
     width: 280,
-    height: 30,
     marginBottom: 20,
     textAlign: 'center',
     fontSize: 18,
-    lineHeight: 30,
+    minHeight: 30,
     fontFamily: 'vincHand',
     color: Colors.Graphite,
     borderWidth: 1,
