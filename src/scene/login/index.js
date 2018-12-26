@@ -4,16 +4,13 @@
 
 import React from 'react';
 import type { Node } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  TextInput,
-  Text,
-  Image,
-} from 'react-native';
+import { View, TouchableOpacity, TextInput, Text, Image } from 'react-native';
 import style from './styles';
 import Colors from '../../colors';
-import type { NavigationScreenProp, NavigationScreenConfig } from 'react-navigation';
+import type {
+  NavigationScreenProp,
+  NavigationScreenConfig,
+} from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { Routes } from '../../routes';
 import { Loader } from '../../components/loader';
@@ -54,7 +51,7 @@ async function getResponse(username, password) {
 }
 
 class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
-  static navigationOptions:NavigationScreenConfig<{header: null}> = {
+  static navigationOptions: NavigationScreenConfig<{ header: null }> = {
     header: null,
   };
 
@@ -113,7 +110,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
           </TouchableOpacity>
         </View>
         {this.state.loading && (
-          <Loader size={'large'} color={Colors.BrightBlue}/>
+          <Loader size={'large'} color={Colors.BrightBlue} />
         )}
       </View>
     );
@@ -128,7 +125,9 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
       return;
     }
     this.setState((prevState, props) => {
-      this.sendRequest(navigation, username, password);
+      this.sendRequest(navigation, username, password, () =>
+        this.onLoginClick(navigation, username, password),
+      );
       return {
         ...prevState,
         loading: true,
@@ -140,18 +139,22 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     navigation: NavigationScreenProp<void>,
     username: string,
     password: string,
+    retryAction: Function,
   ) {
     try {
       // const response = await mockResponse();
       const response = await getResponse(username, password);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
-        return this.handleRequestError(new Error('Response is not ok.'));
+        return this.handleRequestError(
+          new Error('Response is not ok.'),
+          retryAction,
+        );
       }
       const token = await response.text();
       this.handleRequestSuccess();
     } catch (e) {
-      this.handleRequestError(e);
+      this.handleRequestError(e, retryAction);
     }
   }
 
@@ -173,9 +176,15 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     });
   }
 
-  handleRequestError(e: Error) {
+  handleRequestError(e: Error, retryAction: Function) {
+    const { navigation } = this.props;
+
     console.log('Fetch error: ', e);
     this.setState((prevState, props) => {
+      navigation.navigate({
+        routeName: Routes.Modal,
+        params: { error: e, retryAction },
+      });
       return {
         ...prevState,
         loading: false,
@@ -183,4 +192,5 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     });
   }
 }
+
 export default LoginScreen;
