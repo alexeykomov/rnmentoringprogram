@@ -45,7 +45,7 @@ class ProductFull extends React.PureComponent<ProductListProps> {
       },
       headerTitle: (
         <Header
-          icon={<Icon product={product.id} size={IconSizes.Small} />}
+          icon={<Icon product={product.iconId} size={IconSizes.Small} />}
           text={product.name}
           buttonBackIsPresent={true}
         />
