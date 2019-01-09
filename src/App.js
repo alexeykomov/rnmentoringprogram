@@ -14,6 +14,7 @@ import LocationScreen from './scene/location';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Routes } from './routes';
 import ModalScreen from './scene/modal/modal';
+import CreditsScreen from './scene/credits/credits';
 
 const AppNavigator = createStackNavigator(
   {
@@ -21,6 +22,7 @@ const AppNavigator = createStackNavigator(
     [Routes.ProductList]: ProductList,
     [Routes.ProductFull]: ProductFull,
     [Routes.LocationScreen]: LocationScreen,
+    [Routes.Credits]: CreditsScreen,
   },
   {
     initialRouteName: Routes.Login,

@@ -4,7 +4,16 @@
 
 import style from './styles';
 import type { Product } from '../../product';
-import { View, FlatList } from 'react-native';
+import {
+  View,
+  FlatList,
+  Animated,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+  ScrollView,
+  Text,
+} from 'react-native';
 import React from 'react';
 import Header from '../../components/header';
 import type {
@@ -22,6 +31,9 @@ import { formatProducts } from './producttransform';
 import type { ProductApiResponse } from './producttransform';
 import obj from './../../../response.json';
 import NoProductData from '../../components/noproductdata/noproductdata';
+import EventEmitter from '../../lib/eventemitter';
+import { getUid } from '../../lib/id';
+import SidePane from './sidepane/sidepane';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -33,12 +45,26 @@ const INITIAL_PAGE = 1;
 
 const ON_END_REACHED_THRESHOLD = 0.2;
 
+const FlatListAnimated = Animated.createAnimatedComponent(FlatList);
+
+const MENU_PRESS_EVENT = 'menuPress';
+
 class ProductList extends React.PureComponent<ProductListProps, State> {
+  static menuEventEmitter = new EventEmitter();
+
+  static emitMenuPress = () =>
+    ProductList.menuEventEmitter.emit(MENU_PRESS_EVENT);
+
   static navigationOptions: NavigationScreenConfig<{
     headerStyle: ViewStyleProp,
   }> = {
     headerTitle: (
-      <Header text={'Products'} icon={null} buttonBackIsPresent={false} />
+      <Header
+        text={'Products'}
+        icon={null}
+        buttonBackIsPresent={false}
+        onMenuPress={ProductList.emitMenuPress}
+      />
     ),
     headerTitleStyle: {
       color: Colors.White,
@@ -49,6 +75,10 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     },
   };
 
+  sidePane: SidePane = null;
+
+  openMenuListenerUid = null;
+
   constructor() {
     super();
     this.state = {
@@ -56,17 +86,26 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       loading: false,
       refreshing: false,
       currentPage: INITIAL_PAGE,
+      modalVisible: false,
     };
   }
 
   componentDidMount() {
+    this.openMenuListenerUid = ProductList.menuEventEmitter.addListener(
+      MENU_PRESS_EVENT,
+      this.sidePane.openMenu,
+    );
     this.loadInitial();
+  }
+
+  componentWillUnmount() {
+    ProductList.menuEventEmitter.removeListener(this.openMenuListenerUid);
   }
 
   async sendRequest(page: number, retryAction: Function) {
     try {
-      // const response = await this.mockResponse(PAGE_SIZE, page);
-      const response = await this.getResponse(PAGE_SIZE, page);
+      const response = await this.mockResponse(PAGE_SIZE, page);
+      // const response = await this.getResponse(PAGE_SIZE, page);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
@@ -92,7 +131,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
             return <Loader size={'small'} color={Colors.DarkGray} />;
           }
           return (
-            <FlatList
+            <FlatListAnimated
               style={style.frame}
               data={products}
               keyExtractor={this.keyExtractor}
@@ -113,11 +152,22 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
             />
           );
         })()}
+        <SidePane
+          ref={sidePane => (this.sidePane = sidePane)}
+          onCreditsSelect={this.onCreditsSelect}
+        />
       </View>
     );
   }
 
-  keyExtractor = (item: Product, index: number) => String(item.id);
+  onCreditsSelect = () => {
+    this.sidePane.closeMenu(() => this.props.navigation.navigate({
+      routeName: Routes.Credits,
+    }));
+  };
+
+  keyExtractor = (item: Product, index: number) =>
+    String(item.id) + getUid(item);
 
   loadInitial = () => {
     this.setState((prevState, props) => {

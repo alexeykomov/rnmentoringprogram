@@ -10,4 +10,5 @@ export type State = {
   loading: boolean,
   refreshing: boolean,
   currentPage: number,
+  modalVisible: boolean,
 };
