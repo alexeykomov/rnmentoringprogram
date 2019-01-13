@@ -15,7 +15,7 @@ const style: LoginStyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'stretch',
     flexDirection: 'column',
     minHeight: 450,
   },

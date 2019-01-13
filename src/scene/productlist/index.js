@@ -12,7 +12,7 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  Text,
+  Text, Image,
 } from 'react-native';
 import React from 'react';
 import Header from '../../components/header';
@@ -34,6 +34,7 @@ import NoProductData from '../../components/noproductdata/noproductdata';
 import EventEmitter from '../../lib/eventemitter';
 import { getUid } from '../../lib/id';
 import SidePane from './sidepane/sidepane';
+import MenuButton from '../../components/menubutton/menubutton';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -63,9 +64,9 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
         text={'Products'}
         icon={null}
         buttonBackIsPresent={false}
-        onMenuPress={ProductList.emitMenuPress}
       />
     ),
+    headerLeft: <MenuButton onPress={ProductList.emitMenuPress}/>,
     headerTitleStyle: {
       color: Colors.White,
     },

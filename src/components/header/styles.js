@@ -7,9 +7,8 @@ import Colors from '../../colors';
 
 const style = StyleSheet.create({
   header: {
-    ...StyleSheet.absoluteFillObject,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
     backgroundColor: Colors.EpamBlue,

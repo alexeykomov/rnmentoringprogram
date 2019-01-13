@@ -36,7 +36,6 @@ class CreditsScreen extends React.PureComponent<CreditsScreenProps, State> {
         text={'Credits'}
         icon={null}
         buttonBackIsPresent={true}
-        onMenuPress={() => {}}
       />
     ),
     headerTitleStyle: {
@@ -100,7 +99,8 @@ class CreditsScreen extends React.PureComponent<CreditsScreenProps, State> {
     };
   }
 
-  keyExtractor = (item: Credit, index: number) => String(item.name);
+  keyExtractor = (item: Credit, index: number) => String(item.name) +
+      getUid(item);
 
   render() {
     const { navigation } = this.props;

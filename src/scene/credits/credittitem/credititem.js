@@ -9,12 +9,11 @@ type CreditItemProps = {
 
 const CreditItem = ({ credit }: CreditItemProps) => {
   return (
-    <View style={{flexDirection: 'row'}}>
-    <View style={style.credit} >
+    <View style={style.credit}>
       <View>
-      <Text style={style.creditText}>Icon made by </Text>
+        <Text style={style.creditText}>Icon made by </Text>
       </View>
-        <TouchableOpacity onPress={() => Linking.openURL(credit.authorLink)}>
+      <TouchableOpacity onPress={() => Linking.openURL(credit.authorLink)}>
         <Text style={style.creditLink}>{credit.authorName}</Text>
       </TouchableOpacity>
       <View>
@@ -26,7 +25,6 @@ const CreditItem = ({ credit }: CreditItemProps) => {
         www.flaticon.com
       </Text>
       </TouchableOpacity>
-    </View>
     </View>
   );
 };
