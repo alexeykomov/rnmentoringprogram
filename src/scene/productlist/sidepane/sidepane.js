@@ -22,6 +22,7 @@ type SidePaneState = {
 };
 
 const SIDE_PANE_WIDTH = 270;
+const MENU_CLOSING_VELOCITY = 20;
 
 class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
   menuX = new Animated.Value(-SIDE_PANE_WIDTH);
@@ -35,34 +36,25 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
     };
     this.lastMoveX = 0;
     const storeLastMoveX = throttle((gestureState) => {
-      console.log('moveX: ', gestureState.moveX);
       this.lastMoveX = gestureState.moveX;
     }, 100);
 
     this.panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
-      // onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      // onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
       onPanResponderGrant: (evt, gestureState) => {
-        console.log('onPanResponderGrant: ', gestureState);
         this.lastMoveX = gestureState.moveX;
       },
       onPanResponderMove: (evt, gestureState) => {
-        console.log('move: ', evt, ', gestureState: ', gestureState);
-        console.log('dx: ', gestureState.dx);
         storeLastMoveX(gestureState);
         return Animated.event([null, { dx: this.menuX }])(evt, gestureState);
       },
       onPanResponderTerminationRequest: (evt, gestureState) => {
-        console.log('onPanResponderTerminationRequest');
       },
       onPanResponderRelease: (evt, gestureState) => {
-        console.log('this.lastMoveX: ', this.lastMoveX);
-        console.log('release: gestureState.moveX: ', gestureState.moveX);
         if (
-          this.lastMoveX - gestureState.moveX > 20 ||
+          this.lastMoveX - gestureState.moveX > MENU_CLOSING_VELOCITY ||
           Math.abs(gestureState.dx) > SIDE_PANE_WIDTH / 3
         ) {
           this.controlMenu(false, () => {});
