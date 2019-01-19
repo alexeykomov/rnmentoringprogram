@@ -12,13 +12,19 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
-  Text, Image,
+  Text,
+  Image,
+  LayoutAnimation,
 } from 'react-native';
 import React from 'react';
 import Header from '../../components/header';
 import type {
   NavigationScreenConfig,
   NavigationScreenProp,
+} from 'react-navigation';
+import {
+  StackActions,
+  NavigationActions,
 } from 'react-navigation';
 import { Routes } from '../../routes';
 import { Products } from '../../product';
@@ -88,6 +94,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       refreshing: false,
       currentPage: INITIAL_PAGE,
       modalVisible: false,
+      listOpacity: 0,
     };
   }
 
@@ -129,11 +136,11 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       <View style={style.container}>
         {(() => {
           if (this.state.loading) {
-            return <Loader size={'small'} color={Colors.DarkGray} />;
+            return <Loader size={'small'} color={Colors.DarkGray}/>;
           }
           return (
             <FlatListAnimated
-              style={style.frame}
+              style={[style.frame, { opacity: this.state.listOpacity }]}
               data={products}
               keyExtractor={this.keyExtractor}
               renderItem={({ item }) =>
@@ -149,22 +156,37 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
               ListFooterComponent={this.renderSeparator}
               refreshing={this.state.refreshing}
               onRefresh={this.onRefresh}
-              ListEmptyComponent={<NoProductData />}
+              ListEmptyComponent={<NoProductData/>}
             />
           );
         })()}
         <SidePane
           ref={sidePane => (this.sidePane = sidePane)}
           onCreditsSelect={this.onCreditsSelect}
+          onLogoutSelect={this.onLogoutSelect}
         />
       </View>
     );
   }
 
   onCreditsSelect = () => {
-    this.sidePane.closeMenu(() => this.props.navigation.navigate({
-      routeName: Routes.Credits,
-    }));
+    this.sidePane.closeMenu(() =>
+      this.props.navigation.navigate({
+        routeName: Routes.Credits,
+      }),
+    );
+  };
+
+  onLogoutSelect = () => {
+    this.sidePane.closeMenu(() => {
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: Routes.Login }),
+        ],
+      });
+      this.props.navigation.dispatch(resetAction);
+    });
   };
 
   keyExtractor = (item: Product, index: number) =>
@@ -208,10 +230,11 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   }
 
   renderSeparator() {
-    return <View style={style.separator} />;
+    return <View style={style.separator}/>;
   }
 
   handleRequestSuccess(products: Product[], page: number) {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     this.setState((prevState, props) => {
       return {
         ...prevState,
@@ -219,6 +242,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
         loading: false,
         refreshing: false,
         currentPage: page,
+        listOpacity: 1,
       };
     });
   }
@@ -262,7 +286,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 }
 
 const renderProductItem = (onProductClick: Function, product: Product) => (
-  <ProductItem onProductClick={onProductClick} product={product} />
+  <ProductItem onProductClick={onProductClick} product={product}/>
 );
 
 export default ProductList;

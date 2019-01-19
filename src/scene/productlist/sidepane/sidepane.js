@@ -15,6 +15,7 @@ import { throttle } from '../../../lib/throttle';
 
 type SidePaneProps = {
   onCreditsSelect: () => void,
+  onLogoutSelect: () => void,
 };
 
 type SidePaneState = {
@@ -35,7 +36,7 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
       modalVisible: false,
     };
     this.lastMoveX = 0;
-    const storeLastMoveX = throttle((gestureState) => {
+    const storeLastMoveX = throttle(gestureState => {
       this.lastMoveX = gestureState.moveX;
     }, 100);
 
@@ -47,24 +48,30 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
         this.lastMoveX = gestureState.moveX;
       },
       onPanResponderMove: (evt, gestureState) => {
+        if (gestureState.dx >= 0) {
+          return;
+        }
         storeLastMoveX(gestureState);
         return Animated.event([null, { dx: this.menuX }])(evt, gestureState);
       },
-      onPanResponderTerminationRequest: (evt, gestureState) => {
-      },
-      onPanResponderRelease: (evt, gestureState) => {
-        if (
-          this.lastMoveX - gestureState.moveX > MENU_CLOSING_VELOCITY ||
-          Math.abs(gestureState.dx) > SIDE_PANE_WIDTH / 3
-        ) {
-          this.controlMenu(false, () => {});
-        } else {
-          this.controlMenu(true, () => {});
-        }
-      },
-      onPanResponderTerminate: (evt, gestureState) => {},
+      onPanResponderTerminationRequest: (evt, gestureState) => {},
+      onPanResponderRelease: (evt, gestureState) =>
+        this.onPanResponderRelease(evt, gestureState),
+      onPanResponderTerminate: (evt, gestureState) =>
+        this.onPanResponderRelease(evt, gestureState),
       onShouldBlockNativeResponder: (evt, gestureState) => true,
     });
+  }
+
+  onPanResponderRelease(evt, gestureState) {
+    if (
+      this.lastMoveX - gestureState.moveX > MENU_CLOSING_VELOCITY ||
+      Math.abs(gestureState.dx) > SIDE_PANE_WIDTH / 3
+    ) {
+      this.controlMenu(false, () => {});
+    } else {
+      this.controlMenu(true, () => {});
+    }
   }
 
   render() {
@@ -94,18 +101,8 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
                   -SIDE_PANE_WIDTH,
                   0,
                 ).interpolate({
-                  inputRange: [
-                    -SIDE_PANE_WIDTH,
-                    -SIDE_PANE_WIDTH,
-                    SIDE_PANE_WIDTH,
-                    SIDE_PANE_WIDTH,
-                  ],
-                  outputRange: [
-                    -SIDE_PANE_WIDTH,
-                    -SIDE_PANE_WIDTH,
-                    SIDE_PANE_WIDTH,
-                    SIDE_PANE_WIDTH,
-                  ],
+                  inputRange: [-SIDE_PANE_WIDTH, 0],
+                  outputRange: [-SIDE_PANE_WIDTH, 0],
                 }),
               },
             ],
@@ -119,6 +116,10 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
             <MenuItem
               menuItemName={'Credits'}
               onMenuClick={this.props.onCreditsSelect}
+            />
+            <MenuItem
+              menuItemName={'Logout'}
+              onMenuClick={this.props.onLogoutSelect}
             />
           </ScrollView>
         </Animated.View>

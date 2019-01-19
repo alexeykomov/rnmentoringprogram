@@ -11,4 +11,5 @@ export type State = {
   refreshing: boolean,
   currentPage: number,
   modalVisible: boolean,
+  listOpacity: number,
 };
