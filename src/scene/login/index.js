@@ -4,7 +4,14 @@
 
 import React from 'react';
 import type { Node } from 'react';
-import { View, TouchableOpacity, TextInput, Text, Image } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  TextInput,
+  Text,
+  Image,
+  Animated,
+} from 'react-native';
 import style from './styles';
 import Colors from '../../colors';
 import type {
@@ -14,6 +21,7 @@ import type {
 import { StackActions, NavigationActions } from 'react-navigation';
 import { Routes } from '../../routes';
 import { Loader } from '../../components/loader';
+import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 
 type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -23,6 +31,7 @@ type State = {
   loading: boolean,
   username: string,
   password: string,
+  error: boolean,
 };
 
 const AUTH_URL =
@@ -55,13 +64,41 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     header: null,
   };
 
+  inputBlockX = new Animated.Value(0);
+
   constructor(props: LoginScreenProps) {
     super(props);
     this.state = {
       loading: false,
       username: '',
       password: '',
+      error: false,
     };
+  }
+
+  getAnimatedSequence = (): CompositeAnimation[] => {
+    return new Array(10)
+      .fill(null)
+      .map((el: null, index: number, elements: null[]) => {
+        const value =
+          index === elements.length - 1
+            ? 0
+            : (20 / (index + 1)) * (index % 2 === 0 ? -1 : 1);
+        console.log('value: ', value);
+        return Animated.timing(this.inputBlockX, {
+          toValue: value,
+          duration: 50,
+          useNativeDriver: true,
+        });
+      });
+  };
+
+  componentDidUpdate(prevProps: LoginScreenProps, prevState: State) {
+    if (this.state.error) {
+      Animated.sequence(this.getAnimatedSequence()).start(() => {
+        this.setState(prevState => ({ ...prevState, error: false }));
+      });
+    }
   }
 
   render() {
@@ -72,7 +109,14 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
           <Image source={require('./smiling.png')} style={style.greetIcon} />
           <Text style={style.header}>Friday's shop</Text>
         </View>
-        <View style={style.inputBlock}>
+        <Animated.View
+          style={[
+            style.inputBlock,
+            {
+              transform: [{ translateX: this.inputBlockX }],
+            },
+          ]}
+        >
           <TextInput
             style={style.loginInput}
             textContentType={'emailAddress'}
@@ -108,7 +152,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
               <Text style={style.loginText}>login</Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </Animated.View>
         {this.state.loading && (
           <Loader size={'large'} color={Colors.BrightBlue} />
         )}
@@ -181,13 +225,12 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
 
     console.log('Fetch error: ', e);
     this.setState((prevState, props) => {
-      navigation.navigate({
-        routeName: Routes.Modal,
-        params: { error: e, retryAction },
-      });
       return {
         ...prevState,
         loading: false,
+        error: true,
+        username: '',
+        password: '',
       };
     });
   }

@@ -15,6 +15,12 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Routes } from './routes';
 import ModalScreen from './scene/modal/modal';
 import CreditsScreen from './scene/credits/credits';
+import { UIManager, Platform } from 'react-native';
+
+if (Platform.OS === 'android') {
+  UIManager.setLayoutAnimationEnabledExperimental &&
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const AppNavigator = createStackNavigator(
   {
