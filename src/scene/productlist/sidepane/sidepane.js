@@ -23,7 +23,7 @@ type SidePaneState = {
 };
 
 const SIDE_PANE_WIDTH = 270;
-const MENU_CLOSING_VELOCITY = 20;
+const MENU_CLOSING_VELOCITY = 30;
 
 class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
   menuX = new Animated.Value(-SIDE_PANE_WIDTH);
@@ -68,9 +68,14 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
       this.lastMoveX - gestureState.moveX > MENU_CLOSING_VELOCITY ||
       Math.abs(gestureState.dx) > SIDE_PANE_WIDTH / 3
     ) {
-      this.controlMenu(false, () => {});
-    } else {
-      this.controlMenu(true, () => {});
+      return this.controlMenu(false, () => {});
+    }
+
+    if (gestureState.vx < 0) {
+      Animated.decay(this.menuX, {
+        velocity: gestureState.vx,
+        deceleration: 0.8,
+      }).start(() => this.controlMenu(true,() => {}))
     }
   }
 

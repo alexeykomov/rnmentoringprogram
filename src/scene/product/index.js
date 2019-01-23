@@ -70,7 +70,6 @@ class ProductFull extends React.PureComponent<ProductListProps> {
       <View style={style.container}>
         <NavigationEvents
           onDidFocus={payload => {
-            console.log('did focus', payload);
             Animated.stagger(50, [
               Animated.spring(this.buttonY1, {
                 toValue: 0,

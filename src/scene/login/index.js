@@ -84,7 +84,6 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
           index === elements.length - 1
             ? 0
             : (20 / (index + 1)) * (index % 2 === 0 ? -1 : 1);
-        console.log('value: ', value);
         return Animated.timing(this.inputBlockX, {
           toValue: value,
           duration: 50,
@@ -186,8 +185,8 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     retryAction: Function,
   ) {
     try {
-      const response = await mockResponse();
-      // const response = await getResponse(username, password);
+      // const response = await mockResponse();
+      const response = await getResponse(username, password);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
