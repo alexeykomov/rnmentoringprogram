@@ -12,6 +12,7 @@ import {
   Image,
   Animated,
   AsyncStorage,
+  Vibration,
 } from 'react-native';
 import style from './styles';
 import Colors from '../../colors';
@@ -96,13 +97,14 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
 
   componentDidUpdate(prevProps: LoginScreenProps, prevState: State) {
     if (this.state.error) {
+      Vibration.vibrate();
       Animated.sequence(this.getAnimatedSequence()).start(() => {
         this.setState(prevState => ({ ...prevState, error: false }));
       });
     }
   }
 
-  static async componentWillMount() {
+  async componentDidMount() {
     try {
       const token = await AsyncStorage.getItem('token');
       if (token !== null) {
@@ -198,8 +200,8 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     retryAction: Function,
   ) {
     try {
-      // const response = await mockResponse();
-      const response = await getResponse(username, password);
+      const response = await mockResponse();
+      // const response = await getResponse(username, password);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(

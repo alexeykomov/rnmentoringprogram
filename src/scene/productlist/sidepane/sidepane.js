@@ -75,7 +75,7 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
       Animated.decay(this.menuX, {
         velocity: gestureState.vx,
         deceleration: 0.8,
-      }).start(() => this.controlMenu(true,() => {}))
+      }).start(() => this.controlMenu(true, () => {}));
     }
   }
 

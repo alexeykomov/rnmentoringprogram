@@ -113,8 +113,8 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 
   async sendRequest(page: number, retryAction: Function) {
     try {
-      // const response = await this.mockResponse(PAGE_SIZE, page);
-      const response = await this.getResponse(PAGE_SIZE, page);
+      const response = await this.mockResponse(PAGE_SIZE, page);
+      // const response = await this.getResponse(PAGE_SIZE, page);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
@@ -178,8 +178,8 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     );
   };
 
-  onLogoutSelect = async () => {
-    this.sidePane.closeMenu(() => {
+  onLogoutSelect = () => {
+    this.sidePane.closeMenu(async () => {
       try {
         await AsyncStorage.removeItem('token');
       } catch (e) {
