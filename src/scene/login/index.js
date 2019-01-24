@@ -11,6 +11,7 @@ import {
   Text,
   Image,
   Animated,
+  AsyncStorage,
 } from 'react-native';
 import style from './styles';
 import Colors from '../../colors';
@@ -18,7 +19,11 @@ import type {
   NavigationScreenProp,
   NavigationScreenConfig,
 } from 'react-navigation';
-import { StackActions, NavigationActions } from 'react-navigation';
+import {
+  StackActions,
+  NavigationActions,
+  NavigationEvents,
+} from 'react-navigation';
 import { Routes } from '../../routes';
 import { Loader } from '../../components/loader';
 import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/AnimatedImplementation';
@@ -46,7 +51,7 @@ async function mockResponse() {
   );
 }
 
-async function getResponse(username, password) {
+async function getResponse(username: string, password: string) {
   return await fetch(AUTH_URL, {
     method: 'POST',
     headers: {
@@ -80,10 +85,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     return new Array(10)
       .fill(null)
       .map((el: null, index: number, elements: null[]) => {
-        const value =
-          index === elements.length - 1
-            ? 0
-            : (20 / (index + 1)) * (index % 2 === 0 ? -1 : 1);
+        const value = getDeltaByStep(index, elements);
         return Animated.timing(this.inputBlockX, {
           toValue: value,
           duration: 50,
@@ -97,6 +99,17 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
       Animated.sequence(this.getAnimatedSequence()).start(() => {
         this.setState(prevState => ({ ...prevState, error: false }));
       });
+    }
+  }
+
+  static async componentWillMount() {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (token !== null) {
+        this.navigateToContent();
+      }
+    } catch (error) {
+      console.log('Error retrieving token from AsyncStorage: ', error);
     }
   }
 
@@ -195,9 +208,18 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
         );
       }
       const token = await response.text();
+      await this.saveLoginToken(token);
       this.handleRequestSuccess();
     } catch (e) {
       this.handleRequestError(e, retryAction);
+    }
+  }
+
+  async saveLoginToken(token: string) {
+    try {
+      await AsyncStorage.setItem('token', token);
+    } catch (error) {
+      console.log("Error - token wasn't saved: ", error);
     }
   }
 
@@ -205,18 +227,20 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     this.setState((prevState, props) => {
       // TODO(alexk): we're navigating to product list without animation,
       // gonna fix it
-      const resetAction = StackActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: Routes.ProductList }),
-        ],
-      });
-      this.props.navigation.dispatch(resetAction);
+      this.navigateToContent();
       return {
         ...prevState,
         loading: false,
       };
     });
+  }
+
+  navigateToContent() {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: Routes.ProductList })],
+    });
+    this.props.navigation.dispatch(resetAction);
   }
 
   handleRequestError(e: Error, retryAction: Function) {
@@ -234,5 +258,11 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     });
   }
 }
+
+const getDeltaByStep = (index: number, elements: null[]) => {
+  return index === elements.length - 1
+    ? 0
+    : (20 / (index + 1)) * (index % 2 === 0 ? -1 : 1);
+};
 
 export default LoginScreen;

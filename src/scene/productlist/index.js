@@ -15,6 +15,7 @@ import {
   Text,
   Image,
   LayoutAnimation,
+  AsyncStorage,
 } from 'react-native';
 import React from 'react';
 import Header from '../../components/header';
@@ -177,8 +178,13 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     );
   };
 
-  onLogoutSelect = () => {
+  onLogoutSelect = async () => {
     this.sidePane.closeMenu(() => {
+      try {
+        await AsyncStorage.removeItem('token');
+      } catch (e) {
+        console.log('Error - cannot remove token: ', e);
+      }
       const resetAction = StackActions.reset({
         index: 0,
         actions: [
