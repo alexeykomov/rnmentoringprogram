@@ -1,6 +1,6 @@
 /** @flow */
 
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Vibration } from 'react-native';
 import React from 'react';
 import type { NavigationScreenProp } from 'react-navigation';
 import Button from '../../components/button/button';
@@ -11,6 +11,10 @@ type ModalScreenProps = {
 };
 
 class ModalScreen extends React.PureComponent<ModalScreenProps> {
+  componentDidMount() {
+    Vibration.vibrate();
+  }
+
   render() {
     const { navigation } = this.props;
     const error = navigation.getParam('error', {});

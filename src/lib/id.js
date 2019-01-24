@@ -1,8 +1,8 @@
-import { Products } from '../product';
-
 /**
  * @flow
  * */
+
+import { Products } from '../product';
 
 let uid = 0;
 
