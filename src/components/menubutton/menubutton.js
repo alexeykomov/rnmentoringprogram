@@ -9,7 +9,7 @@ type MenuButtonProps = {
 const MenuButton = ({ onPress }: MenuButtonProps) => (
   <TouchableOpacity
     onPress={onPress}
-    hitSlop={{ top: 20, left: 20, right: 20, bottom: 10 }}
+    hitSlop={{ top: 20, left: 20, right: 40, bottom: 10 }}
   >
     <Image
       source={require('../../icons/menu-button-of-three-horizontal-lines.png')}

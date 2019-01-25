@@ -65,17 +65,26 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
 
   onPanResponderRelease(evt, gestureState) {
     if (
-      this.lastMoveX - gestureState.moveX > MENU_CLOSING_VELOCITY ||
-      Math.abs(gestureState.dx) > SIDE_PANE_WIDTH / 3
+      Math.abs(gestureState.dx) <= 10 &&
+      Math.abs(gestureState.dy) <= 10
     ) {
       return this.controlMenu(false, () => {});
     }
 
-    if (gestureState.vx < 0) {
+    if (
+      this.lastMoveX - gestureState.moveX > MENU_CLOSING_VELOCITY ||
+      Math.abs(gestureState.dx) > SIDE_PANE_WIDTH / 3
+    ) {
+      //return this.controlMenu(false, () => {});
+    }
+
+    if (gestureState.vx <= 0) {
       Animated.decay(this.menuX, {
         velocity: gestureState.vx,
-        deceleration: 0.8,
-      }).start(() => this.controlMenu(true, () => {}));
+        deceleration: 0.995,
+      }).start();
+    } else {
+      return this.controlMenu(true, () => {});
     }
   }
 
