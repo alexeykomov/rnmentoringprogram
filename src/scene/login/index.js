@@ -28,6 +28,7 @@ import {
 import { Routes } from '../../routes';
 import { Loader } from '../../components/loader';
 import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/AnimatedImplementation';
+import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 
 type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -118,59 +119,62 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
   render() {
     const { navigation } = this.props;
     return (
-      <View style={style.container}>
-        <View style={style.headerBlock}>
-          <Image source={require('./smiling.png')} style={style.greetIcon} />
-          <Text style={style.header}>Friday's shop</Text>
-        </View>
-        <Animated.View
-          style={[
-            style.inputBlock,
-            {
-              transform: [{ translateX: this.inputBlockX }],
-            },
-          ]}
-        >
-          <TextInput
-            style={style.loginInput}
-            textContentType={'emailAddress'}
-            placeholder={'E-mail'}
-            selectionColor={Colors.BrightBlue}
-            value={this.state.username}
-            onChangeText={username =>
-              this.setState(prevState => ({ ...prevState, username }))
-            }
-          />
-          <TextInput
-            style={style.loginInput}
-            textContentType={'password'}
-            placeholder={'Password'}
-            secureTextEntry
-            selectionColor={Colors.BrightBlue}
-            value={this.state.password}
-            onChangeText={password =>
-              this.setState(prevState => ({ ...prevState, password }))
-            }
-          />
-          <TouchableOpacity
-            style={style.loginButton}
-            onPress={() =>
-              this.onLoginClick(
-                navigation,
-                this.state.username,
-                this.state.password,
-              )
-            }
+      <React.Fragment>
+        <NetworkWatcher navigation={navigation}/>
+        <View style={style.container}>
+          <View style={style.headerBlock}>
+            <Image source={require('./smiling.png')} style={style.greetIcon} />
+            <Text style={style.header}>Friday's shop</Text>
+          </View>
+          <Animated.View
+            style={[
+              style.inputBlock,
+              {
+                transform: [{ translateX: this.inputBlockX }],
+              },
+            ]}
           >
-            <View style={style.loginBackground}>
-              <Text style={style.loginText}>login</Text>
-            </View>
-          </TouchableOpacity>
-        </Animated.View>
-        {this.state.loading && (
-          <Loader size={'large'} color={Colors.BrightBlue} />
-        )}
-      </View>
+            <TextInput
+              style={style.loginInput}
+              textContentType={'emailAddress'}
+              placeholder={'E-mail'}
+              selectionColor={Colors.BrightBlue}
+              value={this.state.username}
+              onChangeText={username =>
+                this.setState(prevState => ({ ...prevState, username }))
+              }
+            />
+            <TextInput
+              style={style.loginInput}
+              textContentType={'password'}
+              placeholder={'Password'}
+              secureTextEntry
+              selectionColor={Colors.BrightBlue}
+              value={this.state.password}
+              onChangeText={password =>
+                this.setState(prevState => ({ ...prevState, password }))
+              }
+            />
+            <TouchableOpacity
+              style={style.loginButton}
+              onPress={() =>
+                this.onLoginClick(
+                  navigation,
+                  this.state.username,
+                  this.state.password,
+                )
+              }
+            >
+              <View style={style.loginBackground}>
+                <Text style={style.loginText}>login</Text>
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
+          {this.state.loading && (
+            <Loader size={'large'} color={Colors.BrightBlue} />
+          )}
+        </View>
+      </React.Fragment>
     );
   }
 

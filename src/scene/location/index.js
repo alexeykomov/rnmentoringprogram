@@ -15,6 +15,7 @@ import { Products } from '../../product';
 import Colors from '../../colors';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import MapView, { Marker } from 'react-native-maps';
+import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 
 type LocationScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -63,19 +64,22 @@ class LocationScreen extends React.PureComponent<LocationScreenProps> {
     };
 
     return (
-      <View style={StyleSheet.absoluteFillObject}>
-        <MapView
-          style={StyleSheet.absoluteFillObject}
-          initialRegion={initialRegion}
-        >
-          <Marker
-            onPress={() => this.onMarkerPress(product)}
-            coordinate={product.location}
-            title={product.name}
-            description={product.telephone}
-          />
-        </MapView>
-      </View>
+      <React.Fragment>
+        <NetworkWatcher navigation={navigation}/>
+        <View style={StyleSheet.absoluteFillObject}>
+          <MapView
+            style={StyleSheet.absoluteFillObject}
+            initialRegion={initialRegion}
+          >
+            <Marker
+              onPress={() => this.onMarkerPress(product)}
+              coordinate={product.location}
+              title={product.name}
+              description={product.telephone}
+            />
+          </MapView>
+        </View>
+      </React.Fragment>
     );
   }
 

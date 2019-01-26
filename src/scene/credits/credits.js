@@ -18,6 +18,7 @@ import CreditItem from './credittitem/credititem';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import Header from '../../components/header';
 import Colors from '../../colors';
+import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 
 type CreditsScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -32,11 +33,7 @@ class CreditsScreen extends React.PureComponent<CreditsScreenProps, State> {
     headerStyle: ViewStyleProp,
   }> = {
     headerTitle: (
-      <Header
-        text={'Credits'}
-        icon={null}
-        buttonBackIsPresent={true}
-      />
+      <Header text={'Credits'} icon={null} buttonBackIsPresent={true} />
     ),
     headerTitleStyle: {
       color: Colors.White,
@@ -70,27 +67,33 @@ class CreditsScreen extends React.PureComponent<CreditsScreenProps, State> {
           name: 'Battery free icon',
           authorName: 'itim2101',
           authorLink: 'https://www.flaticon.com/authors/itim2101',
-        },{
+        },
+        {
           name: 'Circular saw free icon',
           authorName: 'itim2101',
           authorLink: 'https://www.flaticon.com/authors/itim2101',
-        },{
+        },
+        {
           name: 'Computer free icon',
           authorName: 'itim2101',
           authorLink: 'https://www.flaticon.com/authors/itim2101',
-        },{
+        },
+        {
           name: 'Settings free icon',
           authorName: 'itim2101',
           authorLink: 'https://www.flaticon.com/authors/itim2101',
-        },{
+        },
+        {
           name: 'Conveyor free icon',
           authorName: 'itim2101',
           authorLink: 'https://www.flaticon.com/authors/itim2101',
-        },{
+        },
+        {
           name: 'Truck free icon',
           authorName: 'itim2101',
           authorLink: 'https://www.flaticon.com/authors/itim2101',
-        },{
+        },
+        {
           name: 'Electric tower free icon',
           authorName: 'itim2101',
           authorLink: 'https://www.flaticon.com/authors/itim2101',
@@ -99,23 +102,26 @@ class CreditsScreen extends React.PureComponent<CreditsScreenProps, State> {
     };
   }
 
-  keyExtractor = (item: Credit, index: number) => String(item.name) +
-      getUid(item);
+  keyExtractor = (item: Credit, index: number) =>
+    String(item.name) + getUid(item);
 
   render() {
     const { navigation } = this.props;
     return (
-      <View style={style.container}>
-        <FlatList
-          style={style.frame}
-          data={this.state.credits}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderProductItem}
-          ItemSeparatorComponent={this.renderSeparator}
-          ListHeaderComponent={this.renderSeparator}
-          ListFooterComponent={this.renderSeparator}
-        />
-      </View>
+      <React.Fragment>
+        <NetworkWatcher navigation={navigation}/>
+        <View style={style.container}>
+          <FlatList
+            style={style.frame}
+            data={this.state.credits}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderProductItem}
+            ItemSeparatorComponent={this.renderSeparator}
+            ListHeaderComponent={this.renderSeparator}
+            ListFooterComponent={this.renderSeparator}
+          />
+        </View>
+      </React.Fragment>
     );
   }
 

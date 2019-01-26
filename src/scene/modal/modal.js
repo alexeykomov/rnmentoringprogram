@@ -5,6 +5,7 @@ import React from 'react';
 import type { NavigationScreenProp } from 'react-navigation';
 import Button from '../../components/button/button';
 import style from './styles';
+import { noop } from '../../lib/noop';
 
 type ModalScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -26,13 +27,13 @@ class ModalScreen extends React.PureComponent<ModalScreenProps> {
           <Text style={style.modalText}>{`You're encountering error: ${
             error.message
           }`}</Text>
-          <Button
+          {retryAction !== noop ? <Button
             caption={'Retry'}
             onPress={() => {
               retryAction();
               navigation.goBack();
             }}
-          />
+          /> : null}
           <Button caption={'Close'} onPress={() => navigation.goBack()} />
         </View>
       </View>

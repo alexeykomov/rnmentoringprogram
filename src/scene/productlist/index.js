@@ -23,10 +23,7 @@ import type {
   NavigationScreenConfig,
   NavigationScreenProp,
 } from 'react-navigation';
-import {
-  StackActions,
-  NavigationActions,
-} from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { Routes } from '../../routes';
 import { Products } from '../../product';
 import type { State } from './state';
@@ -42,6 +39,7 @@ import EventEmitter from '../../lib/eventemitter';
 import { getUid } from '../../lib/id';
 import SidePane from './sidepane/sidepane';
 import MenuButton from '../../components/menubutton/menubutton';
+import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -67,13 +65,9 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     headerStyle: ViewStyleProp,
   }> = {
     headerTitle: (
-      <Header
-        text={'Products'}
-        icon={null}
-        buttonBackIsPresent={false}
-      />
+      <Header text={'Products'} icon={null} buttonBackIsPresent={false} />
     ),
-    headerLeft: <MenuButton onPress={ProductList.emitMenuPress}/>,
+    headerLeft: <MenuButton onPress={ProductList.emitMenuPress} />,
     headerTitleStyle: {
       color: Colors.White,
     },
@@ -134,39 +128,42 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     const { products } = this.state;
 
     return (
-      <View style={style.container}>
-        {(() => {
-          if (this.state.loading) {
-            return <Loader size={'small'} color={Colors.DarkGray}/>;
-          }
-          return (
-            <FlatListAnimated
-              style={[style.frame, { opacity: this.state.listOpacity }]}
-              data={products}
-              keyExtractor={this.keyExtractor}
-              renderItem={({ item }) =>
-                renderProductItem(
-                  () => this.onProductClick(navigation, item),
-                  item,
-                )
-              }
-              onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
-              onEndReached={this.onLoadMore}
-              ItemSeparatorComponent={this.renderSeparator}
-              ListHeaderComponent={this.renderSeparator}
-              ListFooterComponent={this.renderSeparator}
-              refreshing={this.state.refreshing}
-              onRefresh={this.onRefresh}
-              ListEmptyComponent={<NoProductData/>}
-            />
-          );
-        })()}
-        <SidePane
-          ref={sidePane => (this.sidePane = sidePane)}
-          onCreditsSelect={this.onCreditsSelect}
-          onLogoutSelect={this.onLogoutSelect}
-        />
-      </View>
+      <React.Fragment>
+        <NetworkWatcher navigation={navigation}/>
+        <View style={style.container}>
+          {(() => {
+            if (this.state.loading) {
+              return <Loader size={'small'} color={Colors.DarkGray} />;
+            }
+            return (
+              <FlatListAnimated
+                style={[style.frame, { opacity: this.state.listOpacity }]}
+                data={products}
+                keyExtractor={this.keyExtractor}
+                renderItem={({ item }) =>
+                  renderProductItem(
+                    () => this.onProductClick(navigation, item),
+                    item,
+                  )
+                }
+                onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
+                onEndReached={this.onLoadMore}
+                ItemSeparatorComponent={this.renderSeparator}
+                ListHeaderComponent={this.renderSeparator}
+                ListFooterComponent={this.renderSeparator}
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh}
+                ListEmptyComponent={<NoProductData />}
+              />
+            );
+          })()}
+          <SidePane
+            ref={sidePane => (this.sidePane = sidePane)}
+            onCreditsSelect={this.onCreditsSelect}
+            onLogoutSelect={this.onLogoutSelect}
+          />
+        </View>
+      </React.Fragment>
     );
   }
 
@@ -187,9 +184,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       }
       const resetAction = StackActions.reset({
         index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: Routes.Login }),
-        ],
+        actions: [NavigationActions.navigate({ routeName: Routes.Login })],
       });
       this.props.navigation.dispatch(resetAction);
     });
@@ -236,7 +231,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   }
 
   renderSeparator() {
-    return <View style={style.separator}/>;
+    return <View style={style.separator} />;
   }
 
   handleRequestSuccess(products: Product[], page: number) {
@@ -292,7 +287,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 }
 
 const renderProductItem = (onProductClick: Function, product: Product) => (
-  <ProductItem onProductClick={onProductClick} product={product}/>
+  <ProductItem onProductClick={onProductClick} product={product} />
 );
 
 export default ProductList;
