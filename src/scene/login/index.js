@@ -204,8 +204,8 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     retryAction: Function,
   ) {
     try {
-      const response = await mockResponse();
-      // const response = await getResponse(username, password);
+      // const response = await mockResponse();
+      const response = await getResponse(username, password);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
