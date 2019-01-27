@@ -1,3 +1,5 @@
+/** @flow */
+
 import { Image, Text, TouchableHighlight, View } from 'react-native';
 import style from './styles';
 import { Icon, IconSizes } from '../../../icons';
@@ -7,13 +9,13 @@ const ProductItem = ({ onProductClick, product }: ProductItemProps) => {
   return (
     <TouchableHighlight onPress={onProductClick} key={product.id}>
       <View style={style.product}>
-        <View
-          style={style.iconAndNameContainer}
-        >
+        <View style={style.iconAndNameContainer}>
           <View style={style.productIcon}>
             <Icon product={product.iconId} size={IconSizes.Small} />
           </View>
-          <Text numberOfLines={1} style={style.productText}>{product.name}</Text>
+          <Text numberOfLines={1} style={style.productText}>
+            {product.name}
+          </Text>
         </View>
         <View style={style.productAngle}>
           <Image

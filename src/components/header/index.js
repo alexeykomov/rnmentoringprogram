@@ -4,8 +4,7 @@
 
 import style from './styles';
 import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import Colors from '../../colors';
+import { View, Text } from 'react-native';
 
 type HeaderProps = {
   icon: Object | null,

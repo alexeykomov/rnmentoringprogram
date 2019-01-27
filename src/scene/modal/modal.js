@@ -1,6 +1,6 @@
 /** @flow */
 
-import { StyleSheet, View, Text, Vibration } from 'react-native';
+import { View, Text, Vibration } from 'react-native';
 import React from 'react';
 import type { NavigationScreenProp } from 'react-navigation';
 import Button from '../../components/button/button';
@@ -27,13 +27,15 @@ class ModalScreen extends React.PureComponent<ModalScreenProps> {
           <Text style={style.modalText}>{`You're encountering error: ${
             error.message
           }`}</Text>
-          {retryAction !== noop ? <Button
-            caption={'Retry'}
-            onPress={() => {
-              retryAction();
-              navigation.goBack();
-            }}
-          /> : null}
+          {retryAction !== noop ? (
+            <Button
+              caption={'Retry'}
+              onPress={() => {
+                retryAction();
+                navigation.goBack();
+              }}
+            />
+          ) : null}
           <Button caption={'Close'} onPress={() => navigation.goBack()} />
         </View>
       </View>

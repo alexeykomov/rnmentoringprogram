@@ -65,7 +65,7 @@ class LocationScreen extends React.PureComponent<LocationScreenProps> {
 
     return (
       <React.Fragment>
-        <NetworkWatcher navigation={navigation}/>
+        <NetworkWatcher navigation={navigation} />
         <View style={StyleSheet.absoluteFillObject}>
           <MapView
             style={StyleSheet.absoluteFillObject}

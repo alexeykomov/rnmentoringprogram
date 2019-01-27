@@ -12,11 +12,8 @@ export type LoaderProps = {
   color: Color,
 };
 
-export const Loader = ({size, color}: LoaderProps) => (
+export const Loader = ({ size, color }: LoaderProps) => (
   <View style={style.loaderContainer}>
-    <ActivityIndicator
-      animating={true}
-      size={size}
-      color={color}
-    />
-  </View>);
+    <ActivityIndicator animating={true} size={size} color={color} />
+  </View>
+);

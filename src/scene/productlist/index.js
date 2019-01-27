@@ -8,12 +8,6 @@ import {
   View,
   FlatList,
   Animated,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
-  Text,
-  Image,
   LayoutAnimation,
   AsyncStorage,
 } from 'react-native';
@@ -25,7 +19,6 @@ import type {
 } from 'react-navigation';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { Routes } from '../../routes';
-import { Products } from '../../product';
 import type { State } from './state';
 import Colors from '../../colors';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
@@ -40,6 +33,7 @@ import { getUid } from '../../lib/id';
 import SidePane from './sidepane/sidepane';
 import MenuButton from '../../components/menubutton/menubutton';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
+import { noop } from '../../lib/noop';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -79,7 +73,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 
   sidePane: SidePane = null;
 
-  openMenuListenerUid = null;
+  openMenuListenerUnsubscriber = noop;
 
   constructor() {
     super();
@@ -94,7 +88,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   }
 
   componentDidMount() {
-    this.openMenuListenerUid = ProductList.menuEventEmitter.addListener(
+    this.openMenuListenerUnsubscriber = ProductList.menuEventEmitter.addListener(
       MENU_PRESS_EVENT,
       this.sidePane.openMenu,
     );
@@ -102,13 +96,13 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   }
 
   componentWillUnmount() {
-    ProductList.menuEventEmitter.removeListener(this.openMenuListenerUid);
+    this.openMenuListenerUnsubscriber();
   }
 
   async sendRequest(page: number, retryAction: Function) {
     try {
-      // const response = await this.mockResponse(PAGE_SIZE, page);
-      const response = await this.getResponse(PAGE_SIZE, page);
+      const response = await this.mockResponse(PAGE_SIZE, page);
+      // const response = await this.getResponse(PAGE_SIZE, page);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
@@ -129,7 +123,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 
     return (
       <React.Fragment>
-        <NetworkWatcher navigation={navigation}/>
+        <NetworkWatcher navigation={navigation} />
         <View style={style.container}>
           {(() => {
             if (this.state.loading) {

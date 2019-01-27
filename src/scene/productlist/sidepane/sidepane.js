@@ -1,9 +1,10 @@
+/** @flow */
+
 import {
   Animated,
   Modal,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   PanResponder,
@@ -29,6 +30,10 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
   menuX = new Animated.Value(-SIDE_PANE_WIDTH);
 
   menuFade = new Animated.Value(0);
+
+  lastMoveX = 0;
+
+  panResponder = null;
 
   constructor() {
     super();

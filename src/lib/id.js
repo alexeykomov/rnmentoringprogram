@@ -8,7 +8,7 @@ let uid = 0;
 
 export const getUid = (entity: Object) => {
   if ('__uid' in entity) {
-    return entity['__uid']
+    return entity['__uid'];
   }
   entity['__uid'] = uid++;
   return entity['__uid'];

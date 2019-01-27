@@ -1,3 +1,5 @@
+/** @flow */
+
 import { Text, TouchableOpacity, View, Linking } from 'react-native';
 import style from './styles';
 import React from 'react';
@@ -17,13 +19,12 @@ const CreditItem = ({ credit }: CreditItemProps) => {
         <Text style={style.creditLink}>{credit.authorName}</Text>
       </TouchableOpacity>
       <View>
-      <Text style={style.creditText}> from </Text>
+        <Text style={style.creditText}> from </Text>
       </View>
-        <TouchableOpacity
+      <TouchableOpacity
         onPress={() => Linking.openURL('https://www.flaticon.com/')}
-      ><Text style={style.creditLink}>
-        www.flaticon.com
-      </Text>
+      >
+        <Text style={style.creditLink}>www.flaticon.com</Text>
       </TouchableOpacity>
     </View>
   );

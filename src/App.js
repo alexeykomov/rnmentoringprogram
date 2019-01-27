@@ -6,7 +6,6 @@
  * @flow
  */
 
-import React from 'react';
 import LoginScreen from './scene/login';
 import ProductList from './scene/productlist';
 import ProductFull from './scene/product';
