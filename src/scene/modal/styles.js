@@ -30,7 +30,7 @@ const style = StyleSheet.create({
     fontFamily: 'vincHand',
     fontSize: 20,
     marginBottom: 20,
-  }
+  },
 });
 
 export default style;

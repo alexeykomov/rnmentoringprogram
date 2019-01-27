@@ -3,16 +3,13 @@
  * */
 
 import React from 'react';
-import type { Node } from 'react';
 import { View, FlatList } from 'react-native';
 import style from './styles';
 import type {
   NavigationScreenProp,
   NavigationScreenConfig,
 } from 'react-navigation';
-import ProductItem from '../productlist/productitem/productitem';
 import type { Credit } from './credit';
-import type { Product } from '../../product';
 import { getUid } from '../../lib/id';
 import CreditItem from './credittitem/credititem';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
@@ -109,7 +106,7 @@ class CreditsScreen extends React.PureComponent<CreditsScreenProps, State> {
     const { navigation } = this.props;
     return (
       <React.Fragment>
-        <NetworkWatcher navigation={navigation}/>
+        <NetworkWatcher navigation={navigation} />
         <View style={style.container}>
           <FlatList
             style={style.frame}

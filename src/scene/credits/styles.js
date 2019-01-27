@@ -23,7 +23,7 @@ const style: LoginStyle = StyleSheet.create({
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: Colors.EpamBlue,
-  }
+  },
 });
 
 export default style;

@@ -26,8 +26,7 @@ export type Product = {
   location: LatLng,
 };
 
-
 export type LatLng = {
   latitude: number,
   longitude: number,
-}
+};

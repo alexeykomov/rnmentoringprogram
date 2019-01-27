@@ -70,7 +70,7 @@ class ProductFull extends React.PureComponent<ProductListProps> {
 
     return (
       <React.Fragment>
-        <NetworkWatcher navigation={navigation}/>
+        <NetworkWatcher navigation={navigation} />
         <View style={style.container}>
           <NavigationEvents
             onDidFocus={payload => {

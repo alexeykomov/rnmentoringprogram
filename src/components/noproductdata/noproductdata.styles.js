@@ -12,7 +12,7 @@ const style = StyleSheet.create({
   },
   label: {
     fontFamily: 'vincHand',
-    fontSize: 20
+    fontSize: 20,
   },
 });
 

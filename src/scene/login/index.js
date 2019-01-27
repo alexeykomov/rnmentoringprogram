@@ -3,7 +3,6 @@
  * */
 
 import React from 'react';
-import type { Node } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -20,11 +19,7 @@ import type {
   NavigationScreenProp,
   NavigationScreenConfig,
 } from 'react-navigation';
-import {
-  StackActions,
-  NavigationActions,
-  NavigationEvents,
-} from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
 import { Routes } from '../../routes';
 import { Loader } from '../../components/loader';
 import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/AnimatedImplementation';
@@ -43,28 +38,6 @@ type State = {
 
 const AUTH_URL =
   'http://ecsc00a02fb3.epam.com/index.php/rest/V1/integration/customer/token';
-
-async function mockResponse() {
-  return await new Promise(res =>
-    setTimeout(
-      () => res({ ok: true, text: () => Promise.resolve('token') }),
-      1000,
-    ),
-  );
-}
-
-async function getResponse(username: string, password: string) {
-  return await fetch(AUTH_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-    body: JSON.stringify({
-      username,
-      password,
-    }),
-  });
-}
 
 class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
   static navigationOptions: NavigationScreenConfig<{ header: null }> = {
@@ -120,11 +93,11 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     const { navigation } = this.props;
     return (
       <React.Fragment>
-        <NetworkWatcher navigation={navigation}/>
+        <NetworkWatcher navigation={navigation} />
         <View style={style.container}>
           <View style={style.headerBlock}>
             <Image source={require('./smiling.png')} style={style.greetIcon} />
-            <Text style={style.header}>Friday's shop</Text>
+            <Text style={style.header}>{"Friday's shop"}</Text>
           </View>
           <Animated.View
             style={[
@@ -204,8 +177,8 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     retryAction: Function,
   ) {
     try {
-      // const response = await mockResponse();
-      const response = await getResponse(username, password);
+      const response = await this.mockResponse();
+      // const response = await this.getResponse(username, password);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
@@ -250,8 +223,6 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
   }
 
   handleRequestError(e: Error, retryAction: Function) {
-    const { navigation } = this.props;
-
     console.log('Fetch error: ', e);
     this.setState((prevState, props) => {
       return {
@@ -261,6 +232,28 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
         username: '',
         password: '',
       };
+    });
+  }
+
+  async mockResponse() {
+    return await new Promise(res =>
+      setTimeout(
+        () => res({ ok: true, text: () => Promise.resolve('token') }),
+        1000,
+      ),
+    );
+  }
+
+  async getResponse(username: string, password: string) {
+    return await fetch(AUTH_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
     });
   }
 }

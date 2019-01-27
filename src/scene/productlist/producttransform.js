@@ -8,7 +8,6 @@ import { getRandomProductId } from '../../lib/id';
 export const formatProducts = (
   productsApiResponse: ProductApiResponse,
 ): Product[] => {
-  const products = [];
   return productsApiResponse.items.map(productItem => {
     const description = productItem.custom_attributes.find(
       customAttribute => customAttribute.attribute_code === 'description',

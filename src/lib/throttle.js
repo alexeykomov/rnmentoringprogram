@@ -2,8 +2,7 @@
 
 export const throttle = (func: Function, time: number) => {
   let delayed = false;
-  const noop = () => {
-  };
+  const noop = () => {};
   let delayedFunc = noop;
   return (...args: *[]) => {
     if (!delayed) {
@@ -17,5 +16,5 @@ export const throttle = (func: Function, time: number) => {
     } else {
       delayedFunc = () => func(...args);
     }
-  }
+  };
 };

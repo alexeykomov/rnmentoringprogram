@@ -9,7 +9,7 @@ type ButtonProps = {
   caption: string,
 };
 
-const Button = ({ onPress, caption }:ButtonProps) => (
+const Button = ({ onPress, caption }: ButtonProps) => (
   <TouchableOpacity style={style.returnButton} onPress={onPress}>
     <View style={style.returnBackground}>
       <Text style={style.returnText}>{caption}</Text>
