@@ -101,8 +101,8 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 
   async sendRequest(page: number, retryAction: Function) {
     try {
-      const response = await this.mockResponse(PAGE_SIZE, page);
-      // const response = await this.getResponse(PAGE_SIZE, page);
+      // const response = await this.mockResponse(PAGE_SIZE, page);
+      const response = await this.getResponse(PAGE_SIZE, page);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
