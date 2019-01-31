@@ -25,6 +25,8 @@ import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/Ani
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import SplashScreen from 'react-native-splash-screen';
 import LottieView from 'lottie-react-native';
+import type { ReactNode } from 'react-native/Libraries/Renderer/shims/ReactTypes';
+
 
 type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -115,7 +117,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     this.smilingStackAnimation.play();
   };
 
-  render() {
+  render(): ReactNode {
     const { navigation } = this.props;
     return (
       <React.Fragment>
@@ -290,7 +292,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
   }
 }
 
-const getDeltaByStep = (index: number, elements: null[]) => {
+const getDeltaByStep = (index: number, elements: null[]): number => {
   return index === elements.length - 1
     ? 0
     : (20 / (index + 1)) * (index % 2 === 0 ? -1 : 1);
