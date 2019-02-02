@@ -33,7 +33,9 @@ import { getUid } from '../../lib/id';
 import SidePane from './sidepane/sidepane';
 import MenuButton from '../../components/menubutton/menubutton';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
+import SplashScreen from 'react-native-splash-screen';
 import { noop } from '../../lib/noop';
+
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -93,6 +95,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       this.sidePane.openMenu,
     );
     this.loadInitial();
+    SplashScreen.hide();
   }
 
   componentWillUnmount() {
@@ -101,8 +104,8 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 
   async sendRequest(page: number, retryAction: Function) {
     try {
-      // const response = await this.mockResponse(PAGE_SIZE, page);
-      const response = await this.getResponse(PAGE_SIZE, page);
+      const response = await this.mockResponse(PAGE_SIZE, page);
+      // const response = await this.getResponse(PAGE_SIZE, page);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(

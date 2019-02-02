@@ -24,6 +24,7 @@ import { Routes } from '../../routes';
 import { Loader } from '../../components/loader';
 import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
+import SplashScreen from 'react-native-splash-screen';
 
 type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -82,10 +83,12 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     try {
       const token = await AsyncStorage.getItem('token');
       if (token !== null) {
-        this.navigateToContent();
+        return this.navigateToContent();
       }
+      SplashScreen.hide();
     } catch (error) {
       console.log('Error retrieving token from AsyncStorage: ', error);
+      SplashScreen.hide();
     }
   }
 
@@ -177,8 +180,8 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     retryAction: Function,
   ) {
     try {
-      // const response = await this.mockResponse();
-      const response = await this.getResponse(username, password);
+      const response = await this.mockResponse();
+      // const response = await this.getResponse(username, password);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
