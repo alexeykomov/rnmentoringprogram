@@ -55,9 +55,8 @@ const style: LoginStyle = StyleSheet.create({
     color: Colors.White,
   },
   greetIcon: {
-    marginTop: 50,
-    width: 50,
-    height: 50,
+    width: 150,
+    height: 150,
   },
   loginInput: {
     width: 280,

@@ -25,6 +25,7 @@ import { Loader } from '../../components/loader';
 import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/AnimatedImplementation';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import SplashScreen from 'react-native-splash-screen';
+import LottieView from 'lottie-react-native';
 
 type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -40,12 +41,18 @@ type State = {
 const AUTH_URL =
   'http://ecsc00a02fb3.epam.com/index.php/rest/V1/integration/customer/token';
 
+const HOW_MANY_TIMES_TO_PLAY = 2;
+
 class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
   static navigationOptions: NavigationScreenConfig<{ header: null }> = {
     header: null,
   };
 
   inputBlockX = new Animated.Value(0);
+
+  smilingStackAnimation: typeof LottieView = null;
+
+  playedTimes = 0;
 
   constructor(props: LoginScreenProps) {
     super(props);
@@ -80,6 +87,9 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
   }
 
   async componentDidMount() {
+    this.playedTimes = 0;
+    this.smilingStackAnimation.play();
+
     try {
       const token = await AsyncStorage.getItem('token');
       if (token !== null) {
@@ -92,6 +102,20 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     }
   }
 
+  saveRef = (ref) => {
+    this.smilingStackAnimation = ref;
+  };
+
+  onSmilingStackAnimationFinish = () => {
+    this.playedTimes++;
+
+    if (this.playedTimes >= HOW_MANY_TIMES_TO_PLAY) {
+      return;
+    }
+
+    this.smilingStackAnimation.play()
+  };
+
   render() {
     const { navigation } = this.props;
     return (
@@ -99,7 +123,13 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
         <NetworkWatcher navigation={navigation} />
         <View style={style.container}>
           <View style={style.headerBlock}>
-            <Image source={require('./smiling.png')} style={style.greetIcon} />
+            <LottieView
+              ref={this.saveRef}
+              source={require('./1309-smiley-stack.json')}
+              style={style.greetIcon}
+              loop={false}
+              onAnimationFinish={this.onSmilingStackAnimationFinish}
+            />
             <Text style={style.header}>{"Friday's shop"}</Text>
           </View>
           <Animated.View

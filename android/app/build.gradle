@@ -97,6 +97,11 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     defaultConfig {
         applicationId "com.rnmentoringprogram"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -137,6 +142,7 @@ android {
 }
 
 dependencies {
+    compile project(':lottie-react-native')
     compile project(':react-native-splash-screen')
     implementation project(':react-native-maps')
     compile project(':react-native-gesture-handler')
