@@ -7,18 +7,14 @@ import { View, StyleSheet, Alert, Linking } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
 import { Header } from '../../components/header';
-import type {
-  NavigationScreenConfig,
-  NavigationScreenProp,
-} from 'react-navigation';
+import type { NavigationScreenProp } from 'react-navigation';
 import { Products } from '../../product';
 import Colors from '../../colors';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import MapView, { Marker } from 'react-native-maps';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 
 type LocationScreenProps = {
-  navigation: NavigationScreenProp<void>,
+  navigation: NavigationScreenProp<*>,
 };
 
 const NonExistentProduct: Product = {
@@ -31,10 +27,8 @@ const NonExistentProduct: Product = {
 };
 
 class LocationScreen extends React.PureComponent<LocationScreenProps> {
-  static navigationOptions: NavigationScreenConfig<{
-    headerStyle: ViewStyleProp,
-  }> = ({ navigation }) => {
-    const product = navigation.getParam<product>('product', NonExistentProduct);
+  static navigationOptions = ({ navigation }: LocationScreenProps) => {
+    const product = navigation.getParam('product') || NonExistentProduct;
     return {
       headerTitleStyle: {
         color: Colors.White,

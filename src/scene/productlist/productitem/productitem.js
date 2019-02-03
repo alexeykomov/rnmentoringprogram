@@ -4,8 +4,14 @@ import { Image, Text, TouchableHighlight, View } from 'react-native';
 import style from './styles';
 import { Icon, IconSizes } from '../../../icons';
 import React from 'react';
+import type { Product } from '../../../product';
 
-const ProductItem = ({ onProductClick, product }: ProductItemProps) => {
+type ProductItemPropsType = {|
+  onProductClick: () => void,
+  product: Product,
+|};
+
+const ProductItem = ({ onProductClick, product }: ProductItemPropsType) => {
   return (
     <TouchableHighlight onPress={onProductClick} key={product.id}>
       <View style={style.product}>

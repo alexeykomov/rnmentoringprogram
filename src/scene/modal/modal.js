@@ -7,19 +7,19 @@ import Button from '../../components/button/button';
 import style from './styles';
 import { noop } from '../../lib/noop';
 
-type ModalScreenProps = {
+type ModalScreenPropsType = {
   navigation: NavigationScreenProp<void>,
 };
 
-class ModalScreen extends React.PureComponent<ModalScreenProps> {
+class ModalScreen extends React.PureComponent<ModalScreenPropsType> {
   componentDidMount() {
     Vibration.vibrate();
   }
 
   render() {
     const { navigation } = this.props;
-    const error = navigation.getParam('error', {});
-    const retryAction = navigation.getParam('retryAction', () => {});
+    const error = navigation.getParam('error') || {};
+    const retryAction = navigation.getParam('retryAction') || noop;
     return (
       <View style={style.modalContainer}>
         <View style={style.modalSubContainer}>
@@ -36,11 +36,16 @@ class ModalScreen extends React.PureComponent<ModalScreenProps> {
               }}
             />
           ) : null}
-          <Button caption={'Close'} onPress={() => navigation.goBack()} />
+          <Button caption={'Close'} onPress={this.onBackPress} />
         </View>
       </View>
     );
   }
+
+  onBackPress = () => {
+    const { navigation } = this.props;
+    navigation.goBack;
+  };
 }
 
 export default ModalScreen;

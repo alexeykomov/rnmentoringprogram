@@ -8,4 +8,10 @@ module.exports = {
     'no-invalid-this': 0,
     'babel/no-invalid-this': 1,
   },
+  'settings': {
+    'react': {
+      'version': 'detect',
+      'flowVersion': '0.78',
+    },
+  },
 };

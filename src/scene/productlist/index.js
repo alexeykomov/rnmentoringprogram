@@ -50,6 +50,8 @@ const FlatListAnimated = Animated.createAnimatedComponent(FlatList);
 
 const MENU_PRESS_EVENT = 'menuPress';
 
+const SIDE_PANE_WARNING = "Side pane wasn't mounted.";
+
 class ProductList extends React.PureComponent<ProductListProps, State> {
   static menuEventEmitter = new EventEmitter();
 
@@ -72,7 +74,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     },
   };
 
-  sidePane: SidePane = null;
+  sidePane: SidePane | null;
 
   openMenuListenerUnsubscriber = noop;
 
@@ -91,7 +93,9 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   componentDidMount() {
     this.openMenuListenerUnsubscriber = ProductList.menuEventEmitter.addListener(
       MENU_PRESS_EVENT,
-      this.sidePane.openMenu,
+      this.sidePane
+        ? this.sidePane.openMenu
+        : () => console.log(SIDE_PANE_WARNING),
     );
     this.loadInitial();
     SplashScreen.hide();
@@ -165,34 +169,47 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   }
 
   onCreditsSelect = () => {
-    this.sidePane.closeMenu(() =>
-      this.props.navigation.navigate({
-        routeName: Routes.Credits,
-      }),
-    );
+    this.sidePane
+      ? this.sidePane.closeMenu(
+          (): void =>
+            void this.props.navigation.navigate({
+              routeName: Routes.Credits,
+            }),
+        )
+      : console.log(SIDE_PANE_WARNING);
   };
 
   onLogoutSelect = () => {
-    this.sidePane.closeMenu(async () => {
-      try {
-        await AsyncStorage.removeItem('token');
-      } catch (e) {
-        console.log('Error - cannot remove token: ', e);
-      }
-      const resetAction = StackActions.reset({
-        index: 0,
-        actions: [NavigationActions.navigate({ routeName: Routes.Login })],
-      });
-      this.props.navigation.dispatch(resetAction);
-    });
+    this.sidePane
+      ? this.sidePane.closeMenu(
+          async (): Promise<void> => {
+            try {
+              await AsyncStorage.removeItem('token');
+            } catch (e) {
+              console.log('Error - cannot remove token: ', e);
+            }
+            const resetAction = StackActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({ routeName: Routes.Login }),
+              ],
+            });
+            this.props.navigation.dispatch(resetAction);
+          },
+        )
+      : console.log(SIDE_PANE_WARNING);
   };
 
   onInfoSelect = () => {
-    this.sidePane.closeMenu(() => {
-      this.props.navigation.navigate({
-        routeName: Routes.Info,
-      });
-    });
+    this.sidePane
+      ? this.sidePane.closeMenu(
+          (): void => {
+            this.props.navigation.navigate({
+              routeName: Routes.Info,
+            });
+          },
+        )
+      : console.log(SIDE_PANE_WARNING);
   };
 
   keyExtractor = (item: Product, index: number) =>

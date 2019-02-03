@@ -14,19 +14,15 @@ import {
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
 import { Header } from '../../components/header';
-import type {
-  NavigationScreenConfig,
-  NavigationScreenProp,
-} from 'react-navigation';
+import type { NavigationScreenProp } from 'react-navigation';
 import { NavigationEvents } from 'react-navigation';
 import { Products } from '../../product';
 import Colors from '../../colors';
-import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { Routes } from '../../routes';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 
 type ProductListProps = {
-  navigation: NavigationScreenProp<void>,
+  navigation: NavigationScreenProp<*>,
 };
 
 const NonExistentProduct: Product = {
@@ -39,9 +35,7 @@ const NonExistentProduct: Product = {
 };
 
 class ProductFull extends React.PureComponent<ProductListProps> {
-  static navigationOptions: NavigationScreenConfig<{
-    headerStyle: ViewStyleProp,
-  }> = ({ navigation }) => {
+  static navigationOptions = ({ navigation }: ProductListProps) => {
     const product = navigation.getParam<product>('product', NonExistentProduct);
     return {
       headerTitleStyle: {

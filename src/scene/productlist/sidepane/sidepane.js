@@ -13,6 +13,7 @@ import Colors from '../../../colors';
 import React from 'react';
 import MenuItem from './menuitem/menuitem';
 import { throttle } from '../../../lib/throttle';
+import { noop } from '../../../lib/noop';
 
 type SidePaneProps = {|
   onCreditsSelect: () => void,
@@ -34,7 +35,7 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
 
   lastMoveX = 0;
 
-  panResponder = null;
+  panResponder: PanResponder = null;
 
   constructor() {
     super();
@@ -69,25 +70,25 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
     });
   }
 
-  onPanResponderRelease(evt, gestureState) {
+  onPanResponderRelease(evt: {||}, gestureState: GestureStateType) {
     if (Math.abs(gestureState.dx) <= 10 && Math.abs(gestureState.dy) <= 10) {
-      return this.controlMenu(false, () => {});
+      return this.controlMenu(false, noop);
     }
 
     if (
       this.lastMoveX - gestureState.moveX > MENU_CLOSING_VELOCITY ||
       Math.abs(gestureState.dx) > SIDE_PANE_WIDTH / 3
     ) {
-      return this.controlMenu(false, () => {});
+      return this.controlMenu(false, noop);
     }
 
     if (gestureState.vx <= 0) {
       Animated.decay(this.menuX, {
         velocity: gestureState.vx,
         deceleration: 0.8,
-      }).start(() => this.controlMenu(true, () => {}));
+      }).start(() => this.controlMenu(true, noop));
     } else {
-      this.controlMenu(true, () => {});
+      this.controlMenu(true, noop);
     }
   }
 
@@ -150,11 +151,12 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
 
   onHighlightPress = () => this.closeMenu();
 
-  openMenu = (onEnd: () => void = () => {}) => this.controlMenu(true, onEnd);
+  openMenu = (onEnd: MenuCallbackType = noop) => this.controlMenu(true, onEnd);
 
-  closeMenu = (onEnd: () => void = () => {}) => this.controlMenu(false, onEnd);
+  closeMenu = (onEnd: MenuCallbackType = noop) =>
+    this.controlMenu(false, onEnd);
 
-  controlMenu = (open: boolean, onEnd: () => void) => {
+  controlMenu = (open: boolean, onEnd: MenuCallbackType) => {
     if (open) {
       this.setState(prevState => ({ ...prevState, modalVisible: true }));
     }
@@ -170,11 +172,27 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
     ]).start(() => this.onMenuAnimationEnd(open, onEnd));
   };
 
-  onMenuAnimationEnd(open: boolean, onEnd: () => void) {
+  onMenuAnimationEnd(open: boolean, onEnd: MenuCallbackType) {
     if (!open) {
       this.setState({ ...this.state, modalVisible: false }, onEnd);
     }
   }
 }
+
+type MenuCallbackType = (() => void) | (() => Promise<void>);
+
+type GestureStateType = {|
+  moveX: number,
+  moveY: number,
+  moveY: number,
+  x0: number,
+  y0: number,
+  dx: number,
+  dy: number,
+  vx: number,
+  vy: number,
+  numberActiveTouches: number,
+  _accountsForMovesUpTo: number,
+|};
 
 export default SidePane;
