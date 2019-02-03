@@ -18,7 +18,7 @@ import Colors from '../../colors';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import DeviceInfo from 'react-native-device-info';
 
-type InfoScreenProps = {
+type InfoScreenPropsType = {
   navigation: NavigationScreenProp<void>,
 };
 
@@ -26,7 +26,7 @@ type State = {
   infos: Infoblock[],
 };
 
-class InfoScreen extends React.PureComponent<InfoScreenProps, State> {
+class InfoScreen extends React.PureComponent<InfoScreenPropsType, State> {
   static navigationOptions: NavigationScreenConfig<{
     headerStyle: ViewStyleProp,
   }> = {
@@ -42,7 +42,7 @@ class InfoScreen extends React.PureComponent<InfoScreenProps, State> {
     },
   };
 
-  constructor(props: InfoScreenProps) {
+  constructor(props: InfoScreenPropsType) {
     super(props);
     this.state = {
       infos: [
