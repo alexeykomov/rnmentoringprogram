@@ -27,7 +27,6 @@ import SplashScreen from 'react-native-splash-screen';
 import LottieView from 'lottie-react-native';
 import type { ReactNode } from 'react-native/Libraries/Renderer/shims/ReactTypes';
 
-
 type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
 };

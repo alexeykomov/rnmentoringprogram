@@ -13,7 +13,7 @@ import Colors from '../../colors';
 import MapView, { Marker } from 'react-native-maps';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 
-type LocationScreenProps = {
+type LocationScreenPropsType = {
   navigation: NavigationScreenProp<*>,
 };
 
@@ -26,8 +26,8 @@ const NonExistentProduct: Product = {
   telephone: '',
 };
 
-class LocationScreen extends React.PureComponent<LocationScreenProps> {
-  static navigationOptions = ({ navigation }: LocationScreenProps) => {
+class LocationScreen extends React.PureComponent<LocationScreenPropsType> {
+  static navigationOptions = ({ navigation }: LocationScreenPropsType) => {
     const product = navigation.getParam('product') || NonExistentProduct;
     return {
       headerTitleStyle: {

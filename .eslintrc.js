@@ -1,7 +1,7 @@
 module.exports = {
   'parser': 'babel-eslint',
   'extends': ['google', 'prettier', 'plugin:react/recommended'],
-  'plugins': ['prettier', 'react', 'babel'],
+  'plugins': ['prettier', 'react', 'babel', 'flowtype'],
   'rules': {
     'prettier/prettier': 'error',
     'require-jsdoc': 'off',
@@ -14,7 +14,7 @@ module.exports = {
     ],
     'flowtype/define-flow-type': 1,
     'flowtype/delimiter-dangle': [
-      2,
+      0,
       'never',
     ],
     'flowtype/generic-spacing': [
