@@ -14,14 +14,15 @@ import React from 'react';
 import MenuItem from './menuitem/menuitem';
 import { throttle } from '../../../lib/throttle';
 
-type SidePaneProps = {
+type SidePaneProps = {|
   onCreditsSelect: () => void,
   onLogoutSelect: () => void,
-};
+  onInfoSelect: () => void,
+|};
 
-type SidePaneState = {
+type SidePaneState = {|
   modalVisible: boolean,
-};
+|};
 
 const SIDE_PANE_WIDTH = 270;
 const MENU_CLOSING_VELOCITY = 30;
@@ -129,6 +130,10 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
         >
           <View style={{ backgroundColor: Colors.EpamBlue, height: 100 }} />
           <ScrollView>
+            <MenuItem
+              menuItemName={'Info'}
+              onMenuClick={this.props.onInfoSelect}
+            />
             <MenuItem
               menuItemName={'Credits'}
               onMenuClick={this.props.onCreditsSelect}

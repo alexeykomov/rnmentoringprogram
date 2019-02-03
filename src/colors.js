@@ -15,6 +15,7 @@ const Colors = {
   SharpBlue: '#39c2d7',
   DarkBlue: '#263852',
   LightGray: '#cccccc',
+  MediumGray: 'rgb(142,142,146)',
   DarkGray: '#464557',
   WhiteTransparent: 'rgba(255,255,255,0.5)',
 };

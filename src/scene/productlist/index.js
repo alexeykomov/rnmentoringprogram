@@ -104,8 +104,8 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
 
   async sendRequest(page: number, retryAction: Function) {
     try {
-      const response = await this.mockResponse(PAGE_SIZE, page);
-      // const response = await this.getResponse(PAGE_SIZE, page);
+      // const response = await this.mockResponse(PAGE_SIZE, page);
+      const response = await this.getResponse(PAGE_SIZE, page);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
@@ -158,6 +158,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
             ref={sidePane => (this.sidePane = sidePane)}
             onCreditsSelect={this.onCreditsSelect}
             onLogoutSelect={this.onLogoutSelect}
+            onInfoSelect={this.onInfoSelect}
           />
         </View>
       </React.Fragment>
@@ -185,6 +186,14 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       });
       this.props.navigation.dispatch(resetAction);
     });
+  };
+
+  onInfoSelect = () => {
+    this.sidePane.closeMenu(() => {
+      this.props.navigation.navigate({
+        routeName: Routes.Info
+      })
+    })
   };
 
   keyExtractor = (item: Product, index: number) =>

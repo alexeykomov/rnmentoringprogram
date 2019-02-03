@@ -14,6 +14,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Routes } from './routes';
 import ModalScreen from './scene/modal/modal';
 import CreditsScreen from './scene/credits/credits';
+import InfoScreen from './scene/info/info';
 import { UIManager, Platform } from 'react-native';
 
 if (Platform.OS === 'android') {
@@ -28,6 +29,7 @@ const AppNavigator = createStackNavigator(
     [Routes.ProductFull]: ProductFull,
     [Routes.LocationScreen]: LocationScreen,
     [Routes.Credits]: CreditsScreen,
+    [Routes.Info]: InfoScreen,
   },
   {
     initialRouteName: Routes.Login,

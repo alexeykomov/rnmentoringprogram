@@ -9,6 +9,7 @@ export const Routes = {
   LocationScreen: 'LocationScreen',
   Modal: 'Modal',
   Credits: 'Credits',
+  Info: 'Info',
 };
 
 export type Route = $Values<typeof Routes>;

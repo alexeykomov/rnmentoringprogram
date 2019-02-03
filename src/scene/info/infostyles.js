@@ -5,13 +5,13 @@
 import { StyleSheet } from 'react-native';
 import Colors from '../../colors';
 
-type CreditsStyle = {
+type InfoStyle = {
   container: Object,
   frame: Object,
   separator: Object,
 };
 
-const style: CreditsStyle = StyleSheet.create({
+const style: InfoStyle = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
@@ -23,7 +23,7 @@ const style: CreditsStyle = StyleSheet.create({
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: Colors.EpamBlue,
-  },
+  }
 });
 
 export default style;
