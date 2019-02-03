@@ -23,7 +23,7 @@ const style: InfoStyle = StyleSheet.create({
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: Colors.EpamBlue,
-  }
+  },
 });
 
 export default style;

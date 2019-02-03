@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
-  Image,
   Animated,
   AsyncStorage,
   Vibration,
@@ -113,7 +112,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
       return;
     }
 
-    this.smilingStackAnimation.play()
+    this.smilingStackAnimation.play();
   };
 
   render() {

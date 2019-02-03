@@ -16,7 +16,6 @@ const InfoItem = ({ info }: InfoItemProps) => {
       <View>
         <Text style={style.infoValueText}>{info.value}</Text>
       </View>
-
     </View>
   );
 };

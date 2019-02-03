@@ -36,7 +36,6 @@ import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import SplashScreen from 'react-native-splash-screen';
 import { noop } from '../../lib/noop';
 
-
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
 };
@@ -191,9 +190,9 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   onInfoSelect = () => {
     this.sidePane.closeMenu(() => {
       this.props.navigation.navigate({
-        routeName: Routes.Info
-      })
-    })
+        routeName: Routes.Info,
+      });
+    });
   };
 
   keyExtractor = (item: Product, index: number) =>

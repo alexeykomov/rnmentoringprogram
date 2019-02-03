@@ -3,7 +3,6 @@
  * */
 
 import React from 'react';
-import type { Node } from 'react';
 import { View, FlatList } from 'react-native';
 import style from './infostyles';
 import type {
@@ -49,19 +48,19 @@ class InfoScreen extends React.PureComponent<InfoScreenProps, State> {
       infos: [
         {
           name: 'System',
-          value: DeviceInfo.getSystemName()
+          value: DeviceInfo.getSystemName(),
         },
         {
           name: 'System version',
-          value: DeviceInfo.getSystemVersion()
+          value: DeviceInfo.getSystemVersion(),
         },
         {
           name: 'User agent',
-          value: DeviceInfo.getUserAgent()
+          value: DeviceInfo.getUserAgent(),
         },
         {
           name: 'Timezone',
-          value: DeviceInfo.getTimezone()
+          value: DeviceInfo.getTimezone(),
         },
       ],
     };
@@ -74,7 +73,7 @@ class InfoScreen extends React.PureComponent<InfoScreenProps, State> {
     const { navigation } = this.props;
     return (
       <React.Fragment>
-        <NetworkWatcher navigation={navigation}/>
+        <NetworkWatcher navigation={navigation} />
         <View style={style.container}>
           <FlatList
             style={style.frame}
@@ -90,9 +89,7 @@ class InfoScreen extends React.PureComponent<InfoScreenProps, State> {
     );
   }
 
-  renderInfoItem = ({ item }: { item: Infoblock }) => (
-    <InfoItem info={item} />
-  );
+  renderInfoItem = ({ item }: { item: Infoblock }) => <InfoItem info={item} />;
 
   renderSeparator() {
     return <View style={style.separator} />;
