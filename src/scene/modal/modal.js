@@ -28,19 +28,20 @@ class ModalScreen extends React.PureComponent<ModalScreenPropsType> {
             error.message
           }`}</Text>
           {retryAction !== noop ? (
-            <Button
-              caption={'Retry'}
-              onPress={() => {
-                retryAction();
-                navigation.goBack();
-              }}
-            />
+            <Button caption={'Retry'} onPress={this.onRetryPress} />
           ) : null}
           <Button caption={'Close'} onPress={this.onBackPress} />
         </View>
       </View>
     );
   }
+
+  onRetryPress = () => {
+    const { navigation } = this.props;
+    const retryAction = navigation.getParam('retryAction') || noop;
+    retryAction();
+    navigation.goBack();
+  };
 
   onBackPress = () => {
     const { navigation } = this.props;
