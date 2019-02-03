@@ -44,7 +44,7 @@ class ModalScreen extends React.PureComponent<ModalScreenPropsType> {
 
   onBackPress = () => {
     const { navigation } = this.props;
-    navigation.goBack;
+    navigation.goBack();
   };
 }
 
