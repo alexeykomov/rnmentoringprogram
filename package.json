@@ -7,6 +7,9 @@
     "test": "jest",
     "lint": "eslint ./src --fix"
   },
+  "peerDependencies": {
+    "react-native-swift": "^0.3.0"
+  },
   "dependencies": {
     "lottie-react-native": "^2.5.11",
     "react": "16.6.1",
@@ -30,6 +33,7 @@
     "jest": "23.6.0",
     "metro-react-native-babel-preset": "0.49.2",
     "prettier": "^1.16.1",
+    "react-native-swift": "^1.2.2",
     "react-test-renderer": "16.6.1"
   },
   "jest": {
