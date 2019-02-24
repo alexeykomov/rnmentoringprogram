@@ -9,7 +9,6 @@ import {
   TextInput,
   Text,
   Animated,
-  AsyncStorage,
   Vibration,
 } from 'react-native';
 import style from './styles';
@@ -25,6 +24,7 @@ import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/Ani
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import SplashScreen from 'react-native-splash-screen';
 import LottieView from 'lottie-react-native';
+import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
 
 type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -90,8 +90,8 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     this.smilingStackAnimation && this.smilingStackAnimation.play();
 
     try {
-      const token = await AsyncStorage.getItem('token');
-      if (token !== null) {
+      const token = await RNRnmentoringprogramAsyncStorage.getItem('token');
+      if (token) {
         return this.navigateToContent();
       }
       SplashScreen.hide();
@@ -228,7 +228,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
 
   async saveLoginToken(token: string) {
     try {
-      await AsyncStorage.setItem('token', token);
+      await RNRnmentoringprogramAsyncStorage.setItem('token', token);
     } catch (error) {
       console.log("Error - token wasn't saved: ", error);
     }
