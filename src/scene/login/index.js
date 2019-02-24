@@ -25,6 +25,7 @@ import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import SplashScreen from 'react-native-splash-screen';
 import LottieView from 'lottie-react-native';
 import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
+import { Sentry } from 'react-native-sentry';
 
 type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -96,6 +97,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
       }
       SplashScreen.hide();
     } catch (error) {
+      Sentry.captureException(error);
       console.log('Error retrieving token from AsyncStorage: ', error);
       SplashScreen.hide();
     }
@@ -222,6 +224,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
       await this.saveLoginToken(token);
       this.handleRequestSuccess();
     } catch (e) {
+      Sentry.captureException(e);
       this.handleRequestError(e, retryAction);
     }
   }
@@ -230,6 +233,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     try {
       await RNRnmentoringprogramAsyncStorage.setItem('token', token);
     } catch (error) {
+      Sentry.captureException(error);
       console.log("Error - token wasn't saved: ", error);
     }
   }
