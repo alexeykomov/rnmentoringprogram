@@ -30,6 +30,7 @@ import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import SplashScreen from 'react-native-splash-screen';
 import { noop } from '../../lib/noop';
 import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
+import { Sentry } from 'react-native-sentry';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -114,6 +115,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       const products = formatProducts(await response.json());
       this.handleRequestSuccess(products, page);
     } catch (e) {
+      Sentry.captureException(e);
       this.handleRequestError(e, retryAction);
     }
   }
@@ -181,6 +183,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
             try {
               await RNRnmentoringprogramAsyncStorage.setItem('token', '');
             } catch (e) {
+              Sentry.captureException(e);
               console.log('Error - cannot remove token: ', e);
             }
             const resetAction = StackActions.reset({

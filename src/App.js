@@ -16,11 +16,16 @@ import ModalScreen from './scene/modal/modal';
 import CreditsScreen from './scene/credits/credits';
 import InfoScreen from './scene/info/info';
 import { UIManager, Platform } from 'react-native';
+import { Sentry } from 'react-native-sentry';
 
 if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental &&
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
+
+Sentry.config(
+  'https://0d0b5ca57ec84c48ae9c4f78a04ea338@sentry.io/1401443',
+).install();
 
 const AppNavigator = createStackNavigator(
   {
