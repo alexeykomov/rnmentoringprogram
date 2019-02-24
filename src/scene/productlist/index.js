@@ -4,13 +4,7 @@
 
 import style from './styles';
 import type { Product } from '../../product';
-import {
-  View,
-  FlatList,
-  Animated,
-  LayoutAnimation,
-  AsyncStorage,
-} from 'react-native';
+import { View, FlatList, Animated, LayoutAnimation } from 'react-native';
 import React from 'react';
 import Header from '../../components/header';
 import type {
@@ -35,6 +29,7 @@ import MenuButton from '../../components/menubutton/menubutton';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import SplashScreen from 'react-native-splash-screen';
 import { noop } from '../../lib/noop';
+import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -184,7 +179,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       ? this.sidePane.closeMenu(
           async (): Promise<void> => {
             try {
-              await AsyncStorage.removeItem('token');
+              await RNRnmentoringprogramAsyncStorage.setItem('token', '');
             } catch (e) {
               console.log('Error - cannot remove token: ', e);
             }
