@@ -17,6 +17,8 @@ import CreditsScreen from './scene/credits/credits';
 import InfoScreen from './scene/info/info';
 import { UIManager, Platform } from 'react-native';
 import { Sentry } from 'react-native-sentry';
+import React from 'react';
+import GlobalContext from './globalstate';
 
 if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental &&
@@ -56,4 +58,11 @@ const RootStack = createStackNavigator(
   },
 );
 
-export default createAppContainer(RootStack);
+const App = createAppContainer(RootStack);
+
+const AppWithGlobalState = () => (
+  <GlobalContext.Provider value={{value: 2}}>
+    <App />
+  </GlobalContext.Provider>
+);
+export default AppWithGlobalState;
