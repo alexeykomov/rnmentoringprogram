@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Text,
   ScrollView,
-  Animated,
+  Animated, LayoutAnimation,
 } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
@@ -21,6 +21,10 @@ import Colors from '../../colors';
 import { Routes } from '../../routes';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import GlobalContext from './../../globalstate';
+import type { GlobalState } from '../../globalstate';
+import { formatProducts } from '../productlist/producttransform';
+import { Sentry } from 'react-native-sentry';
+import { createCartRequest } from '../cart/cartservice';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<*>,
@@ -65,10 +69,10 @@ class ProductFull extends React.PureComponent<ProductListProps> {
 
     return (
       <GlobalContext.Consumer>
-        {context => (
+        {(context: GlobalState) => (
           <React.Fragment>
             <NetworkWatcher navigation={navigation} />
-            <Text>{context.value}</Text>
+            <Text>{[...context.items.values()].join()}</Text>
             <View style={style.container}>
               <NavigationEvents
                 onDidFocus={payload => {
@@ -88,12 +92,7 @@ class ProductFull extends React.PureComponent<ProductListProps> {
                 <Text style={style.productText}>{product.history}</Text>
                 <TouchableOpacity
                   style={style.returnButton}
-                  onPress={() =>
-                    navigation.navigate({
-                      routeName: Routes.LocationScreen,
-                      params: { product },
-                    })
-                  }
+                  onPress={this.navigateToLocation}
                 >
                   <Animated.View
                     style={[
@@ -106,7 +105,7 @@ class ProductFull extends React.PureComponent<ProductListProps> {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={style.returnButton}
-                  onPress={() => navigation.goBack()}
+                  onPress={() => this.operateWithCart(context)}
                 >
                   <Animated.View
                     style={[
@@ -114,7 +113,9 @@ class ProductFull extends React.PureComponent<ProductListProps> {
                       { transform: [{ translateY: this.buttonY2 }] },
                     ]}
                   >
-                    <Text style={style.returnText}>All Products</Text>
+                    <Text style={style.returnText}>
+                      {this.getOperateWithCartText(context)}
+                    </Text>
                   </Animated.View>
                 </TouchableOpacity>
               </ScrollView>
@@ -124,6 +125,84 @@ class ProductFull extends React.PureComponent<ProductListProps> {
       </GlobalContext.Consumer>
     );
   }
+
+  getOperateWithCartText(context: GlobalState) {
+    const { navigation } = this.props;
+    const product = navigation.getParam<product>('product', NonExistentProduct);
+    if (context.items.has(product.id)) {
+      return 'Remove from cart';
+    }
+    return 'Add to cart';
+  }
+
+  navigateToLocation() {
+    const { navigation } = this.props;
+    const product = navigation.getParam<product>('product', NonExistentProduct);
+    return navigation.navigate({
+      routeName: Routes.LocationScreen,
+      params: { product },
+    });
+  }
+
+  operateWithCart(context: GlobalState) {
+    const { navigation } = this.props;
+    const product = navigation.getParam<product>('product', NonExistentProduct);
+    if (context.items.has(product.id)) {
+      context.removeItem(product.id);
+    } else {
+      context.addItem(product.id);
+    }
+  }
+
+  async sendRequest(context: GlobalState, retryAction: Function) {
+    try {
+      const createCartResponse = await createCartRequest();
+      const responseIsOk = createCartResponse.ok;
+      if (!responseIsOk) {
+        return this.handleRequestError(
+          new Error('Response is not ok.'),
+          retryAction,
+        );
+      }
+      const qouteId = /(\d+)/.exec(await createCartResponse.json())[0];
+      this.handleRequestSuccess(products, page);
+    } catch (e) {
+      Sentry.captureException(e);
+      this.handleRequestError(e, retryAction);
+    }
+  }
+
+  handleRequestSuccess(products: Product[], page: number) {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    this.setState((prevState, props) => {
+      return {
+        ...prevState,
+        products: [...this.state.products, ...products],
+        loading: false,
+        refreshing: false,
+        currentPage: page,
+        listOpacity: 1,
+      };
+    });
+  }
+
+  handleRequestError(e: Error, retryAction: Function) {
+    const { navigation } = this.props;
+
+    console.log('Fetch error: ', e);
+    this.setState((prevState, props) => {
+      navigation.navigate({
+        routeName: Routes.Modal,
+        params: { error: e, retryAction },
+      });
+      return {
+        ...prevState,
+        loading: false,
+        refreshing: false,
+      };
+    });
+  }
+
 }
 
 export default ProductFull;

@@ -1,68 +1,80 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import LoginScreen from './scene/login';
-import ProductList from './scene/productlist';
-import ProductFull from './scene/product';
-import LocationScreen from './scene/location';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import { Routes } from './routes';
-import ModalScreen from './scene/modal/modal';
-import CreditsScreen from './scene/credits/credits';
-import InfoScreen from './scene/info/info';
-import { UIManager, Platform } from 'react-native';
-import { Sentry } from 'react-native-sentry';
-import React from 'react';
+import type { GlobalState } from './globalstate';
 import GlobalContext from './globalstate';
+import type { Product } from './product';
+import NavigationContainer from './navigationcontainer';
+import React from 'react';
 
-if (Platform.OS === 'android') {
-  UIManager.setLayoutAnimationEnabledExperimental &&
-    UIManager.setLayoutAnimationEnabledExperimental(true);
+type AppWithGlobalStateProps = {};
+
+class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
+  constructor() {
+    super();
+
+    this.state = {
+      items: new Map(),
+      addItem: this.addItem,
+      removeItem: this.removeItem,
+      clearItems: this.clearItems,
+    };
+  }
+
+  async componentDidMount(): void {}
+
+  addItem(item: Product) {
+    this.setState((prevState, props) => {
+      if (prevState.items.has(item.id)) {
+        return prevState;
+      }
+      const newItems = new Map(prevState.items.entries());
+      newItems.set(item.id, item);
+      return {
+        ...prevState,
+        items: newItems,
+      };
+    });
+  }
+
+  removeItem(item: Product) {
+    this.setState((prevState, props) => {
+      if (prevState.items.has(item.id)) {
+        return prevState;
+      }
+      const newItems = new Map(prevState.items.entries());
+      newItems.delete(item.id);
+      return {
+        ...prevState,
+        items: newItems,
+      };
+    });
+  }
+
+  clearItems() {
+    this.setState((prevState, props) => {
+      const newItems = new Map();
+      return {
+        ...prevState,
+        items: newItems,
+      };
+    });
+  }
+
+  setItems(items: Product[]) {
+    this.setState((prevState, props) => {
+      const newItems = new Map();
+      items.forEach(product => newItems.set(product.id, product));
+      return {
+        ...prevState,
+        items: newItems,
+      };
+    });
+  }
+
+  render() {
+    return (
+      <GlobalContext.Provider value={this.state}>
+        <NavigationContainer />
+      </GlobalContext.Provider>
+    );
+  }
 }
-
-Sentry.config(
-  'https://0d0b5ca57ec84c48ae9c4f78a04ea338@sentry.io/1401443',
-).install();
-
-const AppNavigator = createStackNavigator(
-  {
-    [Routes.Login]: LoginScreen,
-    [Routes.ProductList]: ProductList,
-    [Routes.ProductFull]: ProductFull,
-    [Routes.LocationScreen]: LocationScreen,
-    [Routes.Credits]: CreditsScreen,
-    [Routes.Info]: InfoScreen,
-  },
-  {
-    initialRouteName: Routes.Login,
-  },
-);
-
-const RootStack = createStackNavigator(
-  {
-    Main: {
-      screen: AppNavigator,
-    },
-    [Routes.Modal]: {
-      screen: ModalScreen,
-    },
-  },
-  {
-    mode: 'modal',
-    headerMode: 'none',
-  },
-);
-
-const App = createAppContainer(RootStack);
-
-const AppWithGlobalState = () => (
-  <GlobalContext.Provider value={{value: 2}}>
-    <App />
-  </GlobalContext.Provider>
-);
-export default AppWithGlobalState;
+export default App;

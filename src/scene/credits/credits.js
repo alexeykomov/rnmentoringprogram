@@ -95,6 +95,11 @@ class CreditsScreen extends React.PureComponent<CreditsScreenProps, State> {
           authorName: 'itim2101',
           authorLink: 'https://www.flaticon.com/authors/itim2101',
         },
+        {
+          name: 'Shopping cart free icon',
+          authorName: 'Freepik',
+          authorLink: 'https://www.flaticon.com/authors/freepik',
+        },
       ],
     };
   }

@@ -17,6 +17,7 @@ export const formatProducts = (
     return {
       id: productItem.id,
       name,
+      sku: productItem.sku,
       history,
       iconId: getRandomProductId(),
       telephone: '+375111111111',

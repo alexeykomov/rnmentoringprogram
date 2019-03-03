@@ -14,6 +14,8 @@ import React from 'react';
 import MenuItem from './menuitem/menuitem';
 import { throttle } from '../../../lib/throttle';
 import { noop } from '../../../lib/noop';
+import type { GlobalState } from '../../../globalstate';
+import GlobalContext from './../../../globalstate';
 
 type SidePaneProps = {|
   onCreditsSelect: () => void,
@@ -94,58 +96,62 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
 
   render() {
     return (
-      <Modal transparent={true} visible={this.state.modalVisible}>
-        <Animated.View
-          {...this.panResponder.panHandlers}
-          style={{
-            ...StyleSheet.absoluteFillObject,
-            opacity: this.menuFade,
-            backgroundColor: 'black',
-          }}
-        >
-          <TouchableOpacity
-            style={StyleSheet.absoluteFillObject}
-            onPress={this.onHighlightPress}
-          />
-        </Animated.View>
-        <Animated.View
-          style={{
-            ...StyleSheet.absoluteFillObject,
-            width: SIDE_PANE_WIDTH,
-            transform: [
-              {
-                translateX: Animated.diffClamp(
-                  this.menuX,
-                  -SIDE_PANE_WIDTH,
-                  0,
-                ).interpolate({
-                  inputRange: [-SIDE_PANE_WIDTH, 0],
-                  outputRange: [-SIDE_PANE_WIDTH, 0],
-                }),
-              },
-            ],
-            borderRightWidth: 1,
-            borderRightColor: Colors.EpamBlue,
-            backgroundColor: Colors.White,
-          }}
-        >
-          <View style={{ backgroundColor: Colors.EpamBlue, height: 100 }} />
-          <ScrollView>
-            <MenuItem
-              menuItemName={'Info'}
-              onMenuClick={this.props.onInfoSelect}
-            />
-            <MenuItem
-              menuItemName={'Credits'}
-              onMenuClick={this.props.onCreditsSelect}
-            />
-            <MenuItem
-              menuItemName={'Logout'}
-              onMenuClick={this.props.onLogoutSelect}
-            />
-          </ScrollView>
-        </Animated.View>
-      </Modal>
+      <GlobalContext.Consumer>
+        {(context: GlobalState) => (
+          <Modal transparent={true} visible={this.state.modalVisible}>
+            <Animated.View
+              {...this.panResponder.panHandlers}
+              style={{
+                ...StyleSheet.absoluteFillObject,
+                opacity: this.menuFade,
+                backgroundColor: 'black',
+              }}
+            >
+              <TouchableOpacity
+                style={StyleSheet.absoluteFillObject}
+                onPress={this.onHighlightPress}
+              />
+            </Animated.View>
+            <Animated.View
+              style={{
+                ...StyleSheet.absoluteFillObject,
+                width: SIDE_PANE_WIDTH,
+                transform: [
+                  {
+                    translateX: Animated.diffClamp(
+                      this.menuX,
+                      -SIDE_PANE_WIDTH,
+                      0,
+                    ).interpolate({
+                      inputRange: [-SIDE_PANE_WIDTH, 0],
+                      outputRange: [-SIDE_PANE_WIDTH, 0],
+                    }),
+                  },
+                ],
+                borderRightWidth: 1,
+                borderRightColor: Colors.EpamBlue,
+                backgroundColor: Colors.White,
+              }}
+            >
+              <View style={{ backgroundColor: Colors.EpamBlue, height: 100 }} />
+              <ScrollView>
+                <MenuItem
+                  menuItemName={'Info'}
+                  onMenuClick={this.props.onInfoSelect}
+                />
+                <MenuItem
+                  menuItemName={'Credits'}
+                  onMenuClick={this.props.onCreditsSelect}
+                />
+                <MenuItem
+                  menuItemName={'Logout'}
+                  onMenuClick={this.props.onLogoutSelect}
+                />
+              </ScrollView>
+            </Animated.View>
+          </Modal>
+        )}
+      </GlobalContext.Consumer>
     );
   }
 

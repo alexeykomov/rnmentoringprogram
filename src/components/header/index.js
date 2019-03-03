@@ -5,9 +5,10 @@
 import style from './styles';
 import React from 'react';
 import { View, Text } from 'react-native';
+import { Icon } from '../../icons';
 
 type HeaderProps = {
-  icon: Object | null,
+  icon: typeof React.Element | null,
   text: string,
   buttonBackIsPresent: boolean,
 };

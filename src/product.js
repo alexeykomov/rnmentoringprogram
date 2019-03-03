@@ -24,6 +24,7 @@ export type Product = {
   history: string,
   telephone: string,
   location: LatLng,
+  sku: string,
 };
 
 export type LatLng = {

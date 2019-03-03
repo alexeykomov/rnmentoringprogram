@@ -10,6 +10,7 @@ export const Routes = {
   Modal: 'Modal',
   Credits: 'Credits',
   Info: 'Info',
+  Cart: 'Cart',
 };
 
 export type Route = $Values<typeof Routes>;

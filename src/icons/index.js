@@ -42,15 +42,13 @@ export const IconSizes = {
   Big: 1,
 };
 
+export const IconSizeStyles = {
+  [IconSizes.Small]: { width: 30, height: 30 },
+  [IconSizes.Big]: { width: 40, height: 40 },
+};
+
 export type IconSize = $Values<typeof IconSizes>;
 
 export const Icon = ({ product, size }: IconProps) => (
-  <Image
-    style={
-      size === IconSizes.Big
-        ? { width: 40, height: 40 }
-        : { width: 30, height: 30 }
-    }
-    source={getImageByProduct(product)}
-  />
+  <Image style={IconSizeStyles[size]} source={getImageByProduct(product)} />
 );
