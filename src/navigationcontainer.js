@@ -17,6 +17,7 @@ import CreditsScreen from './scene/credits/credits';
 import InfoScreen from './scene/info/info';
 import { UIManager, Platform } from 'react-native';
 import { Sentry } from 'react-native-sentry';
+import Cart from './scene/cart/cart';
 
 if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental &&
@@ -35,6 +36,7 @@ const AppNavigator = createStackNavigator(
     [Routes.LocationScreen]: LocationScreen,
     [Routes.Credits]: CreditsScreen,
     [Routes.Info]: InfoScreen,
+    [Routes.Cart]: Cart,
   },
   {
     initialRouteName: Routes.Login,

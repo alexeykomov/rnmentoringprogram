@@ -4710,6 +4710,11 @@ react-native-maps@^0.22.1:
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.22.1.tgz#ce856e71970e872e596e6fa4773279cae2c4dcdd"
   integrity sha512-JjBpAXjzZY8AW4HTcAZxX+cGk6e6i+J5Vd//DViMUe0bRkKKv92ds1W9rqZ+o9PhUqdP++3DvKv0jrB05icqKA==
 
+react-native-push-notification@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.2.tgz#a6129fb2897773a19c7b42bba1b51a9a4aac7df3"
+  integrity sha512-MjjPNXb2Cw7g1D41DtVbTVuGFCAtADxb91pAEFSkQ0AZ2gIooqYkWFHBL6woc15QHhtaZS8VT2GQoyW5OWlxIg==
+
 react-native-rnmentoringprogram-async-storage@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-rnmentoringprogram-async-storage/-/react-native-rnmentoringprogram-async-storage-1.0.0.tgz#4c37e965aaecb637a2c1b46c0e92f64249cc0e80"
@@ -5995,9 +6000,9 @@ xcode@^1.0.0:
     simple-plist "^0.2.1"
     uuid "3.0.1"
 
-"xcode@git+https://github.com/apache/cordova-node-xcode.git#e7646f0680d509b590b839e567c217590451505b":
+"xcode@https://github.com/apache/cordova-node-xcode#e7646f0680d509b590b839e567c217590451505b":
   version "1.0.1-dev"
-  resolved "git+https://github.com/apache/cordova-node-xcode.git#e7646f0680d509b590b839e567c217590451505b"
+  resolved "https://github.com/apache/cordova-node-xcode#e7646f0680d509b590b839e567c217590451505b"
   dependencies:
     simple-plist "^0.2.1"
     uuid "3.0.1"

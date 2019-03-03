@@ -159,11 +159,23 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
             onCreditsSelect={this.onCreditsSelect}
             onLogoutSelect={this.onLogoutSelect}
             onInfoSelect={this.onInfoSelect}
+            onCartSelect={this.onCartSelect}
           />
         </View>
       </React.Fragment>
     );
   }
+
+  onCartSelect = () => {
+    this.sidePane
+      ? this.sidePane.closeMenu(
+          (): void =>
+            void this.props.navigation.navigate({
+              routeName: Routes.Cart,
+            }),
+        )
+      : console.log(SIDE_PANE_WARNING);
+  };
 
   onCreditsSelect = () => {
     this.sidePane

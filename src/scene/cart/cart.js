@@ -17,7 +17,6 @@ import Colors from '../../colors';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { Loader } from '../../components/loader';
 import ProductItem from '../../components/productitem/productitem';
-import obj from './../../../response.json';
 import NoProductData from '../../components/noproductdata/noproductdata';
 import { getUid } from '../../lib/id';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
@@ -72,6 +71,7 @@ class Cart extends React.PureComponent<ProductListProps, State> {
       currentPage: INITIAL_PAGE,
       modalVisible: false,
       listOpacity: 0,
+      quoteId: '',
     };
   }
 
@@ -81,7 +81,7 @@ class Cart extends React.PureComponent<ProductListProps, State> {
 
   componentWillUnmount() {}
 
-  async sendRequest(page: number, retryAction: Function) {
+  async sendClearCartRequest(quoteId: string, retryAction: Function) {
     try {
       const response = await this.mockResponse(PAGE_SIZE, page);
       // const response = await this.createCartRequest(PAGE_SIZE, page);
@@ -152,7 +152,7 @@ class Cart extends React.PureComponent<ProductListProps, State> {
 
   loadInitial = () => {
     this.setState((prevState, props) => {
-      this.sendRequest(INITIAL_PAGE, this.loadInitial);
+      this.sendClearCartRequest(INITIAL_PAGE, this.loadInitial);
       return {
         ...prevState,
         loading: true,
@@ -162,7 +162,7 @@ class Cart extends React.PureComponent<ProductListProps, State> {
 
   onRefresh = () => {
     this.setState((prevState, props) => {
-      this.sendRequest(INITIAL_PAGE, this.onRefresh);
+      this.sendClearCartRequest(INITIAL_PAGE, this.onRefresh);
       return {
         ...prevState,
         refreshing: true,
@@ -173,7 +173,7 @@ class Cart extends React.PureComponent<ProductListProps, State> {
   onLoadMore = () => {
     this.setState((prevState, props) => {
       const newPage = this.state.currentPage + 1;
-      this.sendRequest(newPage, this.onLoadMore);
+      this.sendClearCartRequest(newPage, this.onLoadMore);
       return {
         ...prevState,
       };
@@ -220,9 +220,7 @@ class Cart extends React.PureComponent<ProductListProps, State> {
       };
     });
   }
-
 }
-
 
 const renderProductItem = (onProductClick: Function, product: Product) => (
   <ProductItem onProductClick={onProductClick} product={product} />

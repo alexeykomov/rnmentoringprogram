@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Text,
   ScrollView,
-  Animated, LayoutAnimation,
+  Animated,
+  LayoutAnimation,
 } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
@@ -24,10 +25,18 @@ import GlobalContext from './../../globalstate';
 import type { GlobalState } from '../../globalstate';
 import { formatProducts } from '../productlist/producttransform';
 import { Sentry } from 'react-native-sentry';
-import { createCartRequest } from '../cart/cartservice';
+import {
+  addItemRequest,
+  createCartRequest,
+  getCartsRequest,
+} from '../cart/cartservice';
 
-type ProductListProps = {
+type ProductPropsType = {
   navigation: NavigationScreenProp<*>,
+};
+
+type ProductStateType = {
+  loading: boolean,
 };
 
 const NonExistentProduct: Product = {
@@ -37,10 +46,14 @@ const NonExistentProduct: Product = {
   history: '',
   location: { longitude: 0, latitude: 0 },
   telephone: '',
+  sku: '',
 };
 
-class ProductFull extends React.PureComponent<ProductListProps> {
-  static navigationOptions = ({ navigation }: ProductListProps) => {
+class ProductFull extends React.PureComponent<
+  ProductPropsType,
+  ProductStateType,
+> {
+  static navigationOptions = ({ navigation }: ProductPropsType) => {
     const product = navigation.getParam<product>('product', NonExistentProduct);
     return {
       headerTitleStyle: {
@@ -62,6 +75,14 @@ class ProductFull extends React.PureComponent<ProductListProps> {
 
   buttonY1 = new Animated.Value(20);
   buttonY2 = new Animated.Value(20);
+
+  constructor() {
+    super();
+
+    this.state = {
+      loading: false,
+    };
+  }
 
   render() {
     const { navigation } = this.props;
@@ -149,47 +170,124 @@ class ProductFull extends React.PureComponent<ProductListProps> {
     const product = navigation.getParam<product>('product', NonExistentProduct);
     if (context.items.has(product.id)) {
       context.removeItem(product.id);
+      this.sendRemoveItemRequest();
     } else {
       context.addItem(product.id);
+      this.sendAddItemRequest(product, context, () => this.sendAddItemRequest);
     }
   }
 
-  async sendRequest(context: GlobalState, retryAction: Function) {
+  async sendAddItemRequest(
+    item: Product,
+    context: GlobalState,
+    retryAction: Function,
+  ) {
     try {
       const createCartResponse = await createCartRequest();
-      const responseIsOk = createCartResponse.ok;
-      if (!responseIsOk) {
+      if (!createCartResponse.ok) {
         return this.handleRequestError(
+          true,
+          item,
+          context,
           new Error('Response is not ok.'),
           retryAction,
         );
       }
-      const qouteId = /(\d+)/.exec(await createCartResponse.json())[0];
-      this.handleRequestSuccess(products, page);
+      const qouteId = (/(\d+)/.exec(await createCartResponse.json()) || [
+        '',
+      ])[0];
+      const addItemResponse = await addItemRequest(item, qouteId);
+      if (!addItemResponse.ok) {
+        return this.handleRequestError(
+          true,
+          item,
+          context,
+          new Error('Response is not ok.'),
+          retryAction,
+        );
+      }
+      this.handleAddItemRequestSuccess();
+      context.addItem(item);
     } catch (e) {
       Sentry.captureException(e);
-      this.handleRequestError(e, retryAction);
+      this.handleRequestError(true, item, context, e, retryAction);
     }
   }
 
-  handleRequestSuccess(products: Product[], page: number) {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+  async sendRemoveItemRequest(
+    item: Product,
+    context: GlobalState,
+    retryAction: Function,
+  ) {
+    try {
+      const getCartsResponse = await getCartsRequest();
+      if (!getCartsResponse.ok) {
+        return this.handleRequestError(
+          false,
+          item,
+          context,
+          new Error('Response is not ok.'),
+          retryAction,
+        );
+      }
+      const qouteIds = await getCartsResponse.json();
+      if (!qouteIds.length) {
+        this.handleAddItemRequestSuccess();
+        context.removeItem(item);
+        return;
+      }
+      const quoteId = qouteIds[qouteIds.length - 1];
+      const removeItemResponse = await removeItemRequest(item, quoteId);
+      if (!removeItemResponse.ok) {
+        return this.handleRequestError(
+          false,
+          item,
+          context,
+          new Error('Response is not ok.'),
+          retryAction,
+        );
+      }
+      this.handleRemoveItemRequestSuccess();
+      context.removeItem(item);
+    } catch (e) {
+      Sentry.captureException(e);
+      this.handleRequestError(false, item, context, e, retryAction);
+    }
+  }
+
+  handleAddItemRequestSuccess() {
     this.setState((prevState, props) => {
       return {
         ...prevState,
-        products: [...this.state.products, ...products],
         loading: false,
-        refreshing: false,
-        currentPage: page,
-        listOpacity: 1,
       };
     });
   }
 
-  handleRequestError(e: Error, retryAction: Function) {
+  handleRemoveItemRequestSuccess(item: Product, context: GlobalState) {
+    this.setState((prevState, props) => {
+      return {
+        ...prevState,
+        loading: false,
+      };
+    });
+  }
+
+  handleRequestError(
+    add: boolean,
+    item: Product,
+    context: GlobalState,
+    e: Error,
+    retryAction: Function,
+  ) {
     const { navigation } = this.props;
 
     console.log('Fetch error: ', e);
+    if (add) {
+      context.removeItem(product);
+    } else {
+      context.addItem(product);
+    }
     this.setState((prevState, props) => {
       navigation.navigate({
         routeName: Routes.Modal,
@@ -198,11 +296,9 @@ class ProductFull extends React.PureComponent<ProductListProps> {
       return {
         ...prevState,
         loading: false,
-        refreshing: false,
       };
     });
   }
-
 }
 
 export default ProductFull;

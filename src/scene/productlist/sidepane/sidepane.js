@@ -21,6 +21,7 @@ type SidePaneProps = {|
   onCreditsSelect: () => void,
   onLogoutSelect: () => void,
   onInfoSelect: () => void,
+  onCartSelect: () => void,
 |};
 
 type SidePaneState = {|
@@ -135,6 +136,10 @@ class SidePane extends React.PureComponent<SidePaneProps, SidePaneState> {
             >
               <View style={{ backgroundColor: Colors.EpamBlue, height: 100 }} />
               <ScrollView>
+                <MenuItem
+                  menuItemName={'Cart'}
+                  onMenuClick={this.props.onCartSelect}
+                />
                 <MenuItem
                   menuItemName={'Info'}
                   onMenuClick={this.props.onInfoSelect}
