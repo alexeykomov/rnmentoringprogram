@@ -92,6 +92,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
 
     try {
       const token = await RNRnmentoringprogramAsyncStorage.getItem('token');
+      console.log('token: ', token);
       if (token) {
         return this.navigateToContent();
       }
@@ -211,8 +212,8 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     retryAction: Function,
   ) {
     try {
-      const response = await this.mockResponse();
-      // const response = await this.getResponse(username, password);
+      // const response = await this.mockResponse();
+      const response = await this.getResponse(username, password);
       const responseIsOk = response.ok;
       if (!responseIsOk) {
         return this.handleRequestError(
@@ -221,6 +222,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
         );
       }
       const token = await response.text();
+      console.log('token: ', token);
       await this.saveLoginToken(token);
       this.handleRequestSuccess();
     } catch (e) {

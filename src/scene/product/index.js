@@ -28,7 +28,7 @@ import { Sentry } from 'react-native-sentry';
 import {
   addItemRequest,
   createCartRequest,
-  getCartsRequest,
+  getCartRequest,
 } from '../cart/cartservice';
 
 type ProductPropsType = {
@@ -193,9 +193,7 @@ class ProductFull extends React.PureComponent<
           retryAction,
         );
       }
-      const qouteId = (/(\d+)/.exec(await createCartResponse.json()) || [
-        '',
-      ])[0];
+      const qouteId = await createCartResponse.json();
       const addItemResponse = await addItemRequest(item, qouteId);
       if (!addItemResponse.ok) {
         return this.handleRequestError(
@@ -220,7 +218,7 @@ class ProductFull extends React.PureComponent<
     retryAction: Function,
   ) {
     try {
-      const getCartsResponse = await getCartsRequest();
+      const getCartsResponse = await getCartRequest();
       if (!getCartsResponse.ok) {
         return this.handleRequestError(
           false,
