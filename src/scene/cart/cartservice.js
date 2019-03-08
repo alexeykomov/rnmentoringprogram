@@ -4,8 +4,55 @@
 
 import type { Product } from '../../product';
 import mockCartResponse from '../../../getcartresponse.json';
+import type { GlobalState } from '../../globalstate';
+import { Sentry } from 'react-native-sentry';
 
 const PATH = 'http://ecsc00a02fb3.epam.com/rest/V1/';
+
+const sendRemoveItemRequest = async (
+  item: CartItemType,
+  context: GlobalState,
+  retryAction: Function,
+  handleRequestError: (boolean, Product, GlobalState, Error, Function) => void,
+  handleRequestSuccess: () => void,
+) => {
+  context.removeItem(item);
+
+  try {
+    const getCartsResponse = await getCartRequest();
+    if (!getCartsResponse.ok) {
+      return handleRequestError(
+        false,
+        item,
+        context,
+        new Error('Response is not ok.'),
+        retryAction,
+      );
+    }
+    const cart = await getCartsResponse.json();
+    if (!cart.items.length) {
+      handleRequestSuccess();
+      return;
+    }
+    const quoteId = cart.id;
+    const removeItemResponse = await removeItemRequest(token, item.item_id);
+    if (!removeItemResponse.ok) {
+      context.addItem(item);
+      return handleRequestError(
+        false,
+        item,
+        context,
+        new Error('Response is not ok.'),
+        retryAction,
+      );
+    }
+    handleRequestSuccess();
+  } catch (e) {
+    Sentry.captureException(e);
+    context.addItem(item);
+    handleRequestError(false, item, context, e, retryAction);
+  }
+};
 
 export const getCartRequest = async (
   token: string,
@@ -25,7 +72,7 @@ export const mockGetCartRequest = async (): GetCartsResponseType => {
   });
 };
 
-export const createCartRequest = (token: string): CreateCartResponseType => {
+export const newCartRequest = (token: string): CreateCartResponseType => {
   return fetch(`${PATH}carts/mine`, {
     method: 'POST',
     headers: {
@@ -35,7 +82,7 @@ export const createCartRequest = (token: string): CreateCartResponseType => {
   });
 };
 
-export const mockCreateCartRequest = async (): DeleteCartResponseType => {
+export const mockNewCartRequest = async (): DeleteCartResponseType => {
   return Promise.resolve({
     ok: true,
     json: () => Promise.resolve('4'),
@@ -80,9 +127,9 @@ export const mockAddItemRequest = async (): AddItemResponseType => {
 
 export const removeItemRequest = (
   token: string,
-  item: CartItemType,
+  itemId: number,
 ): RemoveItemResponseType => {
-  return fetch(`${PATH}carts/mine/items/${item.item_id}`, {
+  return fetch(`${PATH}carts/mine/items/${itemId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -128,12 +175,12 @@ export const mockGetItemsRequest = async (): GetItemsResponseType => {
   });
 };
 
-type RemoveItemResponseType = Promise<{
+type RemoveItemResponseType = Promise<{|
   ok: boolean,
   json: () => Promise<boolean>,
-}>;
+|}>;
 
-type GetCartsResponseType = Promise<{
+type GetCartsResponseType = Promise<{|
   ok: boolean,
   json: () => Promise<{|
     id: number,
@@ -193,17 +240,17 @@ type GetCartsResponseType = Promise<{
     store_id: number,
     extension_attributes: { shipping_assignments: [] },
   |}>,
-}>;
+|}>;
 
-type CreateCartResponseType = Promise<{
+type CreateCartResponseType = Promise<{|
   ok: boolean,
   json: () => Promise<string>,
-}>;
+|}>;
 
-type DeleteCartResponseType = Promise<{
+type DeleteCartResponseType = Promise<{|
   ok: boolean,
   json: () => Promise<string>,
-}>;
+|}>;
 
 type CartItemType = {|
   item_id: number,
@@ -214,14 +261,14 @@ type CartItemType = {|
   quote_id: string,
 |};
 
-type AddItemResponseType = Promise<{
+type AddItemResponseType = Promise<{|
   ok: boolean,
   json: () => Promise<CartItemType>,
-}>;
+|}>;
 
-type GetItemsResponseType = Promise<{
+type GetItemsResponseType = Promise<{|
   ok: boolean,
   json: () => Promise<
     Array<CartItemType>,
   >,
-}>;
+|}>;

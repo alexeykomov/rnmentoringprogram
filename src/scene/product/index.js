@@ -27,7 +27,7 @@ import { formatProducts } from '../productlist/producttransform';
 import { Sentry } from 'react-native-sentry';
 import {
   addItemRequest,
-  createCartRequest,
+  newCartRequest,
   getCartRequest,
 } from '../cart/cartservice';
 
@@ -183,7 +183,7 @@ class ProductFull extends React.PureComponent<
     retryAction: Function,
   ) {
     try {
-      const createCartResponse = await createCartRequest();
+      const createCartResponse = await newCartRequest();
       if (!createCartResponse.ok) {
         return this.handleRequestError(
           true,
