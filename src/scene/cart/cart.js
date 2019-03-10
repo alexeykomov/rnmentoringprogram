@@ -4,7 +4,7 @@
 
 import style from './styles';
 import type { Product } from '../../product';
-import { View, FlatList, Animated, LayoutAnimation, Image } from 'react-native';
+import { View, FlatList, Animated, Image } from 'react-native';
 import React from 'react';
 import Header from '../../components/header';
 import type {
@@ -20,21 +20,18 @@ import ProductItem from '../../components/productitem/productitem';
 import NoProductData from '../../components/noproductdata/noproductdata';
 import { getUid } from '../../lib/id';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
-import { Sentry } from 'react-native-sentry';
 import Button from '../../components/button/button';
 import type { GlobalState } from '../../globalstate';
-import GlobalContext from '../productlist/sidepane/sidepane';
+import GlobalContext from '../../globalstate';
 import { IconSizes, IconSizeStyles } from '../../icons';
+import { getCart } from '../../services/cartservice';
+import { noop } from '../../lib/noop';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
 };
 
-const PAGE_SIZE = 20;
-
 const INITIAL_PAGE = 1;
-
-const ON_END_REACHED_THRESHOLD = 0.2;
 
 const FlatListAnimated = Animated.createAnimatedComponent(FlatList);
 
@@ -63,13 +60,14 @@ class Cart extends React.PureComponent<ProductListProps, State> {
     },
   };
 
+  static contextType = GlobalContext;
+
   constructor() {
     super();
     this.state = {
       loading: false,
       refreshing: false,
       currentPage: INITIAL_PAGE,
-      modalVisible: false,
       listOpacity: 0,
       quoteId: '',
     };
@@ -80,25 +78,6 @@ class Cart extends React.PureComponent<ProductListProps, State> {
   }
 
   componentWillUnmount() {}
-
-  async sendClearCartRequest(quoteId: string, retryAction: Function) {
-    try {
-      const response = await this.mockResponse(PAGE_SIZE, page);
-      // const response = await this.createCartRequest(PAGE_SIZE, page);
-      const responseIsOk = response.ok;
-      if (!responseIsOk) {
-        return this.handleRequestError(
-          new Error('Response is not ok.'),
-          retryAction,
-        );
-      }
-      const products = formatProducts(await response.json());
-      this.handleRequestSuccess(products, page);
-    } catch (e) {
-      Sentry.captureException(e);
-      this.handleRequestError(e, retryAction);
-    }
-  }
 
   render() {
     const { navigation } = this.props;
@@ -115,7 +94,7 @@ class Cart extends React.PureComponent<ProductListProps, State> {
                 return (
                   <FlatListAnimated
                     style={[style.frame, { opacity: this.state.listOpacity }]}
-                    data={context.items}
+                    data={context.getCartProducts()}
                     keyExtractor={this.keyExtractor}
                     renderItem={({ item }) =>
                       renderProductItem(
@@ -123,8 +102,6 @@ class Cart extends React.PureComponent<ProductListProps, State> {
                         item,
                       )
                     }
-                    onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
-                    onEndReached={this.onLoadMore}
                     ItemSeparatorComponent={this.renderSeparator}
                     ListHeaderComponent={this.renderSeparator}
                     ListFooterComponent={this.renderSeparator}
@@ -151,31 +128,49 @@ class Cart extends React.PureComponent<ProductListProps, State> {
     String(item.id) + getUid(item);
 
   loadInitial = () => {
-    this.setState((prevState, props) => {
-      this.sendClearCartRequest(INITIAL_PAGE, this.loadInitial);
-      return {
-        ...prevState,
-        loading: true,
-      };
-    });
+    const navigation = this.props.navigation;
+    getCart(
+      this.context,
+      this.loadInitial,
+      (e, retryAction) => {
+        navigation.navigate({
+          routeName: Routes.Modal,
+          params: { error: e, retryAction },
+        });
+      },
+      () =>
+        this.setState(prevState => ({
+          ...prevState,
+          refreshing: false,
+          listOpacity: 1,
+        })),
+    );
   };
 
   onRefresh = () => {
+    console.log('this.context: ', this.context);
+
     this.setState((prevState, props) => {
-      this.sendClearCartRequest(INITIAL_PAGE, this.onRefresh);
+      const navigation = this.props.navigation;
+      getCart(
+        this.context,
+        this.onRefresh,
+        (e, retryAction) => {
+          navigation.navigate({
+            routeName: Routes.Modal,
+            params: { error: e, retryAction },
+          });
+        },
+        () =>
+          this.setState(prevState => ({
+            ...prevState,
+            refreshing: false,
+            listOpacity: 1,
+          })),
+      );
       return {
         ...prevState,
         refreshing: true,
-      };
-    });
-  };
-
-  onLoadMore = () => {
-    this.setState((prevState, props) => {
-      const newPage = this.state.currentPage + 1;
-      this.sendClearCartRequest(newPage, this.onLoadMore);
-      return {
-        ...prevState,
       };
     });
   };
@@ -189,36 +184,6 @@ class Cart extends React.PureComponent<ProductListProps, State> {
 
   renderSeparator() {
     return <View style={style.separator} />;
-  }
-
-  handleRequestSuccess(products: Product[], page: number) {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-    this.setState((prevState, props) => {
-      return {
-        ...prevState,
-        loading: false,
-        refreshing: false,
-        currentPage: page,
-        listOpacity: 1,
-      };
-    });
-  }
-
-  handleRequestError(e: Error, retryAction: Function) {
-    const { navigation } = this.props;
-
-    console.log('Fetch error: ', e);
-    this.setState((prevState, props) => {
-      navigation.navigate({
-        routeName: Routes.Modal,
-        params: { error: e, retryAction },
-      });
-      return {
-        ...prevState,
-        loading: false,
-        refreshing: false,
-      };
-    });
   }
 }
 

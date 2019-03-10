@@ -18,9 +18,6 @@ import Colors from '../../colors';
 import type { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
 import { Loader } from '../../components/loader';
 import ProductItem from './productitem/productitem';
-import { formatProducts } from './producttransform';
-import type { ProductApiResponse } from './producttransform';
-import obj from './../../../response.json';
 import NoProductData from '../../components/noproductdata/noproductdata';
 import EventEmitter from '../../lib/eventemitter';
 import { getUid } from '../../lib/id';
@@ -31,14 +28,13 @@ import SplashScreen from 'react-native-splash-screen';
 import { noop } from '../../lib/noop';
 import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
 import { Sentry } from 'react-native-sentry';
+import type { GlobalState } from '../../globalstate';
+import GlobalContext, { LoadingStates } from '../../globalstate';
+import { getProducts, INITIAL_PAGE } from '../../services/productservice';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
 };
-
-const PAGE_SIZE = 20;
-
-const INITIAL_PAGE = 1;
 
 const ON_END_REACHED_THRESHOLD = 0.2;
 
@@ -69,6 +65,8 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       borderBottomWidth: 0,
     },
   };
+
+  static contextType = GlobalContext;
 
   sidePane: SidePane | null;
 
@@ -101,68 +99,54 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     this.openMenuListenerUnsubscriber();
   }
 
-  async sendRequest(page: number, retryAction: Function) {
-    try {
-      const response = await this.mockResponse(PAGE_SIZE, page);
-      // const response = await this.getResponse(PAGE_SIZE, page);
-      const responseIsOk = response.ok;
-      if (!responseIsOk) {
-        return this.handleRequestError(
-          new Error('Response is not ok.'),
-          retryAction,
-        );
-      }
-      const products = formatProducts(await response.json());
-      this.handleRequestSuccess(products, page);
-    } catch (e) {
-      Sentry.captureException(e);
-      this.handleRequestError(e, retryAction);
-    }
-  }
-
   render() {
     const { navigation } = this.props;
-    const { products } = this.state;
 
     return (
-      <React.Fragment>
-        <NetworkWatcher navigation={navigation} />
-        <View style={style.container}>
-          {(() => {
-            if (this.state.loading) {
-              return <Loader size={'small'} color={Colors.DarkGray} />;
-            }
-            return (
-              <FlatListAnimated
-                style={[style.frame, { opacity: this.state.listOpacity }]}
-                data={products}
-                keyExtractor={this.keyExtractor}
-                renderItem={({ item }) =>
-                  renderProductItem(
-                    () => this.onProductClick(navigation, item),
-                    item,
-                  )
+      <GlobalContext.Consumer>
+        {(context: GlobalState) => (
+          <React.Fragment>
+            <NetworkWatcher navigation={navigation} />
+            <View style={style.container}>
+              {(() => {
+                if (context.isProductsLoading()) {
+                  return <Loader size={'small'} color={Colors.DarkGray} />;
                 }
-                onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
-                onEndReached={this.onLoadMore}
-                ItemSeparatorComponent={this.renderSeparator}
-                ListHeaderComponent={this.renderSeparator}
-                ListFooterComponent={this.renderSeparator}
-                refreshing={this.state.refreshing}
-                onRefresh={this.onRefresh}
-                ListEmptyComponent={<NoProductData />}
+                const data = [...context.products.values()];
+                console.log('data: ', data);
+                return (
+                  <FlatListAnimated
+                    style={[style.frame, { opacity: this.state.listOpacity }]}
+                    data={data}
+                    keyExtractor={this.keyExtractor}
+                    renderItem={({ item }) =>
+                      renderProductItem(
+                        () => this.onProductClick(navigation, item),
+                        item,
+                      )
+                    }
+                    onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
+                    onEndReached={this.onLoadMore}
+                    ItemSeparatorComponent={this.renderSeparator}
+                    ListHeaderComponent={this.renderSeparator}
+                    ListFooterComponent={this.renderSeparator}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.onRefresh}
+                    ListEmptyComponent={<NoProductData />}
+                  />
+                );
+              })()}
+              <SidePane
+                ref={sidePane => (this.sidePane = sidePane)}
+                onCreditsSelect={this.onCreditsSelect}
+                onLogoutSelect={this.onLogoutSelect}
+                onInfoSelect={this.onInfoSelect}
+                onCartSelect={this.onCartSelect}
               />
-            );
-          })()}
-          <SidePane
-            ref={sidePane => (this.sidePane = sidePane)}
-            onCreditsSelect={this.onCreditsSelect}
-            onLogoutSelect={this.onLogoutSelect}
-            onInfoSelect={this.onInfoSelect}
-            onCartSelect={this.onCartSelect}
-          />
-        </View>
-      </React.Fragment>
+            </View>
+          </React.Fragment>
+        )}
+      </GlobalContext.Consumer>
     );
   }
 
@@ -226,8 +210,15 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     String(item.id) + getUid(item);
 
   loadInitial = () => {
+    console.log('loadInitial: ');
     this.setState((prevState, props) => {
-      this.sendRequest(INITIAL_PAGE, this.loadInitial);
+      getProducts(
+        this.context,
+        INITIAL_PAGE,
+        this.loadInitial,
+        this.handleRequestError,
+        this.handleRequestSuccess,
+      );
       return {
         ...prevState,
         loading: true,
@@ -236,8 +227,15 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   };
 
   onRefresh = () => {
+    console.log('onRefresh: ');
     this.setState((prevState, props) => {
-      this.sendRequest(INITIAL_PAGE, this.onRefresh);
+      getProducts(
+        this.context,
+        INITIAL_PAGE,
+        this.onRefresh,
+        this.handleRequestError,
+        this.handleRequestSuccess,
+      );
       return {
         ...prevState,
         refreshing: true,
@@ -246,9 +244,16 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
   };
 
   onLoadMore = () => {
+    console.log('onLoadMore: ');
     this.setState((prevState, props) => {
       const newPage = this.state.currentPage + 1;
-      this.sendRequest(newPage, this.onLoadMore);
+      getProducts(
+        this.context,
+        newPage,
+        this.onLoadMore,
+        this.handleRequestError,
+        this.handleRequestSuccess,
+      );
       return {
         ...prevState,
       };
@@ -266,23 +271,20 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     return <View style={style.separator} />;
   }
 
-  handleRequestSuccess(products: Product[], page: number) {
+  handleRequestSuccess = (page: number) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     this.setState((prevState, props) => {
       return {
         ...prevState,
-        products: [...this.state.products, ...products],
-        loading: false,
         refreshing: false,
         currentPage: page,
         listOpacity: 1,
       };
     });
-  }
+  };
 
-  handleRequestError(e: Error, retryAction: Function) {
+  handleRequestError = (e: Error, retryAction: Function) => {
     const { navigation } = this.props;
-
     console.log('Fetch error: ', e);
     this.setState((prevState, props) => {
       navigation.navigate({
@@ -291,31 +293,10 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       });
       return {
         ...prevState,
-        loading: false,
         refreshing: false,
       };
     });
-  }
-
-  getResponse(pageSize: number, currentPage: number) {
-    return fetch(
-      `http://ecsc00a02fb3.epam.com/rest/V1/products?searchCriteria[pageSize]=${pageSize}&searchCriteria[currentPage]=${currentPage}`,
-      {
-        method: 'GET',
-      },
-    );
-  }
-
-  async mockResponse(
-    pageSize: number,
-    page: number,
-  ): Promise<{ ok: boolean, json: () => Promise<ProductApiResponse> }> {
-    await new Promise(res => setTimeout(res, 1000));
-    return Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve(obj),
-    });
-  }
+  };
 }
 
 const renderProductItem = (onProductClick: Function, product: Product) => (

@@ -2,117 +2,203 @@
  * @flow
  */
 
-import type { Product } from '../../product';
-import mockCartResponse from '../../../getcartresponse.json';
-import type { GlobalState } from '../../globalstate';
+import type { Product } from '../product';
+import mockCartResponse from '../../getcartresponse.json';
+import type { GlobalState } from '../globalstate';
 import { Sentry } from 'react-native-sentry';
+import { getToken } from './authservice';
+import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
+import { LoadingStates } from '../globalstate';
+import { Routes } from '../routes';
+import { getItemBySku } from './cartserviceutils';
 
 const PATH = 'http://ecsc00a02fb3.epam.com/rest/V1/';
 
-const sendRemoveItemRequest = async (
-  item: CartItemType,
+
+
+export const getCart = async (
   context: GlobalState,
   retryAction: Function,
-  handleRequestError: (boolean, Product, GlobalState, Error, Function) => void,
+  handleRequestError: (Error, Function) => void,
   handleRequestSuccess: () => void,
 ) => {
-  context.removeItem(item);
-
   try {
-    const getCartsResponse = await getCartRequest();
+    context.setItemsRequestState(LoadingStates.Loading);
+    // const getCartsResponse = await getCartRequest();
+    const getCartsResponse = await mockGetCartRequest();
     if (!getCartsResponse.ok) {
-      return handleRequestError(
-        false,
-        item,
-        context,
-        new Error('Response is not ok.'),
-        retryAction,
-      );
+      context.setItemsRequestState(LoadingStates.Error);
+      return handleRequestError(new Error('Response is not ok.'), retryAction);
     }
     const cart = await getCartsResponse.json();
-    if (!cart.items.length) {
-      handleRequestSuccess();
-      return;
-    }
-    const quoteId = cart.id;
-    const removeItemResponse = await removeItemRequest(token, item.item_id);
-    if (!removeItemResponse.ok) {
-      context.addItem(item);
-      return handleRequestError(
-        false,
-        item,
-        context,
-        new Error('Response is not ok.'),
-        retryAction,
-      );
-    }
+
+    context.setItemsRequestState(LoadingStates.OK);
+    context.setItems(cart.items);
     handleRequestSuccess();
   } catch (e) {
     Sentry.captureException(e);
-    context.addItem(item);
-    handleRequestError(false, item, context, e, retryAction);
+    context.setItemsRequestState(LoadingStates.Error);
+    return handleRequestError(e, retryAction);
   }
 };
 
-export const getCartRequest = async (
-  token: string,
-): GetCartsResponseType => {
-  return fetch(`${PATH}carts/mine/`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const addProductToCart = async (
+  product: Product,
+  context: GlobalState,
+  retryAction: Function,
+  handleRequestError: (Error, Function) => void,
+) => {
+  try {
+    context.addProductToInProgress(product);
+    if (context.itemsState !== LoadingStates.OK) {
+      context.removeProductFromInProgress(product);
+      return handleRequestError(new Error('Cart is not ready'), retryAction);
+    }
+    const response = await addItemRequest({
+      product: product,
+      quoteId: context.quoteId,
+    });
+    if (!response.ok) {
+      context.addItem(await response.json());
+      context.removeProductFromInProgress(product);
+      return handleRequestError(new Error('Response is not ok.'), retryAction);
+    }
+    context.removeProductFromInProgress(product);
+  } catch (e) {
+    Sentry.captureException(e);
+    context.removeProductFromInProgress(product);
+    return handleRequestError(e, retryAction);
+  }
 };
 
-export const mockGetCartRequest = async (): GetCartsResponseType => {
+export const removeProductFromCart = async (
+  product: Product,
+  context: GlobalState,
+  retryAction: Function,
+  handleRequestError: (Error, Function) => void,
+) => {
+  try {
+    context.addProductToInProgress(product);
+    if (context.itemsState !== LoadingStates.OK) {
+      context.removeProductFromInProgress(product);
+      return handleRequestError(new Error('Cart is not ready'), retryAction);
+    }
+    const itemBySku = getItemBySku(context, product);
+    if (!itemBySku) {
+      context.removeProductFromInProgress(product);
+      return handleRequestError(
+        new Error('No item for this product'),
+        retryAction,
+      );
+    }
+    const response = await removeItemRequest({
+      itemId: itemBySku.item_id,
+    });
+    if (!response.ok && (await response.json())) {
+      context.removeProductFromInProgress(product);
+      return handleRequestError(new Error('Cart is not ready'), retryAction);
+    }
+    context.removeProductFromInProgress(product);
+    context.removeItem(itemBySku);
+  } catch (e) {
+    Sentry.captureException(e);
+    context.removeProductFromInProgress(product);
+    handleRequestError(e, retryAction);
+  }
+};
+
+function wrapRequestWithAuthorization<I, T: { status: number }>(
+  request: (string, I | void) => Promise<T>,
+): I => Promise<T> {
+  return async (input?: I) => {
+    const token = await RNRnmentoringprogramAsyncStorage.getItem('token');
+    const res = await request(token, input);
+    if (res.status !== 401) {
+      return res;
+    }
+    const username = await RNRnmentoringprogramAsyncStorage.getItem('username');
+    const password = await RNRnmentoringprogramAsyncStorage.getItem('password');
+    const tokenResponse = await getToken(username, password);
+    const newToken = await tokenResponse.text();
+    await RNRnmentoringprogramAsyncStorage.setItem('token', token);
+    return request(newToken, input);
+  };
+}
+
+export const getCartRequest = wrapRequestWithAuthorization<
+  void,
+  GetCartsResponseType,
+>(
+  (token: string): Promise<GetCartsResponseType> => {
+    return fetch(`${PATH}carts/mine/`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+);
+
+export const mockGetCartRequest = async (): Promise<GetCartsResponseType> => {
   return Promise.resolve({
     ok: true,
+    status: 200,
     json: () => Promise.resolve(mockCartResponse),
   });
 };
 
-export const newCartRequest = (token: string): CreateCartResponseType => {
-  return fetch(`${PATH}carts/mine`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
-};
+export const newCartRequest = wrapRequestWithAuthorization<
+  void,
+  CreateCartResponseType,
+>(
+  (token: string): Promise<CreateCartResponseType> => {
+    return fetch(`${PATH}carts/mine`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+);
 
-export const mockNewCartRequest = async (): DeleteCartResponseType => {
+export const mockNewCartRequest = async (): Promise<CreateCartResponseType> => {
   return Promise.resolve({
     ok: true,
+    status: 200,
     json: () => Promise.resolve('4'),
   });
 };
 
-export const addItemRequest = (
-  token: string,
-  product: Product,
-  quoteId: string,
-): AddItemResponseType => {
-  return fetch(`${PATH}carts/mine/items`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      cartItem: {
-        sku: product.sku,
-        qty: 1,
-        quote_id: quoteId,
+export const addItemRequest = wrapRequestWithAuthorization<
+  AddItemInput,
+  AddItemResponseType,
+>(
+  (token: string, input?: AddItemInput): Promise<AddItemResponseType> => {
+    if (!input) {
+      return Promise.reject(new Error('Specify input'));
+    }
+    return fetch(`${PATH}carts/mine/items`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-    }),
-  });
-};
+      body: JSON.stringify({
+        cartItem: {
+          sku: input.product.sku,
+          qty: 1,
+          quote_id: input.quoteId,
+        },
+      }),
+    });
+  },
+);
 
-export const mockAddItemRequest = async (): AddItemResponseType => {
+export const mockAddItemRequest = async (): Promise<AddItemResponseType> => {
   return Promise.resolve({
     ok: true,
+    status: 200,
     json: () =>
       Promise.resolve({
         item_id: 7,
@@ -125,42 +211,51 @@ export const mockAddItemRequest = async (): AddItemResponseType => {
   });
 };
 
-export const removeItemRequest = (
-  token: string,
-  itemId: number,
-): RemoveItemResponseType => {
-  return fetch(`${PATH}carts/mine/items/${itemId}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
-};
+export const removeItemRequest = wrapRequestWithAuthorization<
+  RemoveItemInput,
+  RemoveItemResponseType,
+>(
+  (token: string, input?: RemoveItemInput): Promise<RemoveItemResponseType> => {
+    if (!input) {
+      return Promise.reject(new Error('Specify input'));
+    }
+    return fetch(`${PATH}carts/mine/items/${input.itemId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+);
 
-export const mockRemoveItemRequest = async (): RemoveItemResponseType => {
+export const mockRemoveItemRequest = async (): Promise<RemoveItemResponseType> => {
   return Promise.resolve({
     ok: true,
-    json: () =>
-      Promise.resolve(true),
+    status: 200,
+    json: () => Promise.resolve(true),
   });
 };
 
-export const getItemsRequest = async (
-  token: string,
-): GetItemsResponseType => {
-  return fetch(`${PATH}carts/mine/items`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-};
+export const getItemsRequest = wrapRequestWithAuthorization<
+  null,
+  GetItemsResponseType,
+>(
+  (token: string): Promise<GetItemsResponseType> => {
+    return fetch(`${PATH}carts/mine/items`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+  },
+);
 
-export const mockGetItemsRequest = async (): GetItemsResponseType => {
+export const mockGetItemsRequest = async (): Promise<GetItemsResponseType> => {
   return Promise.resolve({
     ok: true,
+    status: 200,
     json: () =>
       Promise.resolve([
         {
@@ -175,13 +270,19 @@ export const mockGetItemsRequest = async (): GetItemsResponseType => {
   });
 };
 
-type RemoveItemResponseType = Promise<{|
-  ok: boolean,
-  json: () => Promise<boolean>,
-|}>;
+type RemoveItemInput = {|
+  itemId: number,
+|};
 
-type GetCartsResponseType = Promise<{|
+type RemoveItemResponseType = {|
   ok: boolean,
+  status: number,
+  json: () => Promise<boolean>,
+|};
+
+type GetCartsResponseType = {|
+  ok: boolean,
+  status: number,
   json: () => Promise<{|
     id: number,
     created_at: string,
@@ -240,19 +341,15 @@ type GetCartsResponseType = Promise<{|
     store_id: number,
     extension_attributes: { shipping_assignments: [] },
   |}>,
-|}>;
+|};
 
-type CreateCartResponseType = Promise<{|
+type CreateCartResponseType = {|
   ok: boolean,
+  status: number,
   json: () => Promise<string>,
-|}>;
+|};
 
-type DeleteCartResponseType = Promise<{|
-  ok: boolean,
-  json: () => Promise<string>,
-|}>;
-
-type CartItemType = {|
+export type CartItemType = {|
   item_id: number,
   sku: string,
   qty: number,
@@ -261,14 +358,19 @@ type CartItemType = {|
   quote_id: string,
 |};
 
-type AddItemResponseType = Promise<{|
-  ok: boolean,
-  json: () => Promise<CartItemType>,
-|}>;
+type AddItemInput = {|
+  product: Product,
+  quoteId: string,
+|};
 
-type GetItemsResponseType = Promise<{|
+type AddItemResponseType = {|
   ok: boolean,
-  json: () => Promise<
-    Array<CartItemType>,
-  >,
-|}>;
+  status: number,
+  json: () => Promise<CartItemType>,
+|};
+
+type GetItemsResponseType = {|
+  ok: boolean,
+  status: number,
+  json: () => Promise<Array<CartItemType>>,
+|};

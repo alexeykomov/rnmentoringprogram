@@ -26,6 +26,7 @@ import SplashScreen from 'react-native-splash-screen';
 import LottieView from 'lottie-react-native';
 import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
 import { Sentry } from 'react-native-sentry';
+import { sendAuthRequest } from '../../services/authservice';
 
 type LoginScreenProps = {
   navigation: NavigationScreenProp<void>,
@@ -37,9 +38,6 @@ type State = {
   password: string,
   error: boolean,
 };
-
-const AUTH_URL =
-  'http://ecsc00a02fb3.epam.com/index.php/rest/V1/integration/customer/token';
 
 const HOW_MANY_TIMES_TO_PLAY = 2;
 
@@ -195,49 +193,18 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
       return;
     }
     this.setState((prevState, props) => {
-      this.sendRequest(navigation, username, password, () =>
-        this.onLoginClick(navigation, username, password),
+      sendAuthRequest(
+        username,
+        password,
+        () => this.onLoginClick(navigation, username, password),
+        this.handleRequestSuccess,
+        this.handleRequestError,
       );
       return {
         ...prevState,
         loading: true,
       };
     });
-  }
-
-  async sendRequest(
-    navigation: NavigationScreenProp<void>,
-    username: string,
-    password: string,
-    retryAction: Function,
-  ) {
-    try {
-      // const response = await this.mockResponse();
-      const response = await this.getResponse(username, password);
-      const responseIsOk = response.ok;
-      if (!responseIsOk) {
-        return this.handleRequestError(
-          new Error('Response is not ok.'),
-          retryAction,
-        );
-      }
-      const token = await response.text();
-      console.log('token: ', token);
-      await this.saveLoginToken(token);
-      this.handleRequestSuccess();
-    } catch (e) {
-      Sentry.captureException(e);
-      this.handleRequestError(e, retryAction);
-    }
-  }
-
-  async saveLoginToken(token: string) {
-    try {
-      await RNRnmentoringprogramAsyncStorage.setItem('token', token);
-    } catch (error) {
-      Sentry.captureException(error);
-      console.log("Error - token wasn't saved: ", error);
-    }
   }
 
   handleRequestSuccess() {
@@ -261,7 +228,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
   }
 
   handleRequestError(e: Error, retryAction: Function) {
-    console.log('Fetch error: ', e);
+    console.log('Fetch AUTH_URLerror: ', e);
     this.setState((prevState, props) => {
       return {
         ...prevState,
@@ -270,28 +237,6 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
         username: '',
         password: '',
       };
-    });
-  }
-
-  async mockResponse() {
-    return await new Promise(res =>
-      setTimeout(
-        () => res({ ok: true, text: () => Promise.resolve('token') }),
-        1000,
-      ),
-    );
-  }
-
-  async getResponse(username: string, password: string) {
-    return await fetch(AUTH_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
     });
   }
 }

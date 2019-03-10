@@ -1,8 +1,10 @@
-import type { GlobalState } from './globalstate';
-import GlobalContext from './globalstate';
+import type { GlobalState, LoadingState } from './globalstate';
+import GlobalContext, { LoadingStates } from './globalstate';
 import type { Product } from './product';
 import NavigationContainer from './navigationcontainer';
 import React from 'react';
+import type { CartItemType } from './services/cartservice';
+import Cart from './scene/cart/cart';
 
 type AppWithGlobalStateProps = {};
 
@@ -10,45 +12,59 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
   constructor() {
     super();
 
-    this.state = {
+    const state: GlobalState = {
+      addProducts: this.addProducts,
+      setItems: this.setItems,
       items: new Map(),
+      itemSkus: [],
+      products: new Map(),
+      isProductsLoading: this.isProductsLoading,
+      productSkus: [],
       addItem: this.addItem,
       removeItem: this.removeItem,
       clearItems: this.clearItems,
+      setItemsRequestState: this.setItemsRequestState,
+      setProductsRequestState: this.setProductsRequestState,
+      addProductToInProgress: this.addProductToInProgress,
+      getCartProducts: this.getCartProducts,
     };
+
+    this.state = state;
   }
 
   async componentDidMount(): void {}
 
-  addItem(item: Product) {
+  addItem = (product: Product) => {
     this.setState((prevState, props) => {
-      if (prevState.items.has(item.id)) {
+      if (prevState.items.has(product.sku)) {
         return prevState;
       }
       const newItems = new Map(prevState.items.entries());
-      newItems.set(item.id, item);
+      newItems.set(product.sku, product);
+      prevState.productsInProgress.delete(product.sku);
       return {
         ...prevState,
         items: newItems,
       };
     });
-  }
+  };
 
-  removeItem(item: Product) {
+  removeItem = (product: Product) => {
     this.setState((prevState, props) => {
-      if (prevState.items.has(item.id)) {
+      if (prevState.items.has(product.sku)) {
         return prevState;
       }
       const newItems = new Map(prevState.items.entries());
-      newItems.delete(item.id);
+      newItems.delete(product.sku);
+      prevState.productsInProgress.delete(product.sku);
       return {
         ...prevState,
         items: newItems,
       };
     });
-  }
+  };
 
-  clearItems() {
+  clearItems = () => {
     this.setState((prevState, props) => {
       const newItems = new Map();
       return {
@@ -56,18 +72,78 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
         items: newItems,
       };
     });
-  }
+  };
 
-  setItems(items: Product[]) {
+  setItems = (items: CartItemType[]) => {
     this.setState((prevState, props) => {
       const newItems = new Map();
-      items.forEach(product => newItems.set(product.id, product));
+      items.forEach(item => newItems.set(item.sku, item));
       return {
         ...prevState,
+        itemsState: LoadingStates.OK,
         items: newItems,
       };
     });
-  }
+  };
+
+  setItemsRequestState = (itemsState: LoadingState) => {
+    this.setState((prevState, props) => {
+      return {
+        ...prevState,
+        itemsState,
+      };
+    });
+  };
+
+  setProductsRequestState = (productsState: LoadingState) => {
+    this.setState((prevState, props) => {
+      return {
+        ...prevState,
+        productsState,
+      };
+    });
+  };
+
+  addProductToInProgress = (product: Product) => {
+    this.setState((prevState, props) => {
+      const prevIds = [...prevState.productsInProgress.values()];
+      const newItemsInProgress = new Set(prevIds.concat([product.sku]));
+      return {
+        ...prevState,
+        newItemsInProgress,
+      };
+    });
+  };
+
+  getCartProducts = (): Product[] => {
+    console.log('this.state: ', this.state);
+    const products = this.state.itemSkus.map(sku =>
+      this.state.products.get(sku),
+    );
+    return products;
+  };
+
+  addProducts = (aProducts: Product[]) => {
+    this.setState(prevState => {
+      const oldProducts = [...prevState.products.entries()];
+      const newProducts = oldProducts.concat(
+        aProducts.map(product => [product.sku, product]),
+      );
+      const products = new Map(newProducts);
+      return {
+        ...prevState,
+        products,
+      };
+    });
+  };
+
+  isProductsLoading = () => {
+    return this.state.productsState === LoadingStates.Loading;
+  };
+
+  isCartLoading = () => {
+    return this.state.itemsState === LoadingStates.Loading;
+  };
 
   render() {
     return (
