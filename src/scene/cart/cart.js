@@ -4,7 +4,7 @@
 
 import style from './styles';
 import type { Product } from '../../product';
-import { View, FlatList, Animated, Image } from 'react-native';
+import { View, FlatList, Animated, Image, LayoutAnimation } from 'react-native';
 import React from 'react';
 import Header from '../../components/header';
 import type {
@@ -68,54 +68,58 @@ class Cart extends React.PureComponent<ProductListProps, State> {
       loading: false,
       refreshing: false,
       currentPage: INITIAL_PAGE,
-      listOpacity: 0,
+      listOpacity: 1,
       quoteId: '',
     };
   }
-
-  componentDidMount() {
-    this.loadInitial();
-  }
-
-  componentWillUnmount() {}
 
   render() {
     const { navigation } = this.props;
     return (
       <GlobalContext.Consumer>
-        {(context: GlobalState) => (
-          <React.Fragment>
-            <NetworkWatcher navigation={navigation} />
-            <View style={style.container}>
-              {(() => {
-                if (this.state.loading) {
-                  return <Loader size={'small'} color={Colors.DarkGray} />;
-                }
-                return (
-                  <FlatListAnimated
-                    style={[style.frame, { opacity: this.state.listOpacity }]}
-                    data={context.getCartProducts()}
-                    keyExtractor={this.keyExtractor}
-                    renderItem={({ item }) =>
-                      renderProductItem(
-                        () => this.onProductClick(navigation, item),
-                        item,
-                      )
-                    }
-                    ItemSeparatorComponent={this.renderSeparator}
-                    ListHeaderComponent={this.renderSeparator}
-                    ListFooterComponent={this.renderSeparator}
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.onRefresh}
-                    ListEmptyComponent={<NoProductData />}
-                  />
-                );
-              })()}
-              <Button onPress={this.onClear} caption={'Clear'} />
-              <Button onPress={this.onCheckout} caption={'Checkout'} />
-            </View>
-          </React.Fragment>
-        )}
+        {(context: GlobalState) => {
+          const loading =
+            context.isItemsLoading() || context.isProductsLoading();
+          return (
+            <React.Fragment>
+              <NetworkWatcher navigation={navigation} />
+              <View style={style.container}>
+                {(() => {
+                  if (loading) {
+                    return <Loader size={'small'} color={Colors.DarkGray} />;
+                  }
+                  const data = context.getCartProducts();
+                  console.log('data: ', data.length);
+                  return (
+                    <FlatListAnimated
+                      style={[style.frame, { opacity: this.state.listOpacity }]}
+                      data={data}
+                      keyExtractor={this.keyExtractor}
+                      renderItem={({ item }) =>
+                        renderProductItem(
+                          () => this.onProductClick(navigation, item),
+                          item,
+                        )
+                      }
+                      ItemSeparatorComponent={this.renderSeparator}
+                      ListHeaderComponent={this.renderSeparator}
+                      ListFooterComponent={this.renderSeparator}
+                      refreshing={this.state.refreshing}
+                      onRefresh={this.onRefresh}
+                      ListEmptyComponent={<NoProductData />}
+                    />
+                  );
+                })()}
+                {!loading && (
+                  <React.Fragment>
+                    <Button onPress={this.onClear} caption={'Clear'} />
+                    <Button onPress={this.onCheckout} caption={'Checkout'} />
+                  </React.Fragment>
+                )}
+              </View>
+            </React.Fragment>
+          );
+        }}
       </GlobalContext.Consumer>
     );
   }
@@ -127,50 +131,43 @@ class Cart extends React.PureComponent<ProductListProps, State> {
   keyExtractor = (item: Product, index: number) =>
     String(item.id) + getUid(item);
 
-  loadInitial = () => {
-    const navigation = this.props.navigation;
-    getCart(
-      this.context,
-      this.loadInitial,
-      (e, retryAction) => {
-        navigation.navigate({
-          routeName: Routes.Modal,
-          params: { error: e, retryAction },
-        });
-      },
-      () =>
-        this.setState(prevState => ({
-          ...prevState,
-          refreshing: false,
-          listOpacity: 1,
-        })),
-    );
-  };
-
   onRefresh = () => {
-    console.log('this.context: ', this.context);
-
     this.setState((prevState, props) => {
       const navigation = this.props.navigation;
       getCart(
         this.context,
+        false,
         this.onRefresh,
-        (e, retryAction) => {
-          navigation.navigate({
-            routeName: Routes.Modal,
-            params: { error: e, retryAction },
-          });
-        },
-        () =>
-          this.setState(prevState => ({
-            ...prevState,
-            refreshing: false,
-            listOpacity: 1,
-          })),
+        this.handleRequestError,
+        this.handleRequestSuccess,
       );
       return {
         ...prevState,
         refreshing: true,
+      };
+    });
+  };
+
+  handleRequestSuccess = () => {
+    this.setState((prevState, props) => {
+      return {
+        ...prevState,
+        refreshing: false,
+      };
+    });
+  };
+
+  handleRequestError = (e: Error, retryAction: Function) => {
+    const { navigation } = this.props;
+    console.log('Fetch error: ', e);
+    this.setState((prevState, props) => {
+      navigation.navigate({
+        routeName: Routes.Modal,
+        params: { error: e, retryAction },
+      });
+      return {
+        ...prevState,
+        refreshing: false,
       };
     });
   };

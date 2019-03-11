@@ -17,12 +17,15 @@ const PATH = 'http://ecsc00a02fb3.epam.com/rest/V1/';
 
 export const getCart = async (
   context: GlobalState,
+  shouldSetLoadingStatus: boolean,
   retryAction: Function,
   handleRequestError: (Error, Function) => void,
   handleRequestSuccess: () => void,
 ) => {
   try {
-    context.setItemsRequestState(LoadingStates.Loading);
+    if (shouldSetLoadingStatus) {
+      context.setItemsRequestState(LoadingStates.Loading);
+    }
     // const getCartsResponse = await getCartRequest();
     const getCartsResponse = await mockGetCartRequest();
     if (!getCartsResponse.ok) {
@@ -115,8 +118,10 @@ function wrapRequestWithAuthorization<I, T: { status: number }>(
     if (res.status !== 401) {
       return res;
     }
-    const username = await RNRnmentoringprogramAsyncStorage.getItem('username');
-    const password = await RNRnmentoringprogramAsyncStorage.getItem('password');
+    const [username, password] = await Promise.all([
+      RNRnmentoringprogramAsyncStorage.getItem('username'),
+      RNRnmentoringprogramAsyncStorage.getItem('password'),
+    ]);
     const tokenResponse = await getToken(username, password);
     const newToken = await tokenResponse.text();
     await RNRnmentoringprogramAsyncStorage.setItem('token', token);
@@ -139,7 +144,7 @@ export const getCartRequest = wrapRequestWithAuthorization<
 );
 
 export const mockGetCartRequest = async (): Promise<GetCartsResponseType> => {
-  await delay(1000);
+  await delay(3000);
   return Promise.resolve({
     ok: true,
     status: 200,

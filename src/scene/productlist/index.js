@@ -219,7 +219,13 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
         this.handleRequestError,
         this.handleRequestSuccess,
       );
-      getCart(this.context, this.loadInitial, this.handleRequestError, noop);
+      getCart(
+        this.context,
+        true,
+        this.loadInitial,
+        this.handleRequestError,
+        noop,
+      );
       return {
         ...prevState,
         loading: true,

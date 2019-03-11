@@ -121,7 +121,7 @@ class ProductFull extends React.PureComponent<
                     <Text style={style.returnText}>Location</Text>
                   </Animated.View>
                 </TouchableOpacity>
-                <TouchableOpacity
+                {context.isItemsLoaded() && <TouchableOpacity
                   style={style.returnButton}
                   onPress={() => this.operateWithCart(context)}
                 >
@@ -135,7 +135,7 @@ class ProductFull extends React.PureComponent<
                       {this.getOperateWithCartText(context)}
                     </Text>
                   </Animated.View>
-                </TouchableOpacity>
+                </TouchableOpacity>}
               </ScrollView>
             </View>
           </React.Fragment>

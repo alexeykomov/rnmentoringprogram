@@ -19,6 +19,7 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
       products: new Map(),
       isProductsLoading: this.isProductsLoading,
       isItemsLoading: this.isItemsLoading,
+      isItemsLoaded: this.isItemsLoaded,
       addItem: this.addItem,
       removeItem: this.removeItem,
       clearItems: this.clearItems,
@@ -146,6 +147,10 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
 
   isItemsLoading = () => {
     return this.state.itemsState === LoadingStates.Loading;
+  };
+
+  isItemsLoaded = () => {
+    return this.state.itemsState === LoadingStates.OK;
   };
 
   render() {
