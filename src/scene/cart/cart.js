@@ -33,8 +33,6 @@ type ProductListProps = {
 
 const INITIAL_PAGE = 1;
 
-const FlatListAnimated = Animated.createAnimatedComponent(FlatList);
-
 class Cart extends React.PureComponent<ProductListProps, State> {
   static navigationOptions: NavigationScreenConfig<{
     headerStyle: ViewStyleProp,
@@ -68,7 +66,6 @@ class Cart extends React.PureComponent<ProductListProps, State> {
       loading: false,
       refreshing: false,
       currentPage: INITIAL_PAGE,
-      listOpacity: 1,
       quoteId: '',
     };
   }
@@ -91,8 +88,8 @@ class Cart extends React.PureComponent<ProductListProps, State> {
                   const data = context.getCartProducts();
                   console.log('data: ', data.length);
                   return (
-                    <FlatListAnimated
-                      style={[style.frame, { opacity: this.state.listOpacity }]}
+                    <FlatList
+                      style={style.frame}
                       data={data}
                       keyExtractor={this.keyExtractor}
                       renderItem={({ item }) =>

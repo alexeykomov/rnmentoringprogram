@@ -207,7 +207,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     });
   }
 
-  handleRequestSuccess() {
+  handleRequestSuccess = () => {
     this.setState((prevState, props) => {
       // TODO(alexk): we're navigating to product list without animation,
       // gonna fix it
@@ -227,7 +227,7 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     this.props.navigation.dispatch(resetAction);
   }
 
-  handleRequestError(e: Error, retryAction: Function) {
+  handleRequestError = (e: Error, retryAction: Function) => {
     console.log('Fetch AUTH_URLerror: ', e);
     this.setState((prevState, props) => {
       return {

@@ -13,7 +13,7 @@ import { Routes } from '../routes';
 import { getItemBySku } from './cartserviceutils';
 import { delay } from '../lib/delay';
 
-const PATH = 'http://ecsc00a02fb3.epam.com/rest/V1/';
+const PATH = 'http://ecsc00a02fb3.epam.com/index.php/rest/default/V1/';
 
 export const getCart = async (
   context: GlobalState,
@@ -26,8 +26,8 @@ export const getCart = async (
     if (shouldSetLoadingStatus) {
       context.setItemsRequestState(LoadingStates.Loading);
     }
-    // const getCartsResponse = await getCartRequest();
-    const getCartsResponse = await mockGetCartRequest();
+    const getCartsResponse = await getCartRequest();
+    // const getCartsResponse = await mockGetCartRequest();
     if (!getCartsResponse.ok) {
       context.setItemsRequestState(LoadingStates.Error);
       return handleRequestError(new Error('Response is not ok.'), retryAction);
@@ -113,7 +113,9 @@ function wrapRequestWithAuthorization<I, T: { status: number }>(
   request: (string, I | void) => Promise<T>,
 ): I => Promise<T> {
   return async (input?: I) => {
-    const token = await RNRnmentoringprogramAsyncStorage.getItem('token');
+    const token = JSON.parse(
+      await RNRnmentoringprogramAsyncStorage.getItem('token'),
+    );
     const res = await request(token, input);
     if (res.status !== 401) {
       return res;
@@ -123,7 +125,7 @@ function wrapRequestWithAuthorization<I, T: { status: number }>(
       RNRnmentoringprogramAsyncStorage.getItem('password'),
     ]);
     const tokenResponse = await getToken(username, password);
-    const newToken = await tokenResponse.text();
+    const newToken = await tokenResponse.json();
     await RNRnmentoringprogramAsyncStorage.setItem('token', token);
     return request(newToken, input);
   };
@@ -137,6 +139,7 @@ export const getCartRequest = wrapRequestWithAuthorization<
     return fetch(`${PATH}carts/mine/`, {
       method: 'GET',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
     });

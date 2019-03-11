@@ -34,8 +34,8 @@ export const getProducts = async (
     if (shouldSetLoadingStatus) {
       context.setProductsRequestState(LoadingStates.Loading);
     }
-    const response = await mockGetProductsRequest(PAGE_SIZE, page);
-    // const response = await getProductsRequest(PAGE_SIZE, page);
+    // const response = await mockGetProductsRequest(PAGE_SIZE, page);
+    const response = await getProductsRequest(PAGE_SIZE, page);
     const responseIsOk = response.ok;
     if (!responseIsOk) {
       context.setProductsRequestState(LoadingStates.Error);

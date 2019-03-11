@@ -169,6 +169,7 @@ class ProductFull extends React.PureComponent<
 
     const { navigation } = this.props;
     const product = navigation.getParam<product>('product', NonExistentProduct);
+    console.log('context.items: ', context.items);
     if (context.items.has(product.sku)) {
       this.removeProductFromCart(product, context);
     } else {

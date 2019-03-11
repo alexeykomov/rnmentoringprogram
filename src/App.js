@@ -8,6 +8,11 @@ import Cart from './scene/cart/cart';
 
 type AppWithGlobalStateProps = {};
 
+if (__DEV__) {
+  // This will make network calls visible in Chrome debugger
+  global.XMLHttpRequest = global.originalXMLHttpRequest || global.XMLHttpRequest;
+}
+
 class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
   constructor() {
     super();
