@@ -10,7 +10,6 @@ import {
   Text,
   ScrollView,
   Animated,
-  LayoutAnimation,
 } from 'react-native';
 import React from 'react';
 import { Icon, IconSizes } from '../../icons';
@@ -23,11 +22,8 @@ import { Routes } from '../../routes';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import GlobalContext from './../../globalstate';
 import type { GlobalState } from '../../globalstate';
-import { formatProducts } from '../productlist/producttransform';
-import { Sentry } from 'react-native-sentry';
 import {
   addProductToCart,
-  getCart,
   removeProductFromCart,
 } from '../../services/cartservice';
 
@@ -86,20 +82,6 @@ class ProductFull extends React.PureComponent<
     };
   }
 
-  componentDidMount(): void {
-    this.loadInitial();
-  }
-
-  loadInitial() {
-    const navigation = this.props.navigation;
-    getCart(this.context, this.loadInitial, (e, retryAction) => {
-      navigation.navigate({
-        routeName: Routes.Modal,
-        params: { error: e, retryAction },
-      });
-    });
-  }
-
   render() {
     const { navigation } = this.props;
     const product = navigation.getParam<product>('product', NonExistentProduct);
@@ -109,7 +91,6 @@ class ProductFull extends React.PureComponent<
         {(context: GlobalState) => (
           <React.Fragment>
             <NetworkWatcher navigation={navigation} />
-            <Text>{[...context.items.values()].join()}</Text>
             <View style={style.container}>
               <NavigationEvents
                 onDidFocus={payload => {
@@ -166,7 +147,7 @@ class ProductFull extends React.PureComponent<
   getOperateWithCartText(context: GlobalState) {
     const { navigation } = this.props;
     const product = navigation.getParam<product>('product', NonExistentProduct);
-    if (context.items.has(product.id)) {
+    if (context.items.has(product.sku)) {
       return 'Remove from cart';
     }
     return 'Add to cart';
@@ -182,9 +163,13 @@ class ProductFull extends React.PureComponent<
   }
 
   operateWithCart(context: GlobalState) {
+    if (context.isItemsLoading()) {
+      return;
+    }
+
     const { navigation } = this.props;
     const product = navigation.getParam<product>('product', NonExistentProduct);
-    if ([...context.items.values()].find(i => i.sku === product.sku)) {
+    if (context.items.has(product.sku)) {
       this.removeProductFromCart(product, context);
     } else {
       this.addProductToCart(product, context);

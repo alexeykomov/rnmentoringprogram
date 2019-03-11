@@ -14,11 +14,10 @@ export const LoadingStates = {
 const GlobalContext = React.createContext<GlobalState>({
   quoteId: '',
   items: new Map(),
-  itemSkus: [],
-  productSkus: [],
   products: new Map(),
   addProducts: () => {},
   isProductsLoading: () => false,
+  isItemsLoading: () => false,
   productsInProgress: new Set(),
   addItem: () => {},
   removeItem: () => {},
@@ -32,6 +31,7 @@ const GlobalContext = React.createContext<GlobalState>({
   setItemsRequestState: () => {},
   addProductToInProgress: () => {},
   getCartProducts: () => [],
+  getProducts: () => [],
   removeProductFromInProgress: () => {},
 });
 
@@ -41,8 +41,7 @@ export type GlobalState = {|
   addProducts: (Product[]) => void,
   products: Map<string, Product>,
   isProductsLoading: () => boolean,
-  itemSkus: string[],
-  productSkus: string[],
+  isItemsLoading: () => boolean,
   addProductToInProgress: Product => void,
   removeProductFromInProgress: Product => void,
   productsInProgress: Set<number>,
@@ -58,6 +57,7 @@ export type GlobalState = {|
   itemsState: LoadingState,
   setItemsRequestState: LoadingState => void,
   getCartProducts: () => Product[],
+  getProducts: () => Product[],
 |};
 
 export type LoadingState = $Values<typeof LoadingStates>;

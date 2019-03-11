@@ -24,13 +24,14 @@ export const INITIAL_PAGE = 1;
 
 export const getProducts = async (
   context: GlobalState,
+  shouldSetLoadingStatus: boolean,
   page: number,
   retryAction: Function,
   handleRequestError: (Error, Function) => void,
   handleRequestSuccess: number => void,
 ) => {
   try {
-    if (page === INITIAL_PAGE) {
+    if (shouldSetLoadingStatus) {
       context.setProductsRequestState(LoadingStates.Loading);
     }
     const response = await mockGetProductsRequest(PAGE_SIZE, page);
@@ -64,6 +65,8 @@ const getProductsRequest = (
   );
 };
 
+let mockRequestCounter = 0;
+
 const mockGetProductsRequest = async (
   pageSize: number,
   page: number,
@@ -72,7 +75,10 @@ const mockGetProductsRequest = async (
   return Promise.resolve({
     ok: true,
     json: () => {
-      const newItems = obj.items.map(i => ({ ...i, sku: i.sku + getUid({}) }));
+      const newItems = obj.items.map(i => ({
+        ...i,
+        sku: i.sku + mockRequestCounter++,
+      }));
       return Promise.resolve({ ...obj, items: newItems });
     },
   });

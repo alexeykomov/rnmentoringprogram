@@ -16,10 +16,9 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
       addProducts: this.addProducts,
       setItems: this.setItems,
       items: new Map(),
-      itemSkus: [],
       products: new Map(),
       isProductsLoading: this.isProductsLoading,
-      productSkus: [],
+      isItemsLoading: this.isItemsLoading,
       addItem: this.addItem,
       removeItem: this.removeItem,
       clearItems: this.clearItems,
@@ -27,6 +26,7 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
       setProductsRequestState: this.setProductsRequestState,
       addProductToInProgress: this.addProductToInProgress,
       getCartProducts: this.getCartProducts,
+      getProducts: this.getProducts,
     };
 
     this.state = state;
@@ -116,11 +116,14 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
   };
 
   getCartProducts = (): Product[] => {
-    console.log('this.state: ', this.state);
-    const products = this.state.itemSkus.map(sku =>
+    const products = [...this.state.items.keys()].map(sku =>
       this.state.products.get(sku),
     );
     return products;
+  };
+
+  getProducts = (): Product[] => {
+    return [...this.state.products.values()];
   };
 
   addProducts = (aProducts: Product[]) => {
@@ -141,7 +144,7 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
     return this.state.productsState === LoadingStates.Loading;
   };
 
-  isCartLoading = () => {
+  isItemsLoading = () => {
     return this.state.itemsState === LoadingStates.Loading;
   };
 

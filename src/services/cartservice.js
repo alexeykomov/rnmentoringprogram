@@ -11,10 +11,9 @@ import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-as
 import { LoadingStates } from '../globalstate';
 import { Routes } from '../routes';
 import { getItemBySku } from './cartserviceutils';
+import { delay } from '../lib/delay';
 
 const PATH = 'http://ecsc00a02fb3.epam.com/rest/V1/';
-
-
 
 export const getCart = async (
   context: GlobalState,
@@ -140,6 +139,7 @@ export const getCartRequest = wrapRequestWithAuthorization<
 );
 
 export const mockGetCartRequest = async (): Promise<GetCartsResponseType> => {
+  await delay(1000);
   return Promise.resolve({
     ok: true,
     status: 200,

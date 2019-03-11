@@ -31,6 +31,7 @@ import { Sentry } from 'react-native-sentry';
 import type { GlobalState } from '../../globalstate';
 import GlobalContext, { LoadingStates } from '../../globalstate';
 import { getProducts, INITIAL_PAGE } from '../../services/productservice';
+import { getCart } from '../../services/cartservice';
 
 type ProductListProps = {
   navigation: NavigationScreenProp<void>,
@@ -112,12 +113,10 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
                 if (context.isProductsLoading()) {
                   return <Loader size={'small'} color={Colors.DarkGray} />;
                 }
-                const data = [...context.products.values()];
-                console.log('data: ', data);
                 return (
                   <FlatListAnimated
                     style={[style.frame, { opacity: this.state.listOpacity }]}
-                    data={data}
+                    data={context.getProducts()}
                     keyExtractor={this.keyExtractor}
                     renderItem={({ item }) =>
                       renderProductItem(
@@ -214,11 +213,13 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     this.setState((prevState, props) => {
       getProducts(
         this.context,
+        true,
         INITIAL_PAGE,
         this.loadInitial,
         this.handleRequestError,
         this.handleRequestSuccess,
       );
+      getCart(this.context, this.loadInitial, this.handleRequestError, noop);
       return {
         ...prevState,
         loading: true,
@@ -231,6 +232,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
     this.setState((prevState, props) => {
       getProducts(
         this.context,
+        false,
         INITIAL_PAGE,
         this.onRefresh,
         this.handleRequestError,
@@ -249,6 +251,7 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       const newPage = this.state.currentPage + 1;
       getProducts(
         this.context,
+        false,
         newPage,
         this.onLoadMore,
         this.handleRequestError,
