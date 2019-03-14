@@ -163,14 +163,15 @@ class ProductFull extends React.PureComponent<
   }
 
   operateWithCart(context: GlobalState) {
-    if (context.isItemsLoading()) {
-      return;
-    }
-
     const { navigation } = this.props;
     const product = navigation.getParam<product>('product', NonExistentProduct);
+    if (context.productsInProgress.has(product.sku)) {
+      return;
+    }
     console.log('context.items: ', context.items);
-    if (context.items.has(product.sku)) {
+    const itemInCart = context.items.has(product.sku);
+    console.log('itemInCart: ', itemInCart);
+    if (itemInCart) {
       this.removeProductFromCart(product, context);
     } else {
       this.addProductToCart(product, context);
@@ -178,9 +179,6 @@ class ProductFull extends React.PureComponent<
   }
 
   addProductToCart(product: Product, context: GlobalState) {
-    if (context.productsInProgress.has(product.id)) {
-      return;
-    }
     addProductToCart(
       product,
       context,
@@ -190,9 +188,6 @@ class ProductFull extends React.PureComponent<
   }
 
   removeProductFromCart(product: Product, context: GlobalState) {
-    if (context.productsInProgress.has(product.id)) {
-      return;
-    }
     removeProductFromCart(
       product,
       context,

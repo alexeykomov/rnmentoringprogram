@@ -19,7 +19,7 @@ export const sendAuthRequest = async (
     if (!responseIsOk) {
       return handleRequestError(new Error('Response is not ok.'), retryAction);
     }
-    const token = await response.text();
+    const token = await response.json();
     console.log('token: ', token);
     await saveLoginInfo(token, username, password);
     handleRequestSuccess();
@@ -47,7 +47,7 @@ const saveLoginInfo = async (
 };
 
 export const mockGetToken = async (): GetTokenResponseType => {
-  return Promise.resolve({ ok: true, text: () => Promise.resolve('token') });
+  return Promise.resolve({ ok: true, json: () => Promise.resolve('token') });
 };
 
 export const getToken = (
@@ -68,5 +68,5 @@ export const getToken = (
 
 type GetTokenResponseType = Promise<{|
   ok: boolean,
-  text: () => Promise<string>,
+  json: () => Promise<string>,
 |}>;

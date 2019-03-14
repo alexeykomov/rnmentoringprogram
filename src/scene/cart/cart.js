@@ -66,7 +66,6 @@ class Cart extends React.PureComponent<ProductListProps, State> {
       loading: false,
       refreshing: false,
       currentPage: INITIAL_PAGE,
-      quoteId: '',
     };
   }
 
@@ -85,8 +84,10 @@ class Cart extends React.PureComponent<ProductListProps, State> {
                   if (loading) {
                     return <Loader size={'small'} color={Colors.DarkGray} />;
                   }
-                  const data = context.getCartProducts();
-                  console.log('data: ', data.length);
+                  const products = context.products;
+                  console.log('products: ', products);
+                  const data = context.getCartProducts().filter(d => !!d);
+                  console.log('data: ', data);
                   return (
                     <FlatList
                       style={style.frame}

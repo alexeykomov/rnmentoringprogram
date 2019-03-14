@@ -10,7 +10,8 @@ type AppWithGlobalStateProps = {};
 
 if (__DEV__) {
   // This will make network calls visible in Chrome debugger
-  global.XMLHttpRequest = global.originalXMLHttpRequest || global.XMLHttpRequest;
+  global.XMLHttpRequest =
+    global.originalXMLHttpRequest || global.XMLHttpRequest;
 }
 
 class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
@@ -18,6 +19,8 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
     super();
 
     const state: GlobalState = {
+      quoteId: '',
+      setQuoteId: this.setQuoteId,
       addProducts: this.addProducts,
       setItems: this.setItems,
       items: new Map(),
@@ -31,8 +34,10 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
       setItemsRequestState: this.setItemsRequestState,
       setProductsRequestState: this.setProductsRequestState,
       addProductToInProgress: this.addProductToInProgress,
+      removeProductFromInProgress: this.removeProductFromInProgress,
       getCartProducts: this.getCartProducts,
       getProducts: this.getProducts,
+      productsInProgress: new Set(),
     };
 
     this.state = state;
@@ -47,7 +52,6 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
       }
       const newItems = new Map(prevState.items.entries());
       newItems.set(product.sku, product);
-      prevState.productsInProgress.delete(product.sku);
       return {
         ...prevState,
         items: newItems,
@@ -57,12 +61,11 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
 
   removeItem = (product: Product) => {
     this.setState((prevState, props) => {
-      if (prevState.items.has(product.sku)) {
+      if (!prevState.items.has(product.sku)) {
         return prevState;
       }
       const newItems = new Map(prevState.items.entries());
       newItems.delete(product.sku);
-      prevState.productsInProgress.delete(product.sku);
       return {
         ...prevState,
         items: newItems,
@@ -116,7 +119,20 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
       const newItemsInProgress = new Set(prevIds.concat([product.sku]));
       return {
         ...prevState,
-        newItemsInProgress,
+        productsInProgress: newItemsInProgress,
+      };
+    });
+  };
+
+  removeProductFromInProgress = (product: Product) => {
+    this.setState((prevState, props) => {
+      const prevIds = [...prevState.productsInProgress.values()];
+      const newItemsInProgress = new Set(
+        prevIds.filter(sku => sku !== product.sku),
+      );
+      return {
+        ...prevState,
+        productsInProgress: newItemsInProgress,
       };
     });
   };
@@ -156,6 +172,10 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
 
   isItemsLoaded = () => {
     return this.state.itemsState === LoadingStates.OK;
+  };
+
+  setQuoteId = (quoteId: number) => {
+    this.setState(prevState => ({ ...prevState, quoteId }));
   };
 
   render() {

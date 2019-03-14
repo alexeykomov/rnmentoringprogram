@@ -36,6 +36,7 @@ export const getCart = async (
 
     context.setItemsRequestState(LoadingStates.OK);
     context.setItems(cart.items);
+    context.setQuoteId(cart.id);
     handleRequestSuccess();
   } catch (e) {
     Sentry.captureException(e);
@@ -60,13 +61,16 @@ export const addProductToCart = async (
       product: product,
       quoteId: context.quoteId,
     });
+    console.log('response: ', response);
+    console.log('response.ok: ', response.ok);
     if (!response.ok) {
-      context.addItem(await response.json());
       context.removeProductFromInProgress(product);
       return handleRequestError(new Error('Response is not ok.'), retryAction);
     }
+    context.addItem(await response.json());
     context.removeProductFromInProgress(product);
   } catch (e) {
+    console.log('e: ', e);
     Sentry.captureException(e);
     context.removeProductFromInProgress(product);
     return handleRequestError(e, retryAction);
@@ -96,16 +100,16 @@ export const removeProductFromCart = async (
     const response = await removeItemRequest({
       itemId: itemBySku.item_id,
     });
-    if (!response.ok && (await response.json())) {
+    if (!response.ok) {
       context.removeProductFromInProgress(product);
       return handleRequestError(new Error('Cart is not ready'), retryAction);
     }
-    context.removeProductFromInProgress(product);
     context.removeItem(itemBySku);
+    context.removeProductFromInProgress(product);
   } catch (e) {
     Sentry.captureException(e);
     context.removeProductFromInProgress(product);
-    handleRequestError(e, retryAction);
+    return handleRequestError(e, retryAction);
   }
 };
 
@@ -113,10 +117,9 @@ function wrapRequestWithAuthorization<I, T: { status: number }>(
   request: (string, I | void) => Promise<T>,
 ): I => Promise<T> {
   return async (input?: I) => {
-    const token = JSON.parse(
-      await RNRnmentoringprogramAsyncStorage.getItem('token'),
-    );
+    const token = await RNRnmentoringprogramAsyncStorage.getItem('token');
     const res = await request(token, input);
+    console.log('res.status: ', res.status);
     if (res.status !== 401) {
       return res;
     }
@@ -126,7 +129,7 @@ function wrapRequestWithAuthorization<I, T: { status: number }>(
     ]);
     const tokenResponse = await getToken(username, password);
     const newToken = await tokenResponse.json();
-    await RNRnmentoringprogramAsyncStorage.setItem('token', token);
+    await RNRnmentoringprogramAsyncStorage.setItem('token', newToken);
     return request(newToken, input);
   };
 }

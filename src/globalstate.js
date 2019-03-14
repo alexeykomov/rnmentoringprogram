@@ -13,6 +13,7 @@ export const LoadingStates = {
 
 const GlobalContext = React.createContext<GlobalState>({
   quoteId: '',
+  setQuoteId: () => {},
   items: new Map(),
   products: new Map(),
   addProducts: () => {},
@@ -38,6 +39,7 @@ const GlobalContext = React.createContext<GlobalState>({
 
 export type GlobalState = {|
   quoteId: string,
+  setQuoteId: (number) => void,
   items: Map<string, CartItemType>,
   addProducts: (Product[]) => void,
   products: Map<string, Product>,
@@ -46,7 +48,7 @@ export type GlobalState = {|
   isItemsLoaded: () => boolean,
   addProductToInProgress: Product => void,
   removeProductFromInProgress: Product => void,
-  productsInProgress: Set<number>,
+  productsInProgress: Set<string>,
   addItem: CartItemType => void,
   removeItem: CartItemType => void,
   clearItems: () => void,
