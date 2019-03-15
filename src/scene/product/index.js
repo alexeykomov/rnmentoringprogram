@@ -153,7 +153,7 @@ class ProductFull extends React.PureComponent<
     return 'Add to cart';
   }
 
-  navigateToLocation() {
+  navigateToLocation = () => {
     const { navigation } = this.props;
     const product = navigation.getParam<product>('product', NonExistentProduct);
     return navigation.navigate({
@@ -196,7 +196,7 @@ class ProductFull extends React.PureComponent<
     );
   }
 
-  handleRequestError(e: Error, retryAction: Function) {
+  handleRequestError = (e: Error, retryAction: Function) => {
     const { navigation } = this.props;
     navigation.navigate({
       routeName: Routes.Modal,

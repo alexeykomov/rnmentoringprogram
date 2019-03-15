@@ -38,6 +38,7 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
       getCartProducts: this.getCartProducts,
       getProducts: this.getProducts,
       productsInProgress: new Set(),
+      clearCart: this.clearCart,
     };
 
     this.state = state;

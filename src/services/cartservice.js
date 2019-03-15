@@ -65,7 +65,14 @@ export const addProductToCart = async (
     console.log('response.ok: ', response.ok);
     if (!response.ok) {
       context.removeProductFromInProgress(product);
-      return handleRequestError(new Error('Response is not ok.'), retryAction);
+      const responseBody = await response.json();
+      return handleRequestError(
+        new Error(
+          'Response is not ok. ' +
+            ('message' in responseBody ? responseBody.message : ''),
+        ),
+        retryAction,
+      );
     }
     context.addItem(await response.json());
     context.removeProductFromInProgress(product);
@@ -374,10 +381,20 @@ type AddItemInput = {|
   quoteId: string,
 |};
 
-type AddItemResponseType = {|
-  ok: boolean,
+type AddItemResponseType =
+  | AddItemResponseSuccessType
+  | AddItemResponseFailedType;
+
+type AddItemResponseSuccessType = {|
+  ok: true,
   status: number,
   json: () => Promise<CartItemType>,
+|};
+
+type AddItemResponseFailedType = {|
+  ok: false,
+  status: number,
+  json: () => Promise<{ message: string }>,
 |};
 
 type GetItemsResponseType = {|

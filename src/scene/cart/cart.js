@@ -24,7 +24,7 @@ import Button from '../../components/button/button';
 import type { GlobalState } from '../../globalstate';
 import GlobalContext from '../../globalstate';
 import { IconSizes, IconSizeStyles } from '../../icons';
-import { getCart } from '../../services/cartservice';
+import { getCart, removeProductFromCart } from '../../services/cartservice';
 import { noop } from '../../lib/noop';
 
 type ProductListProps = {
@@ -122,7 +122,17 @@ class Cart extends React.PureComponent<ProductListProps, State> {
     );
   }
 
-  onClear = () => {};
+  onClear = () => {
+    const context: GlobalState = this.context;
+    context.getCartProducts().forEach(product => {
+      removeProductFromCart(
+        product,
+        context,
+        () => this.onClear(),
+        this.handleRequestError,
+      );
+    })
+  };
 
   onCheckout = () => {};
 
