@@ -3,7 +3,7 @@
  * */
 
 import style from './styles';
-import type { Product } from '../../product';
+import type { Product, ProductUid } from '../../product';
 import {
   View,
   TouchableOpacity,
@@ -26,6 +26,11 @@ import {
   addProductToCart,
   removeProductFromCart,
 } from '../../services/cartservice';
+import {
+  CART_NOTIFICATION,
+  notificatonEmitter,
+} from '../../notificationemitter';
+import PushNotification from 'react-native-push-notification';
 
 type ProductPropsType = {
   navigation: NavigationScreenProp<*>,
@@ -121,21 +126,23 @@ class ProductFull extends React.PureComponent<
                     <Text style={style.returnText}>Location</Text>
                   </Animated.View>
                 </TouchableOpacity>
-                {context.isItemsLoaded() && <TouchableOpacity
-                  style={style.returnButton}
-                  onPress={() => this.operateWithCart(context)}
-                >
-                  <Animated.View
-                    style={[
-                      style.returnBackground,
-                      { transform: [{ translateY: this.buttonY2 }] },
-                    ]}
+                {context.isItemsLoaded() && (
+                  <TouchableOpacity
+                    style={style.returnButton}
+                    onPress={() => this.operateWithCart(context)}
                   >
-                    <Text style={style.returnText}>
-                      {this.getOperateWithCartText(context)}
-                    </Text>
-                  </Animated.View>
-                </TouchableOpacity>}
+                    <Animated.View
+                      style={[
+                        style.returnBackground,
+                        { transform: [{ translateY: this.buttonY2 }] },
+                      ]}
+                    >
+                      <Text style={style.returnText}>
+                        {this.getOperateWithCartText(context)}
+                      </Text>
+                    </Animated.View>
+                  </TouchableOpacity>
+                )}
               </ScrollView>
             </View>
           </React.Fragment>
@@ -160,7 +167,7 @@ class ProductFull extends React.PureComponent<
       routeName: Routes.LocationScreen,
       params: { product },
     });
-  }
+  };
 
   operateWithCart(context: GlobalState) {
     const { navigation } = this.props;
@@ -184,6 +191,7 @@ class ProductFull extends React.PureComponent<
       context,
       () => this.addProductToCart(product, context),
       this.handleRequestError,
+      this.handleRequestSuccess,
     );
   }
 
@@ -202,7 +210,20 @@ class ProductFull extends React.PureComponent<
       routeName: Routes.Modal,
       params: { error: e, retryAction },
     });
-  }
+  };
+
+  handleRequestSuccess = (product: Product, context: GlobalState) => {
+    PushNotification.localNotification({
+      title: 'Product added',
+      message: product.name,
+    });
+  };
 }
+
+type ProductForNotificationType = {
+  name: string,
+  icon: ProductUid,
+  quantity: number,
+};
 
 export default ProductFull;

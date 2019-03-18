@@ -50,6 +50,7 @@ export const addProductToCart = async (
   context: GlobalState,
   retryAction: Function,
   handleRequestError: (Error, Function) => void,
+  handleRequestSuccess: (Product, GlobalState) => void,
 ) => {
   try {
     context.addProductToInProgress(product);
@@ -76,6 +77,7 @@ export const addProductToCart = async (
     }
     context.addItem(await response.json());
     context.removeProductFromInProgress(product);
+    handleRequestSuccess(product, context);
   } catch (e) {
     console.log('e: ', e);
     Sentry.captureException(e);

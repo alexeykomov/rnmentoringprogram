@@ -125,6 +125,7 @@ class Cart extends React.PureComponent<ProductListProps, State> {
   onClear = () => {
     const context: GlobalState = this.context;
     context.getCartProducts().forEach(product => {
+      console.log('product: ', product);
       removeProductFromCart(
         product,
         context,

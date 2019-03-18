@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -45,6 +46,7 @@
 		37CB2ECF6CD2452DB3290106 /* vincHand.otf in Resources */ = {isa = PBXBuildFile; fileRef = A951032EEBED41909CF757E3 /* vincHand.otf */; };
 		5A69B1712219BB7400A37ABF /* libRNRnmentoringprogramAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16334D22182DA900A4670D /* libRNRnmentoringprogramAsyncStorage.a */; };
 		5A69B1762219C2E200A37ABF /* empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A69B1752219C2E200A37ABF /* empty.swift */; };
+		5AC2D8A3223FADC800B7212C /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC2D880223FADAC00B7212C /* libRCTPushNotification.a */; };
 		5AEB973B2205D19600D8691A /* Lottie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEB97312205D03F00D8691A /* Lottie.framework */; };
 		5AEB973C2205D19600D8691A /* Lottie.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5AEB97312205D03F00D8691A /* Lottie.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		670752F81CC342399A2F82C2 /* VINCHAND.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9E44918A140410CA01759E6 /* VINCHAND.ttf */; };
@@ -332,13 +334,6 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNGestureHandler;
 		};
-		5A5495D12221906100328A35 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5A16334822182DA800A4670D /* RNRnmentoringprogramAsyncStorage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5A549584221F4F6C00328A35;
-			remoteInfo = Tests;
-		};
 		5A74776A22231F7D00310B15 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7B27530365FF451AAFDACED5 /* RNSentry.xcodeproj */;
@@ -359,6 +354,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = 3D7682761D8E76B80014119E;
 			remoteInfo = SplashScreen;
+		};
+		5AC2D87F223FADAC00B7212C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5AC2D869223FADAB00B7212C /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTPushNotification;
+		};
+		5AC2D881223FADAC00B7212C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5AC2D869223FADAB00B7212C /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D05745F1DE6004600184BB4;
+			remoteInfo = "RCTPushNotification-tvOS";
 		};
 		5AEB97302205D03F00D8691A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -482,6 +491,7 @@
 		5A16334822182DA800A4670D /* RNRnmentoringprogramAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNRnmentoringprogramAsyncStorage.xcodeproj; path = "../../react-native-rnmentoringprogram-async-storage/ios/RNRnmentoringprogramAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		5A69B1742219C2E100A37ABF /* rnmentoringprogram-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rnmentoringprogram-Bridging-Header.h"; sourceTree = "<group>"; };
 		5A69B1752219C2E200A37ABF /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
+		5AC2D869223FADAB00B7212C /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		5C19718629E049A9B3DA820C /* LottieReactNative.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = LottieReactNative.xcodeproj; path = "../node_modules/lottie-react-native/src/ios/LottieReactNative.xcodeproj"; sourceTree = "<group>"; };
 		5CA9EDFF77B84203A3E30929 /* VINCHAND.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = VINCHAND.otf; path = ../assets/fonts/VINCHAND.otf; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -520,6 +530,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AC2D8A3223FADC800B7212C /* libRCTPushNotification.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				5AEB973B2205D19600D8691A /* Lottie.framework in Frameworks */,
@@ -714,7 +725,6 @@
 			isa = PBXGroup;
 			children = (
 				5A16334D22182DA900A4670D /* libRNRnmentoringprogramAsyncStorage.a */,
-				5A5495D22221906100328A35 /* Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -769,6 +779,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		5AC2D86A223FADAB00B7212C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5AC2D880223FADAC00B7212C /* libRCTPushNotification.a */,
+				5AC2D882223FADAC00B7212C /* libRCTPushNotification-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		5AEB97282205D03D00D8691A /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -809,6 +828,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5AC2D869223FADAB00B7212C /* RCTPushNotification.xcodeproj */,
 				5A16334822182DA800A4670D /* RNRnmentoringprogramAsyncStorage.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -887,14 +907,6 @@
 				2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		B957A05B61604B5BB0AE6C21 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1054,6 +1066,10 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
+				},
+				{
+					ProductGroup = 5AC2D86A223FADAB00B7212C /* Products */;
+					ProjectRef = 5AC2D869223FADAB00B7212C /* RCTPushNotification.xcodeproj */;
 				},
 				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
@@ -1366,13 +1382,6 @@
 			remoteRef = 5A24D5AA21EA02EE00031575 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5A5495D22221906100328A35 /* Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Tests.xctest;
-			remoteRef = 5A5495D12221906100328A35 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		5A74776B22231F7D00310B15 /* libRNSentry.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1392,6 +1401,20 @@
 			fileType = archive.ar;
 			path = libSplashScreen.a;
 			remoteRef = 5A7F56B12205B3A900C73C64 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5AC2D880223FADAC00B7212C /* libRCTPushNotification.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTPushNotification.a;
+			remoteRef = 5AC2D87F223FADAC00B7212C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5AC2D882223FADAC00B7212C /* libRCTPushNotification-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRCTPushNotification-tvOS.a";
+			remoteRef = 5AC2D881223FADAC00B7212C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5AEB97312205D03F00D8691A /* Lottie.framework */ = {
@@ -1517,7 +1540,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "~/.nvm/nvm.sh\nexport SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=~/.nvm/versions/node/v8.9.2/bin/node\nwhich node\nnode -v\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1538,14 +1561,14 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
-			name = "Upload Debug Symbols to Sentry";
 			inputPaths = (
 			);
+			name = "Upload Debug Symbols to Sentry";
 			outputPaths = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
+			shellScript = "~/.nvm/nvm.sh\nexport SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

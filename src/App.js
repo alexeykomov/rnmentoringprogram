@@ -141,7 +141,7 @@ class App extends React.PureComponent<AppWithGlobalStateProps, GlobalState> {
   getCartProducts = (): Product[] => {
     const products = [...this.state.items.keys()].map(sku =>
       this.state.products.get(sku),
-    );
+    ).filter(p => !!p);
     return products;
   };
 
