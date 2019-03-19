@@ -31,6 +31,7 @@ import {
   notificatonEmitter,
 } from '../../notificationemitter';
 import PushNotification from 'react-native-push-notification';
+import { delay } from '../../lib/delay';
 
 type ProductPropsType = {
   navigation: NavigationScreenProp<*>,
@@ -212,10 +213,13 @@ class ProductFull extends React.PureComponent<
     });
   };
 
-  handleRequestSuccess = (product: Product, context: GlobalState) => {
+  handleRequestSuccess = async (product: Product, context: GlobalState) => {
+    await delay(5000);
     PushNotification.localNotification({
-      title: 'Product added',
+      title: `Product added (${context.getCartProducts().length} total)`,
       message: product.name,
+      repeatType: 'time',
+      repeatTime: '1000',
     });
   };
 }
