@@ -143,7 +143,9 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-push-notification')
+    compile (project(':react-native-push-notification')) {
+        exclude group: 'com.google.android.gms'
+    }
     compile project(':react-native-sentry')
     compile project(':react-native-rnmentoringprogram-async-storage')
     compile project(':react-native-maps')

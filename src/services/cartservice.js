@@ -62,6 +62,7 @@ export const addProductToCart = async (
       product: product,
       quoteId: context.quoteId,
     });
+    // const response = await mockAddItemRequest();
     console.log('response: ', response);
     console.log('response.ok: ', response.ok);
     if (!response.ok) {
@@ -109,6 +110,7 @@ export const removeProductFromCart = async (
     const response = await removeItemRequest({
       itemId: itemBySku.item_id,
     });
+    //const response = await mockRemoveItemRequest();
     if (!response.ok) {
       context.removeProductFromInProgress(product);
       return handleRequestError(new Error('Cart is not ready'), retryAction);

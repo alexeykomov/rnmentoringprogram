@@ -13,7 +13,7 @@ export const sendAuthRequest = async (
   handleRequestError: (Error, Function) => void,
 ) => {
   try {
-    // const response = await mockGetToken();
+    //const response = await mockGetToken();
     const response = await getToken(username, password);
     const responseIsOk = response.ok;
     if (!responseIsOk) {
