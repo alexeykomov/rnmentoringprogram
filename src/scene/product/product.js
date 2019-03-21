@@ -214,7 +214,7 @@ class ProductFull extends React.PureComponent<
   };
 
   handleRequestSuccess = async (product: Product, context: GlobalState) => {
-    await delay(5000);
+    await delay(2000);
     PushNotification.localNotification({
       title: `Product added (${context.getCartProducts().length} total)`,
       message: product.name,
