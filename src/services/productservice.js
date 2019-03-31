@@ -7,7 +7,7 @@ import mockCartResponse from '../../getcartresponse.json';
 import type { GlobalState } from '../globalstate';
 import { Sentry } from 'react-native-sentry';
 import { getToken } from './authservice';
-import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
+import * as Keychain from 'react-native-keychain';
 import { LoadingStates } from '../globalstate';
 import { Routes } from '../routes';
 import { getItemBySku } from './cartserviceutils';

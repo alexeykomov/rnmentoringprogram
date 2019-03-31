@@ -1,6 +1,6 @@
 // @flow
 import { Sentry } from 'react-native-sentry';
-import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
+import * as Keychain from 'react-native-keychain';
 
 const AUTH_URL =
   'http://ecsc00a02fb3.epam.com/index.php/rest/V1/integration/customer/token';
@@ -13,7 +13,7 @@ export const sendAuthRequest = async (
   handleRequestError: (Error, Function) => void,
 ) => {
   try {
-    //const response = await mockGetToken();
+    // const response = await mockGetToken();
     const response = await getToken(username, password);
     const responseIsOk = response.ok;
     if (!responseIsOk) {
@@ -36,9 +36,8 @@ const saveLoginInfo = async (
 ) => {
   try {
     await Promise.all([
-      RNRnmentoringprogramAsyncStorage.setItem('token', token),
-      RNRnmentoringprogramAsyncStorage.setItem('username', username),
-      RNRnmentoringprogramAsyncStorage.setItem('password', password),
+      Keychain.setInternetCredentials('token', 'token', token),
+      Keychain.setInternetCredentials('username', username, password),
     ]);
   } catch (error) {
     Sentry.captureException(error);

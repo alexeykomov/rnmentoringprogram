@@ -26,7 +26,7 @@ import MenuButton from '../../components/menubutton/menubutton';
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import SplashScreen from 'react-native-splash-screen';
 import { noop } from '../../lib/noop';
-import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
+import * as Keychain from 'react-native-keychain';
 import { Sentry } from 'react-native-sentry';
 import type { GlobalState } from '../../globalstate';
 import GlobalContext, { LoadingStates } from '../../globalstate';
@@ -176,7 +176,10 @@ class ProductList extends React.PureComponent<ProductListProps, State> {
       ? this.sidePane.closeMenu(
           async (): Promise<void> => {
             try {
-              await RNRnmentoringprogramAsyncStorage.setItem('token', '');
+              Promise.all([
+                await Keychain.resetInternetCredentials('username'),
+                await Keychain.resetInternetCredentials('token'),
+              ]);
             } catch (e) {
               Sentry.captureException(e);
               console.log('Error - cannot remove token: ', e);

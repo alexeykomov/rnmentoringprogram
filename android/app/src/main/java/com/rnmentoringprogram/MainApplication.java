@@ -3,6 +3,7 @@ package com.rnmentoringprogram;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.keychain.KeychainPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import io.sentry.RNSentryPackage;
 import me.alexeykomov.RNRnmentoringprogramAsyncStorage.RNRnmentoringprogramAsyncStoragePackage;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new KeychainPackage(),
             new ReactNativePushNotificationPackage(),
             new RNSentryPackage(),
             new RNRnmentoringprogramAsyncStoragePackage(),

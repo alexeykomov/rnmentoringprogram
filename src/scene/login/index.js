@@ -24,7 +24,7 @@ import type { CompositeAnimation } from 'react-native/Libraries/Animated/src/Ani
 import NetworkWatcher from '../../components/networkwatcher/networkwatcher';
 import SplashScreen from 'react-native-splash-screen';
 import LottieView from 'lottie-react-native';
-import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
+import * as Keychain from 'react-native-keychain';
 import { Sentry } from 'react-native-sentry';
 import { sendAuthRequest } from '../../services/authservice';
 
@@ -89,9 +89,9 @@ class LoginScreen extends React.PureComponent<LoginScreenProps, State> {
     this.smilingStackAnimation && this.smilingStackAnimation.play();
 
     try {
-      const token = await RNRnmentoringprogramAsyncStorage.getItem('token');
-      console.log('token: ', token);
-      if (token) {
+      const creds = await Keychain.getInternetCredentials('token');
+      console.log('token: ', creds && creds.password);
+      if (creds.password) {
         return this.navigateToContent();
       }
       SplashScreen.hide();

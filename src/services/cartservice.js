@@ -7,7 +7,7 @@ import mockCartResponse from '../../getcartresponse.json';
 import type { GlobalState } from '../globalstate';
 import { Sentry } from 'react-native-sentry';
 import { getToken } from './authservice';
-import RNRnmentoringprogramAsyncStorage from 'react-native-rnmentoringprogram-async-storage';
+import * as Keychain from 'react-native-keychain';
 import { LoadingStates } from '../globalstate';
 import { Routes } from '../routes';
 import { getItemBySku } from './cartserviceutils';
@@ -128,19 +128,18 @@ function wrapRequestWithAuthorization<I, T: { status: number }>(
   request: (string, I | void) => Promise<T>,
 ): I => Promise<T> {
   return async (input?: I) => {
-    const token = await RNRnmentoringprogramAsyncStorage.getItem('token');
-    const res = await request(token, input);
+    const creds = await Keychain.getInternetCredentials('token');
+    const res = await request(creds && creds.password, input);
     console.log('res.status: ', res.status);
     if (res.status !== 401) {
       return res;
     }
-    const [username, password] = await Promise.all([
-      RNRnmentoringprogramAsyncStorage.getItem('username'),
-      RNRnmentoringprogramAsyncStorage.getItem('password'),
-    ]);
+    const { username, password } = await Keychain.getInternetCredentials(
+      'username',
+    );
     const tokenResponse = await getToken(username, password);
     const newToken = await tokenResponse.json();
-    await RNRnmentoringprogramAsyncStorage.setItem('token', newToken);
+    await Keychain.setInternetCredentials('token', 'token', newToken);
     return request(newToken, input);
   };
 }
