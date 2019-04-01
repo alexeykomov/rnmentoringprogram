@@ -3,7 +3,6 @@ package com.rnmentoringprogram;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.oblador.keychain.KeychainPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import io.sentry.RNSentryPackage;
